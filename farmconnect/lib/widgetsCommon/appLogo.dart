@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:farmconnect/consts/consts.dart';
 import 'package:flutter/cupertino.dart';
 

@@ -1,6 +1,7 @@
 import 'package:farmconnect/consts/consts.dart';
 import 'package:farmconnect/widgetsCommon/appLogo.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import '../auth_screen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
