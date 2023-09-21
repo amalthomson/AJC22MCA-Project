@@ -28,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: [
-                  Image.asset(imgProfile2, width: 85, fit: BoxFit.cover)
+                  Image.asset(icAppLogo, width: 85, fit: BoxFit.cover)
                       .box
                       .roundedFull
                       .clip(Clip.antiAlias)
@@ -38,8 +38,8 @@ class ProfileScreen extends StatelessWidget {
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      "Dummy user".text.fontFamily(semibold).white.make(),
-                      "Dummy@example.com".text.white.make(),
+                      "Amal Thomson".text.fontFamily(bold).white.make(),
+                      "amal@gmail.com".text.white.make(),
                     ],
                   )),
                   OutlinedButton(

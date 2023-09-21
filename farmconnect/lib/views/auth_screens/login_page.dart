@@ -1,4 +1,4 @@
-import '../Home_screens/Home.dart';
+import '../Profile_Screen/profile_Screen.dart';
 import 'package:FarmConnect/views/auth_screens/signup_page.dart';
 import 'package:FarmConnect/widgets_common/appLogo.dart';
 import 'package:FarmConnect/widgets_common/bg_widget.dart';
@@ -54,11 +54,8 @@ class loginPage extends StatelessWidget {
                 10.heightBox,
                 Align(
                   alignment: Alignment.center,
-                  child: loginWith.text
-                      .fontFamily(bold)
-                      .color(Colors.black)
-                      .size(13)
-                      .make(),
+                  child:
+                    Container(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -66,14 +63,9 @@ class loginPage extends StatelessWidget {
                       3,
                       (index) => Padding(
                           padding: const EdgeInsets.all(10),
-                          child: CircleAvatar(
-                            backgroundColor: lightGrey,
-                            radius: 25,
-                            child: Image.asset(
-                              socialIconList[index],
-                              width: 30,
-                            ),
-                          ))),
+                          child:
+                          Container(),
+                      )),
                 )
               ],
             )

@@ -8,7 +8,6 @@ Widget customTextField({String? fieldName, String? fieldNameHint, conrtoller}) {
         fieldName!.text.color(Colors.black).fontFamily(semibold).size(16).make(),
         5.heightBox,
         TextFormField(
-          controller: conrtoller,
           decoration: InputDecoration(
             hintStyle: TextStyle(
               fontFamily: semibold,

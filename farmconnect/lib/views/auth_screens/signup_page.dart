@@ -1,4 +1,4 @@
-import 'package:FarmConnect/views/Home_screens/Home.dart';
+import '../Profile_Screen/profile_Screen.dart';
 import 'package:FarmConnect/views/auth_screens/login_page.dart';
 import 'package:FarmConnect/widgets_common/appLogo.dart';
 import 'package:FarmConnect/widgets_common/bg_widget.dart';
@@ -17,12 +17,6 @@ class signUpPage extends StatefulWidget {
 
 class _signUpPageState extends State<signUpPage> {
   bool? isCheck = false;
-  var controller = Get.put(AuthController());
-
-  var nameController = TextEditingController();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var passwordReController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +37,10 @@ class _signUpPageState extends State<signUpPage> {
             15.heightBox,
             Column(
               children: [
-                customTextField(fieldName: name, controller: nameController),
-                customTextField(fieldName: email, controller: emailController),
-                customTextField(fieldName: password, controller: passwordController),
-                customTextField(fieldName: retypePass, controller: passwordReController),
+                customTextField(fieldName: name),
+                customTextField(fieldName: email),
+                customTextField(fieldName: password),
+                customTextField(fieldName: retypePass),
                 5.heightBox,
                 Row(
                   children: [
