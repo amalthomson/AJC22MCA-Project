@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "farmconnect" "\0"
+            VALUE "FileDescription", "eshop" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "farmconnect" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "farmconnect.exe" "\0"
-            VALUE "ProductName", "farmconnect" "\0"
+            VALUE "InternalName", "eshop" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "eshop.exe" "\0"
+            VALUE "ProductName", "eshop" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

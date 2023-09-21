@@ -1,11 +1,11 @@
 {
-    "name": "farmconnect",
-    "short_name": "farmconnect",
+    "name": "eshop",
+    "short_name": "eshop",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "FarmConnect - AJC22MCA_Final_Project",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
