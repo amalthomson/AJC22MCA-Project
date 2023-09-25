@@ -92,9 +92,10 @@ class HomePage extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   DashboardCard(
-                    title: "Settings",
-                    icon: Icons.settings,
+                    title: "Update Details",
+                    icon: Icons.update,
                     onPressed: () {
+                      Navigator.pushNamed(context, "/update_details");
                       // Add action for settings
                     },
                   ),

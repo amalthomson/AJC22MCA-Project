@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase/features/user_auth/presentation/pages/update_details.dart'; // Replace with the correct path to your update_details.dart file
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter_firebase/features/app/splash_screen/splash_screen.dart';
 import 'package:flutter_firebase/features/user_auth/presentation/pages/home_page.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
         '/home': (context) => HomePage(),
+        '/update_details': (context) => UpdateDetailsPage(),
       },
     );
   }
