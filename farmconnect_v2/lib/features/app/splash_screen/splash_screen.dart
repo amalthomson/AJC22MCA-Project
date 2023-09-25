@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => widget.child!),
-              (route) => false);
+          (route) => false);
     });
     super.initState();
   }
@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           // Background Image
           Image.asset(
-            'assets/icons/bg1.png',
+            'assets/icons/home.png',
             fit: BoxFit.cover, // Adjust the fit as needed
             width: double.infinity,
             height: double.infinity,
@@ -46,14 +46,16 @@ class _SplashScreenState extends State<SplashScreen> {
                   width: 120,
                   height: 120,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60), // Adjust the radius as needed
+                    borderRadius: BorderRadius.circular(
+                        60), // Adjust the radius as needed
                     border: Border.all(
                       color: Colors.white, // Set the border color to white
                       width: 4.0, // Adjust the border width as needed
                     ),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(60), // Same radius as the container
+                    borderRadius: BorderRadius.circular(
+                        60), // Same radius as the container
                     child: Image.asset(
                       'assets/icons/app_logo.png',
                       width: 100,
@@ -87,6 +89,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-
-
 }

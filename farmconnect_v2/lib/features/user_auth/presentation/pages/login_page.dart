@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             // Background Image
             Image.asset(
-              'assets/icons/bg5.png',
+              'assets/icons/bk7.jpg',
               fit: BoxFit.cover, // Adjust the fit as needed
               width: double.infinity,
               height: double.infinity,
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     "Login to FarmConnect",
-                    style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(
                     height: 30,
@@ -83,7 +83,8 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("New to FarmConnect?"),
+                      Text("New to FarmConnect?",
+                      style: TextStyle(color: Colors.white)),
                       SizedBox(width: 5,),
                       GestureDetector(
                         onTap: () {

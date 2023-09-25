@@ -12,7 +12,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController _usernameController = TextEditingController();
@@ -38,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             // Background Image
             Image.asset(
-              'assets/icons/bg5.png',
+              'assets/icons/bk7.jpg',
               fit: BoxFit.cover, // Adjust the fit as needed
               width: double.infinity,
               height: double.infinity,
@@ -50,7 +49,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   Text(
                     "Sign Up with FarmConnect",
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   SizedBox(
                     height: 30,
@@ -90,22 +92,35 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       child: Center(
                           child: Text(
-                            "Sign Up",
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          )),
+                        "Sign Up",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      )),
                     ),
                   ),
-                  SizedBox(height: 20,),
-                  Row(mainAxisAlignment: MainAxisAlignment.center,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already have an account?"),
-                      SizedBox(width: 5,),
+                      Text("Already have an account?",
+                          style: TextStyle(color: Colors.white)),
+                      SizedBox(
+                        width: 5,
+                      ),
                       GestureDetector(
                           onTap: () {
                             Navigator.pushAndRemoveUntil(
-                                context, MaterialPageRoute(builder: (context) => LoginPage()), (route) => false);
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                                (route) => false);
                           },
-                          child: Text("Login", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),))
+                          child: Text("Login",
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold))),
                     ],
                   )
                 ],
@@ -170,5 +185,4 @@ class _SignUpPageState extends State<SignUpPage> {
       },
     );
   }
-
 }
