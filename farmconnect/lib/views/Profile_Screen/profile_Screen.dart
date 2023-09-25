@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       "Amal Thomson".text.fontFamily(bold).white.make(),
-                      "amal@gmail.com".text.white.make(),
+                      "amalthomson@gmail.com".text.white.make(),
                     ],
                   )),
                   OutlinedButton(
