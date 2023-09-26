@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:flutter_firebase/features/user_auth/presentation/pages/login_page.dart';
-import 'package:flutter_firebase/features/user_auth/presentation/widgets/form_container_widget.dart';
+import 'package:farmconnect/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/widgets/form_container_widget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -37,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             // Background Image
             Image.asset(
-              'assets/icons/bk7.jpg',
+              'assets/icons/bgImage.jpg',
               fit: BoxFit.cover, // Adjust the fit as needed
               width: double.infinity,
               height: double.infinity,
@@ -155,8 +155,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   bool _isValidPassword(String password) {
-    // Define your password criteria here (e.g., minimum length, special characters, numbers)
-    // For example, a password must be at least 8 characters long and contain at least one number and one special character.
     final minLength = 8;
     final hasNumber = RegExp(r'[0-9]').hasMatch(password);
     final hasSpecialChar = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password);

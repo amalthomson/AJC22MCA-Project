@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_firebase/constants/colors.dart';
-import 'package:flutter_firebase/constants/images.dart';
-import 'package:flutter_firebase/constants/consts.dart';
-import 'package:flutter_firebase/constants/strings.dart';
-import 'package:flutter_firebase/constants/styles.dart';
 
 class SplashScreen extends StatefulWidget {
   final Widget? child;

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/features/user_auth/presentation/pages/sign_up_page.dart';
-import 'package:flutter_firebase/features/user_auth/presentation/widgets/form_container_widget.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/widgets/form_container_widget.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             // Background Image
             Image.asset(
-              'assets/icons/bk7.jpg',
+              'assets/icons/bgImage.jpg',
               fit: BoxFit.cover, // Adjust the fit as needed
               width: double.infinity,
               height: double.infinity,
