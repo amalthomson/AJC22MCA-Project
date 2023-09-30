@@ -129,7 +129,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               }
                             },
                             value: userrole.isNotEmpty ? userrole : null,
-                            items: <String>['Customer', 'Farmer'].map<DropdownMenuItem<String>>(
+                            items: <String>['Buyer', 'Farmer'].map<DropdownMenuItem<String>>(
                                   (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,

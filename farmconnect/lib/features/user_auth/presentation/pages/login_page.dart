@@ -121,6 +121,7 @@
 // }
 
 
+import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
@@ -241,7 +242,29 @@ class _LoginPageState extends State<LoginPage> {
 
                     ),
                     SizedBox(
-                      height: 30,
+                      height : 10,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: GestureDetector(
+
+                        onTap: () {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPassword()),
+                                  (route) => false);
+                        },
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     GestureDetector(
                       onTap: _signIn,
