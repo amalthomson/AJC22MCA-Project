@@ -14,7 +14,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final FirebaseAuthService _auth = FirebaseAuthService();
+  // final FirebaseAuthService _auth = FirebaseAuthService();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -28,34 +28,70 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final dbRef = FirebaseDatabase.instance.ref().child('users');
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
-  final auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
+
+  // void register() async {
+  //   try {
+  //     final newUser = _auth.createUserWithEmailAndPassword(
+  //         email: email, password: password)
+  //         .then((value) {
+  //       FirebaseFirestore.instance.collection('users').doc(value.user?.uid).set(
+  //           {"email": value.user?.email,
+  //             "name": username,
+  //             "phone": phone,
+  //             "role": userrole,});
+  //     },
+  //     );
+  //     if  (newUser != null) {
+  //       Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context)=>LoginPage()));
+  //     }
+  //   } catch (e) {
+  //     print (e);
+  //     SnackBar(
+  //       content: Text("Username Already exists"),
+  //       backgroundColor: Colors.teal,
+  //     );
+  //     Fluttertoast.showToast(msg: e.toString());
+  //     print(e);
+  //
+  //   }
+  // }
 
   void register() async {
     try {
-      final newUser = auth.createUserWithEmailAndPassword(
-          email: email, password: password)
-          .then((value) {
-        FirebaseFirestore.instance.collection('users').doc(value.user?.uid).set(
-            {"email": value.user?.email,
-              "name": username,
-              "phone": phone,
-              "role": userrole,});
-      },
-      );
-      if  (newUser != null) {
-        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context)=>LoginPage()));
+      print("Starting registration...");
+
+      final newUser = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      print("User created successfully!");
+
+      final userId = newUser.user?.uid;
+      print("User ID: $userId");
+
+      final userData = {
+        "email": email,
+        "name": username,
+        "phone": phone,
+        "role": userrole,
+      };
+
+      await FirebaseFirestore.instance.collection('users').doc(userId).set(userData);
+      print("User data saved to Firestore!");
+
+      // ... Other code ...
+
+      if (newUser != null) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+        );
       }
     } catch (e) {
-      print (e);
-      SnackBar(
-        content: Text("Username Already exists"),
-        backgroundColor: Colors.teal,
-      );
-      Fluttertoast.showToast(msg: e.toString());
-      print(e);
-
+      print("Error occurred during registration: $e");
+      // ... Handle errors ...
     }
   }
+
+
   @override
   void dispose() {
     _usernameController.dispose();
@@ -330,35 +366,35 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
 
-  void _signUp() async {
-    String username = _usernameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    String confirmPassword = _confirmPasswordController.text;
-
-    // Validate the password
-    if (!_isValidPassword(password)) {
-      _showPasswordErrorDialog(
-        "Password must be at least 8 characters with at least one number and a special character.",
-      );
-      return;
-    }
-
-    // Check if passwords match
-    if (password != confirmPassword) {
-      _showPasswordErrorDialog("Passwords do not match.");
-      return;
-    }
-
-    User? user = await _auth.signUpWithEmailAndPassword(email, password);
-
-    if (user != null) {
-      print("User is successfully created");
-      Navigator.pushNamed(context, "/home");
-    } else {
-      print("Some error happened");
-    }
-  }
+  // void _signUp() async {
+  //   String username = _usernameController.text;
+  //   String email = _emailController.text;
+  //   String password = _passwordController.text;
+  //   String confirmPassword = _confirmPasswordController.text;
+  //
+  //   // Validate the password
+  //   if (!_isValidPassword(password)) {
+  //     _showPasswordErrorDialog(
+  //       "Password must be at least 8 characters with at least one number and a special character.",
+  //     );
+  //     return;
+  //   }
+  //
+  //   // Check if passwords match
+  //   if (password != confirmPassword) {
+  //     _showPasswordErrorDialog("Passwords do not match.");
+  //     return;
+  //   }
+  //
+  //   User? user = await _auth.signUpWithEmailAndPassword(email, password);
+  //
+  //   if (user != null) {
+  //     print("User is successfully created");
+  //     Navigator.pushNamed(context, "/home");
+  //   } else {
+  //     print("Some error happened");
+  //   }
+  // }
 
   bool _isValidPassword(String password) {
     final minLength = 8;

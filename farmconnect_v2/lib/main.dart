@@ -7,17 +7,21 @@ import 'package:farmconnect/features/app/splash_screen/splash_screen.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/home_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
-Future main() async {
+// Future main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   if (kIsWeb) {
+//     await Firebase.initializeApp(
+//         );
+//   } else {
+//     await Firebase.initializeApp();
+//   }
+//   runApp(MyApp());
+// }
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-        );
-  } else {
-    await Firebase.initializeApp();
-  }
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
