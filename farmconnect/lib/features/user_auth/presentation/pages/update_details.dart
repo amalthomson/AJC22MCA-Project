@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UpdateDetailsPage extends StatefulWidget {
   @override
@@ -7,9 +9,44 @@ class UpdateDetailsPage extends StatefulWidget {
 
 class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController dobController = TextEditingController();
-  final TextEditingController addressController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Call retrieveUserData in initState to populate the text fields when the page is loaded.
+    retrieveUserData();
+  }
+
+  Future<void> retrieveUserData() async {
+    try {
+      // Ensure the user is signed in before attempting to retrieve data.
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        String userId = user.uid;
+        DocumentSnapshot userSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+        // Check if the user document exists.
+        if (userSnapshot.exists) {
+          // Check if 'name' and 'phone' fields exist in the document.
+          Map<String, dynamic>? userData = userSnapshot.data() as Map<String, dynamic>?;
+
+          if (userData != null) {
+            String name = userData['name'] ?? '';
+            String phone = userData['phone'] ?? ''; // Use 'phone' instead of 'phoneNumber'
+
+            setState(() {
+              nameController.text = name;
+              phoneNumberController.text = phone; // Set the phone value
+            });
+          }
+        }
+      }
+    } catch (e) {
+      print('Error retrieving user data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,42 +65,26 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
             ),
             SizedBox(height: 16),
             TextField(
-              controller: dobController,
-              decoration: InputDecoration(labelText: 'Date of Birth'),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: addressController,
-              decoration: InputDecoration(labelText: 'Address'),
-            ),
-            SizedBox(height: 16),
-            TextField(
               controller: phoneNumberController,
               decoration: InputDecoration(labelText: 'Phone Number'),
             ),
             SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // Here, you can insert the user details into the database
-                // You can use Firebase Firestore or any other database of your choice
-                // Retrieve values from controllers (nameController, dobController, etc.)
+              onPressed: () async {
                 final String name = nameController.text;
-                final String dob = dobController.text;
-                final String address = addressController.text;
-                final String phoneNumber = phoneNumberController.text;
+                final String phone = phoneNumberController.text; // Get the phone value
 
-                // Insert the user details into the database
-                // You can implement this part based on your chosen database
-                // For example, if you're using Firebase Firestore:
-                // FirebaseFirestore.instance.collection('users').doc(userId).set({
-                //   'name': name,
-                //   'dob': dob,
-                //   'address': address,
-                //   'phoneNumber': phoneNumber,
-                // });
+                try {
+                  String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+                  await FirebaseFirestore.instance.collection('users').doc(userId).update({
+                    'name': name,
+                    'phone': phone, // Update 'phone' instead of 'phoneNumber'
+                  });
 
-                // After inserting the data, you can navigate back to the previous page
-                Navigator.pop(context);
+                  Navigator.pop(context);
+                } catch (e) {
+                  print('Error updating user data: $e');
+                }
               },
               child: Text('Update'),
             ),
@@ -75,10 +96,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
 
   @override
   void dispose() {
-    // Dispose of controllers when they are no longer needed to prevent memory leaks
     nameController.dispose();
-    dobController.dispose();
-    addressController.dispose();
     phoneNumberController.dispose();
     super.dispose();
   }

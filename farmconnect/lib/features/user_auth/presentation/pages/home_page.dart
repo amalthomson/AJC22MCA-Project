@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/update_details.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key});
@@ -22,81 +23,129 @@ class HomePage extends StatelessWidget {
               return CircularProgressIndicator();
             }
             var userData = snapshot.data?.data();
-            var userEmail = FirebaseAuth.instance.currentUser?.email;
+            var displayName = userData?["name"] ?? "User"; // Fetch the display name
 
             return Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/icons/bgImage.jpg'), // Background image
-                  fit: BoxFit.cover, // Adjust the fit as needed
+                  image: AssetImage('assets/icons/bgImage.jpg'),
+                  fit: BoxFit.cover,
                 ),
               ),
               child: ListView(
                 padding: EdgeInsets.all(16),
                 children: [
-                  SizedBox(height: 20),
+                  SizedBox(height: 100),
                   Container(
-                    width: 120,
-                    height: 120,
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white, // Border color
-                        width: 4.0, // Border width
-                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: CircleAvatar(
-                      radius: 60, // Adjust the radius to fit the available space
-                      backgroundColor: Colors.transparent,
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/icons/dp.png',
-                          fit: BoxFit.cover, // Scale the image to fit
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 4.0,
+                            ),
+                          ),
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.transparent,
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/icons/dp.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Welcome",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                                color: Colors.black,
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                displayName, // Display the display name here
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/update_password");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Reset Password",
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(width: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/update_details");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blue,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Edit Profile",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Welcome,",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                      color: Colors.white, // Text color
-                    ),
-                  ),
-                  Text(
-                    "${userEmail ?? 'User'}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 36,
-                      color: Colors.white, // Text color
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  DashboardCard(
-                    title: "Edit Profile",
-                    icon: Icons.edit,
-                    onPressed: () {
-                      // Navigate to the Edit Profile page
-                      Navigator.pushNamed(context, "/edit_profile");
-                    },
-                  ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 50),
                   DashboardCard(
                     title: "View Orders",
                     icon: Icons.shopping_cart,
                     onPressed: () {
                       // Add action for viewing orders
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  DashboardCard(
-                    title: "Update Details",
-                    icon: Icons.update,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/update_details");
-                      // Add action for settings
                     },
                   ),
                   SizedBox(height: 16),

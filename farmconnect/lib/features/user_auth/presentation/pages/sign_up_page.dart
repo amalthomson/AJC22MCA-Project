@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:farmconnect/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -110,11 +110,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     Form(
                       key: _formKey,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
                         children: [
                           DropdownButtonFormField(
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
+
                               labelText: 'Sign Up as',
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
@@ -148,6 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           TextFormField(
                             controller: _usernameController,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
@@ -159,7 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 return 'Name is required';
                               }
                               if (!RegExp(r'^[a-zA-Z\s\-\’]+$').hasMatch(value)) {
-                                return ("Please enter a valid name");
+                                return "Please enter a valid name";
                               } else {
                                 return null;
                               }
@@ -170,6 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           TextFormField(
                             controller: _emailController,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
@@ -183,7 +186,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               if (!RegExp(
                                 r"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$",
                               ).hasMatch(value)) {
-                                return ("Please enter a valid email");
+                                return "Please enter a valid email";
                               } else {
                                 return null;
                               }
@@ -194,6 +197,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           TextFormField(
                             controller: _phoneController,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
@@ -215,6 +219,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           TextFormField(
                             controller: _passwordController,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             obscureText: true,
                             decoration: InputDecoration(
                               filled: true,
@@ -234,6 +239,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           TextFormField(
                             controller: _confirmPasswordController,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             obscureText: true,
                             decoration: InputDecoration(
                               filled: true,
