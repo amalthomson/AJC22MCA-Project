@@ -10,6 +10,7 @@ class UpdateDetailsPage extends StatefulWidget {
 class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
 
   @override
   void initState() {
@@ -34,11 +35,13 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
 
           if (userData != null) {
             String name = userData['name'] ?? '';
-            String phone = userData['phone'] ?? ''; // Use 'phone' instead of 'phoneNumber'
+            String phone = userData['phone'] ?? '';
+            String address = userData['address'] ?? '';
 
             setState(() {
               nameController.text = name;
-              phoneNumberController.text = phone; // Set the phone value
+              phoneNumberController.text = phone;
+              addressController.text = address;// Set the phone value
             });
           }
         }
@@ -68,17 +71,23 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
               controller: phoneNumberController,
               decoration: InputDecoration(labelText: 'Phone Number'),
             ),
+            TextField(
+              controller: addressController,
+              decoration: InputDecoration(labelText: 'Address'),
+            ),
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () async {
                 final String name = nameController.text;
-                final String phone = phoneNumberController.text; // Get the phone value
+                final String phone = phoneNumberController.text;
+                final String address = addressController.text;// Get the phone value
 
                 try {
                   String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
                   await FirebaseFirestore.instance.collection('users').doc(userId).update({
                     'name': name,
                     'phone': phone, // Update 'phone' instead of 'phoneNumber'
+                    'address' : address,
                   });
 
                   Navigator.pop(context);

@@ -1,10 +1,13 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/widgets/form_container_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
 
 class EmailFieldValidator {
@@ -45,7 +48,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isSigning = false;
-
+  // final _auth = FirebaseAuth.instance;
+  final dbRef = FirebaseDatabase.instance.ref().child('users');
+  final fire = FirebaseFirestore.instance.collection('users');
+  String role = 'Buyer';
+  String ftl = 'yes';
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController _emailController = TextEditingController();
@@ -65,6 +72,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("FarmConnect"),
+        automaticallyImplyLeading: false,
+
       ),
       body: Center(
         child: Stack(
@@ -139,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 10,
                     ),
                     GestureDetector(
-                      onTap: _signIn,
+                      onTap: signIn,
                       child: Container(
                         width: double.infinity,
                         height: 45,
@@ -195,30 +204,105 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _signIn() async {
+  // void _signIn() async {
+  //   if (_formKey.currentState!.validate()) {
+  //     String email = _emailController.text;
+  //     String password = _passwordController.text;
+  //
+  //     try {
+  //       User? user = await _auth.signInWithEmailAndPassword(email, password);
+  //
+  //       if (user != null) {
+  //         print("User is successfully signed in");
+  //         Navigator.pushNamed(context, "/home");
+  //       } else {
+  //         // Show an error message if login fails
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //             content: Text("Invalid Username or Password"),
+  //             backgroundColor: Colors.red,
+  //           ),
+  //         );
+  //         print("Some error happened");
+  //       }
+  //     } catch (e) {
+  //       // Handle other exceptions (e.g., network issues, etc.) here
+  //       print("Error: $e");
+  //     }
+  //   }
+  // }
+
+  void signIn() async {
     if (_formKey.currentState!.validate()) {
+      // setState(()=>loading = true);
       String email = _emailController.text;
       String password = _passwordController.text;
-
       try {
-        User? user = await _auth.signInWithEmailAndPassword(email, password);
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        if (userCredential != null) {
+          User? user = FirebaseAuth.instance.currentUser;
+          final DocumentSnapshot snap = await FirebaseFirestore.instance.collection('users').doc(user?.uid).get();
+          setState(() {
+            role = snap['role'];
+            ftl = snap['ftl'];
+            // setState(() => loading = true);
+          });
+          if(ftl == 'no'){
+            if(role == 'Buyer'){
+              Navigator.pushNamed(context, "/buyer_home");
 
-        if (user != null) {
-          print("User is successfully signed in");
-          Navigator.pushNamed(context, "/home");
-        } else {
-          // Show an error message if login fails
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Invalid Username or Password"),
-              backgroundColor: Colors.red,
-            ),
-          );
-          print("Some error happened");
+            }
+            else if(role == 'Admin'){
+              Navigator.pushNamed(context, "/admin_home");
+            } else if(role == 'Farmer') {
+              Navigator.pushNamed(context, "/farmer_home");
+            }
+          }else if(ftl == 'yes'){
+
+            if(role == 'Farmer'){
+              Navigator.pushNamed(context, "/farmer_ftl");
+            } else if(role == 'Buyer') {
+              Navigator.pushNamed(context, "/buyer_ftl");
+            }
+          }
+          else if(ftl == 'Verification Pending'){
+            // loading = false;
+
+            Fluttertoast.showToast(
+              msg: "Verification not complete yet, please wait",
+            );
+
+          }
+          else if(role == 'rej'){
+            // loading = false;
+            Fluttertoast.showToast(
+              msg: "Your application has been rejected.",
+            );
+          }
+          else{
+            // loading = false;
+            Fluttertoast.showToast(
+              msg: "You don't have authorization to Login",
+            );
+          }
         }
-      } catch (e) {
-        // Handle other exceptions (e.g., network issues, etc.) here
-        print("Error: $e");
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          // loading = false;
+        });
+        if (e.code == 'user-not-found') {
+          print("No user found with this email");
+
+          Fluttertoast.showToast(
+            msg: "No user found with this email",
+          );
+        } else if (e.code == 'wrong-password') {
+          print("You have entered the Wrong Password");
+          Fluttertoast.showToast(
+            msg: "You have entered the Wrong Password",
+          );
+        }
       }
     }
   }

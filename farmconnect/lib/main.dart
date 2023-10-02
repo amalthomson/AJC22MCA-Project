@@ -1,3 +1,6 @@
+import 'package:farmconnect/features/user_auth/presentation/pages/admin_home.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/buyerftl.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/farmer_home.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/reset_password.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/update_password.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,10 +32,13 @@ class MyApp extends StatelessWidget {
         ),
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
-        '/home': (context) => HomePage(),
+        '/buyer_home': (context) => HomePage(),
         '/update_details': (context) => UpdateDetailsPage(), // Define the route for UpdateDetailsPage
         '/reset_password': (context) => ResetPasswordPage(),
-        '/update_password': (context) => UpdatePasswordPage()
+        '/update_password': (context) => UpdatePasswordPage(),
+        '/farmer_home' : (context) => FarmerHomePage(),
+        '/admin_home' : (context) => AdminHomePage(),
+        '/buyer_ftl' : (context) => BuyerFTLPage()
       },
     );
   }

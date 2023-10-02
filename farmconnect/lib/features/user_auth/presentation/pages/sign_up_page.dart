@@ -24,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
-  late String email, phone, username, password, userrole = '';
+  late String email, phone, username, password, userrole = '', ftl = '', address = '';
 
   final dbRef = FirebaseDatabase.instance.ref().child('users');
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
@@ -51,6 +51,8 @@ class _SignUpPageState extends State<SignUpPage> {
             "name": username,
             "phone": phone,
             "role": userrole,
+            "ftl" : 'yes',
+            "address" : ''
           },
         );
 
@@ -160,9 +162,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               if (value == null || value.isEmpty) {
                                 return 'Name is required';
                               }
-                              if (!RegExp(r'^[a-zA-Z\s\-\’]+$').hasMatch(value)) {
-                                return "Please enter a valid name";
-                              } else {
+                              if(!(value.isEmpty) && !RegExp(r"(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)")
+                                  .hasMatch(value)){
+                                return "Enter a valid Name";
+                              }
+                               else {
                                 return null;
                               }
                             },
@@ -321,7 +325,8 @@ class _SignUpPageState extends State<SignUpPage> {
     final minLength = 8;
     final hasNumber = RegExp(r'[0-9]').hasMatch(password);
     final hasSpecialChar = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password);
-
-    return password.length >= minLength && hasNumber && hasSpecialChar;
+    final hasNoSpace = !password.contains(' ');
+    return password.length >= minLength && hasNumber && hasSpecialChar && hasNoSpace;
   }
+
 }
