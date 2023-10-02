@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/update_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
 
-class AdminHomePage extends StatelessWidget {
-  const AdminHomePage({Key? key});
+class FarmerHomePage extends StatelessWidget {
+  const FarmerHomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Admin Dashboard"),
+        title: Text("Farmer Dashboard"),
       ),
       body: Center(
         child: StreamBuilder(

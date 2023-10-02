@@ -1,17 +1,18 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/admin_home.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/buyerftl.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/farmer_home.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/reset_password.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/update_password.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_home.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/buyer_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerftl.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmer_home.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_password.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:farmconnect/features/app/splash_screen/splash_screen.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/home_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/update_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,11 +35,14 @@ class MyApp extends StatelessWidget {
         '/signUp': (context) => SignUpPage(),
         '/buyer_home': (context) => HomePage(),
         '/update_details': (context) => UpdateDetailsPage(), // Define the route for UpdateDetailsPage
-        '/reset_password': (context) => ResetPasswordPage(),
         '/update_password': (context) => UpdatePasswordPage(),
         '/farmer_home' : (context) => FarmerHomePage(),
         '/admin_home' : (context) => AdminHomePage(),
-        '/buyer_ftl' : (context) => BuyerFTLPage()
+        '/buyer_ftl' : (context) => BuyerFTLPage(),
+        '/farmer_ftl' : (context) => FarmerFTLPage(),
+        '/admin_dashboard' : (context) => AdminDashboard(),
+        '/buyer_details' : (context) => BuyerDetailsPage(),
+        '/farmer_details' : (context) => FarmerDetailsPage()
       },
     );
   }

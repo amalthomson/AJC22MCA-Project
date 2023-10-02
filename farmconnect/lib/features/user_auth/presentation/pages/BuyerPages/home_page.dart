@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/update_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
 
-class FarmerHomePage extends StatelessWidget {
-  const FarmerHomePage({Key? key});
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Farmer Dashboard"),
+        title: Text("Buyer Dashboard"),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: StreamBuilder(
@@ -154,7 +155,7 @@ class FarmerHomePage extends StatelessWidget {
                     icon: Icons.logout,
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
-                      Navigator.pushNamed(context, "/login");
+                      Navigator.popAndPushNamed(context, "/login");
                     },
                   ),
                 ],

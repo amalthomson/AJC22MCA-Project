@@ -9,6 +9,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.d
 import 'package:farmconnect/features/user_auth/presentation/widgets/form_container_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/common/loading.dart';
 
 class EmailFieldValidator {
   static String? validate(String value) {
@@ -48,6 +49,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isSigning = false;
+  bool loading = false;
   // final _auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('users');
   final fire = FirebaseFirestore.instance.collection('users');
@@ -69,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading? Loading() :  Scaffold(
       appBar: AppBar(
         title: Text("FarmConnect"),
         automaticallyImplyLeading: false,
@@ -234,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void signIn() async {
     if (_formKey.currentState!.validate()) {
-      // setState(()=>loading = true);
+      setState(()=>loading = true);
       String email = _emailController.text;
       String password = _passwordController.text;
       try {
@@ -246,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             role = snap['role'];
             ftl = snap['ftl'];
-            // setState(() => loading = true);
+            setState(() => loading = true);
           });
           if(ftl == 'no'){
             if(role == 'Buyer'){
@@ -254,7 +256,7 @@ class _LoginPageState extends State<LoginPage> {
 
             }
             else if(role == 'Admin'){
-              Navigator.pushNamed(context, "/admin_home");
+              Navigator.pushNamed(context, "/admin_dashboard");
             } else if(role == 'Farmer') {
               Navigator.pushNamed(context, "/farmer_home");
             }
@@ -267,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
             }
           }
           else if(ftl == 'Verification Pending'){
-            // loading = false;
+            loading = false;
 
             Fluttertoast.showToast(
               msg: "Verification not complete yet, please wait",
@@ -275,13 +277,13 @@ class _LoginPageState extends State<LoginPage> {
 
           }
           else if(role == 'rej'){
-            // loading = false;
+            loading = false;
             Fluttertoast.showToast(
               msg: "Your application has been rejected.",
             );
           }
           else{
-            // loading = false;
+            loading = false;
             Fluttertoast.showToast(
               msg: "You don't have authorization to Login",
             );
@@ -289,7 +291,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       } on FirebaseAuthException catch (e) {
         setState(() {
-          // loading = false;
+          loading = false;
         });
         if (e.code == 'user-not-found') {
           print("No user found with this email");
