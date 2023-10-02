@@ -57,7 +57,7 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
           ),
         );
 
-        Navigator.pushNamed(context, "/buyer_home");
+        Navigator.pushNamed(context, "/farmer_home");
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

@@ -30,6 +30,8 @@ class _SignUpPageState extends State<SignUpPage> {
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
   final auth = FirebaseAuth.instance;
 
+  bool _isCheckboxChecked = false; // Add this variable
+
   void register() async {
     // Get the values from the text fields
     email = _emailController.text;
@@ -117,7 +119,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           DropdownButtonFormField(
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
-
                               labelText: 'Sign Up as',
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
@@ -136,7 +137,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                   (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(value),
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.black), // Change text color to black
+                                  ),
                                 );
                               },
                             ).toList(),
@@ -166,7 +170,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   .hasMatch(value)){
                                 return "Enter a valid Name";
                               }
-                               else {
+                              else {
                                 return null;
                               }
                             },
@@ -264,20 +268,49 @@ class _SignUpPageState extends State<SignUpPage> {
                           SizedBox(
                             height: 30,
                           ),
+                          // Use a custom CheckboxListTile
+                          CheckboxListTile(
+
+                            title: GestureDetector(
+                              onTap: (){
+                                Navigator.pushNamed(context, '/terms');
+                              },
+                              child: Text(
+                                    "I agree to terms and conditions",
+                                style: TextStyle(color: Colors.white), // Change text color to white
+                              ),
+                            ),
+                            value: _isCheckboxChecked,
+                            onChanged: (bool? newValue) {
+                              setState(() {
+                                _isCheckboxChecked = newValue!;
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Colors.blue, // Color of the checkbox when checked
+                            tileColor: Colors.transparent, // Color of the checkbox box
+                            checkColor: Colors.white,
+                            // Color of the checkmark
+                          ),
+
+                          SizedBox(
+                            height: 20,
+                          ),
+                          // Wrap the Sign Up button with GestureDetector
                           GestureDetector(
-                            onTap: register,
+                            onTap: _isCheckboxChecked ? register : null, // Check the checkbox state
                             child: Container(
                               width: double.infinity,
                               height: 45,
                               decoration: BoxDecoration(
-                                color: Colors.blue,
+                                color: _isCheckboxChecked ? Colors.blue : Colors.grey, // Change button color when checkbox is unchecked
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Center(
                                 child: Text(
                                   "Sign Up",
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.white, // Change text color to white
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -290,7 +323,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Already have an account?", style: TextStyle(color: Colors.white)),
+                              Text(
+                                "Already have an account?",
+                                style: TextStyle(color: Colors.white),
+                              ),
                               SizedBox(
                                 width: 5,
                               ),
@@ -304,7 +340,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                         (route) => false,
                                   );
                                 },
-                                child: Text("Login", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ],
                           )
@@ -328,5 +367,4 @@ class _SignUpPageState extends State<SignUpPage> {
     final hasNoSpace = !password.contains(' ');
     return password.length >= minLength && hasNumber && hasSpecialChar && hasNoSpace;
   }
-
 }

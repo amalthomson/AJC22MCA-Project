@@ -295,14 +295,20 @@ class _LoginPageState extends State<LoginPage> {
         });
         if (e.code == 'user-not-found') {
           print("No user found with this email");
-
-          Fluttertoast.showToast(
-            msg: "No user found with this email",
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("No user found with this email: $e"),
+              backgroundColor: Colors.red,
+            ),
           );
+
         } else if (e.code == 'wrong-password') {
           print("You have entered the Wrong Password");
-          Fluttertoast.showToast(
-            msg: "You have entered the Wrong Password",
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("You have entered the Wrong Password: $e"),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }

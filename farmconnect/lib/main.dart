@@ -6,6 +6,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buy
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmer_home.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_password.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/common/terms_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:farmconnect/features/app/splash_screen/splash_screen.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
         '/farmer_ftl' : (context) => FarmerFTLPage(),
         '/admin_dashboard' : (context) => AdminDashboard(),
         '/buyer_details' : (context) => BuyerDetailsPage(),
-        '/farmer_details' : (context) => FarmerDetailsPage()
+        '/farmer_details' : (context) => FarmerDetailsPage(),
+        '/terms' : (context) => TermsPage()
       },
     );
   }
