@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,13 +85,14 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      backgroundColor: blackColor,
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: RichText(
           text: TextSpan(
             children: [
               TextSpan(
-                text: "   FarmConnect",
+                text: "FarmConnect",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -112,6 +114,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(
                       height: 20,
                     ),
+                    Text(
+                      "Sign Up with FarmConnect",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Form(
                       key: _formKey,
                       child: Column(
@@ -119,7 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           DropdownButtonFormField(
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
-                              labelText: 'Sign Up as',
+                              hintText: 'Sign Up as',
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
                               border: OutlineInputBorder(
@@ -263,38 +275,44 @@ class _SignUpPageState extends State<SignUpPage> {
                             },
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 1,
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 1,
                           ),
                           // Use a custom CheckboxListTile
-                          CheckboxListTile(
-
+                          ListTile(
                             title: GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Navigator.pushNamed(context, '/terms');
                               },
                               child: Text(
-                                    "I agree to terms and conditions",
-                                style: TextStyle(color: Colors.white), // Change text color to white
+                                "I agree to terms and conditions",
+                                style: TextStyle(color: Colors.blue),
                               ),
                             ),
-                            value: _isCheckboxChecked,
-                            onChanged: (bool? newValue) {
-                              setState(() {
-                                _isCheckboxChecked = newValue!;
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                            activeColor: Colors.blue, // Color of the checkbox when checked
+                            leading: Checkbox(
+                              value: _isCheckboxChecked,
+                              onChanged: (bool? newValue) {
+                                setState(() {
+                                  _isCheckboxChecked = newValue!;
+                                });
+                              },
+                              activeColor: Colors.blue, // Color of the checkbox when checked
+                              checkColor: Colors.white, // Color of the checkmark
+                              fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                                // Change the border color when not checked
+                                if (states.contains(MaterialState.selected)) {
+                                  return Colors.blue;
+                                }
+                                return Colors.white; // Color of the checkbox border when not checked
+                              }),
+                            ),
                             tileColor: Colors.transparent, // Color of the checkbox box
-                            checkColor: Colors.white,
-                            // Color of the checkmark
                           ),
 
                           SizedBox(
-                            height: 20,
+                            height: 1,
                           ),
                           // Wrap the Sign Up button with GestureDetector
                           GestureDetector(
@@ -365,6 +383,13 @@ class _SignUpPageState extends State<SignUpPage> {
     final hasNumber = RegExp(r'[0-9]').hasMatch(password);
     final hasSpecialChar = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password);
     final hasNoSpace = !password.contains(' ');
-    return password.length >= minLength && hasNumber && hasSpecialChar && hasNoSpace;
+    final hasUpperCase = RegExp(r'[A-Z]').hasMatch(password); // At least one uppercase letter
+    final hasLowerCase = RegExp(r'[a-z]').hasMatch(password); // At least one lowercase letter
+    return password.length >= minLength &&
+        hasNumber &&
+        hasSpecialChar &&
+        hasNoSpace &&
+        hasUpperCase &&
+        hasLowerCase;
   }
 }
