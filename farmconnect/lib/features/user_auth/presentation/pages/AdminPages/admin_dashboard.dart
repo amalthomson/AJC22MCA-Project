@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
-
 
 void main() {
   runApp(MaterialApp(
@@ -18,6 +16,8 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   int numberOfBuyers = 0;
   int numberOfFarmers = 0;
+  int numberOfPendingRequests = 0; // New
+  int numberOfRequestApprovals = 0; // New
 
   @override
   void initState() {
@@ -28,66 +28,102 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Future<void> fetchUserCounts() async {
     final usersCollection = FirebaseFirestore.instance.collection('users');
 
-    // Fetch the count of users with role "Buyer"
     final buyerQuery = await usersCollection.where('role', isEqualTo: 'Buyer').get();
     numberOfBuyers = buyerQuery.docs.length;
 
-    // Fetch the count of users with role "Farmer"
     final farmerQuery = await usersCollection.where('role', isEqualTo: 'Farmer').get();
     numberOfFarmers = farmerQuery.docs.length;
 
-    setState(() {}); // Update the UI with the fetched counts
+    // Fetch the count of pending requests (customize as needed)
+    final pendingRequestsQuery = await FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'Pending').get();
+    numberOfPendingRequests = pendingRequestsQuery.docs.length;
+
+    // Fetch the count of request approvals (customize as needed)
+    final requestApprovalsQuery = await FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'Approved').get();
+    numberOfRequestApprovals = requestApprovalsQuery.docs.length;
+
+    setState(() {});
   }
 
   Future<void> _refreshData() async {
-    // Fetch updated data from the database
     await fetchUserCounts();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("Admin Dashboard"),
+        title: Text(
+          "Admin Dashboard",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              // Refresh the data when the button is pressed
               _refreshData();
             },
           ),
         ],
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        children: [
-          InkWell(
-            child: AdminDashboardTile(
-              title: "Buyers",
-              count: numberOfBuyers,
+      body: Container(
+        child: GridView.count(
+          crossAxisCount: 2,
+          padding: EdgeInsets.all(16.0),
+          children: [
+            InkWell(
+              child: AdminDashboardTile(
+                title: "Buyers",
+                count: numberOfBuyers,
+                tileColor: Colors.blue,
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/buyer_details');
+              },
             ),
-            onTap: (){
-              Navigator.pushNamed(context, '/buyer_details');
-            },
-          ),
-          InkWell(
-            child: AdminDashboardTile(
-              title: "Farmers",
-              count: numberOfFarmers,
+            InkWell(
+              child: AdminDashboardTile(
+                title: "Farmers",
+                count: numberOfFarmers,
+                tileColor: Colors.green,
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/farmer_details');
+              },
             ),
-            onTap: () {
-              Navigator.pushNamed(context, '/farmer_details');
-            },
-          ),
-          // Add other tiles (Pending Requests) here
-        ],
+            InkWell(
+              child: AdminDashboardTile(
+                title: "      User\nVerification",
+                count: numberOfPendingRequests,
+                tileColor: Colors.orange,
+              ),
+              onTap: () {
+                // Handle navigation for "User Verification"
+                // Navigator.pushNamed(context, '/user_verification');
+              },
+            ),
+            InkWell(
+              child: AdminDashboardTile(
+                title: "   Product\nVerification",
+                count: numberOfRequestApprovals,
+                tileColor: Colors.red,
+              ),
+              onTap: () {
+                // Handle navigation for "Product Verification"
+                // Navigator.pushNamed(context, '/product_verification');
+              },
+            ),
+          ],
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, // Center the button
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: DashboardCard(
         title: "Sign Out",
         icon: Icons.logout,
@@ -95,8 +131,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
           FirebaseAuth.instance.signOut();
           Navigator.pushNamed(context, "/login");
         },
-        backgroundColor: Colors.red, // Set the button background color to red
-        textColor: Colors.white, // Set the text color to white
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
       ),
     );
   }
@@ -105,16 +141,21 @@ class _AdminDashboardState extends State<AdminDashboard> {
 class AdminDashboardTile extends StatelessWidget {
   final String title;
   final int count;
+  final Color tileColor;
 
   const AdminDashboardTile({
     required this.title,
     required this.count,
+    required this.tileColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.blue,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      color: tileColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -123,15 +164,18 @@ class AdminDashboardTile extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontSize: 24.0,
+              fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 10.0),
-          Text(
-            count.toString(),
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 36.0,
-              fontWeight: FontWeight.bold,
+          Center(
+            child: Text(
+              count.toString(),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 36.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -144,8 +188,8 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
-  final Color backgroundColor; // Button background color
-  final Color textColor; // Text color
+  final Color backgroundColor;
+  final Color textColor;
 
   DashboardCard({
     required this.title,
@@ -158,7 +202,7 @@ class DashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 20, // Adjust the position as needed
+      bottom: 20,
       left: 0,
       right: 0,
       child: Card(
@@ -166,7 +210,7 @@ class DashboardCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        color: backgroundColor, // Set the background color
+        color: backgroundColor,
         child: InkWell(
           onTap: onPressed,
           child: Padding(
@@ -177,7 +221,7 @@ class DashboardCard extends StatelessWidget {
                 Icon(
                   icon,
                   size: 36,
-                  color: textColor, // Set the text color
+                  color: textColor,
                 ),
                 SizedBox(width: 16),
                 Text(
@@ -185,7 +229,7 @@ class DashboardCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: textColor, // Set the text color
+                    color: textColor,
                   ),
                 ),
               ],
