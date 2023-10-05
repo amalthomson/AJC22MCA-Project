@@ -63,9 +63,11 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     } catch (e) {
       print(e);
-      SnackBar(
-        content: Text("Username Already exists"),
-        backgroundColor: Colors.teal,
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Unable to establish connection on channel, verify the fields or try again later"),
+          backgroundColor: Colors.red,
+        ),
       );
       Fluttertoast.showToast(msg: e.toString());
       print(e);
@@ -84,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.green,
         title: RichText(
@@ -101,278 +103,345 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Sign Up with FarmConnect",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          DropdownButtonFormField(
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              hintText: 'Sign Up as',
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.9),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(1.0),
-                                borderSide: BorderSide(),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null) {
-                                return "Select One";
-                              }
-                            },
-                            value: userrole.isNotEmpty ? userrole : null,
-                            items: <String>['Buyer', 'Farmer'].map<DropdownMenuItem<String>>(
-                                  (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: TextStyle(color: Colors.black), // Change text color to black
-                                  ),
-                                );
-                              },
-                            ).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                userrole = value.toString();
-                              });
-                            },
+      body: Builder(
+        builder: (BuildContext scaffoldContext) {
+          return Container(
+            child: SingleChildScrollView(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          "Sign Up with FarmConnect",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _usernameController,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.9),
-                              labelText: 'Name',
-                              hintText: 'Enter your Name',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Name is required';
-                              }
-                              if(!(value.isEmpty) && !RegExp(r"(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)")
-                                  .hasMatch(value)){
-                                return "Enter a valid Name";
-                              }
-                              else {
-                                return null;
-                              }
-                            },
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _emailController,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.9),
-                              labelText: 'Email',
-                              hintText: 'Enter your email',
-                            ),
-                            validator: (value) {
-                              if (value!.length == 0) {
-                                return "Email cannot be empty";
-                              }
-                              if (!RegExp(
-                                r"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$",
-                              ).hasMatch(value)) {
-                                return "Please enter a valid email";
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _phoneController,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.9),
-                              labelText: 'Phone Number',
-                              hintText: 'Enter your Phone Number',
-                            ),
-                            validator: (val) {
-                              if (val!.length == 0) {
-                                return "Phone Number cannot be empty";
-                              }
-                              if (!(val.isEmpty) && !RegExp(r"^[0-9]{10}$").hasMatch(val)) {
-                                return "Enter a valid phone number";
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _passwordController,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.9),
-                              labelText: 'Password',
-                              hintText: 'Enter your Password',
-                            ),
-                            validator: (value) {
-                              if (!_isValidPassword(value!)) {
-                                return 'Password must be at least 8 characters with at least one number and a special character.';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: _confirmPasswordController,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.9),
-                              labelText: 'Confirm Password',
-                              hintText: 'Reenter Password',
-                            ),
-                            validator: (value) {
-                              if (value != _passwordController.text) {
-                                return 'Passwords do not match';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                            height: 1,
-                          ),
-                          SizedBox(
-                            height: 1,
-                          ),
-                          // Use a custom CheckboxListTile
-                          ListTile(
-                            title: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/terms');
-                              },
-                              child: Text(
-                                "I agree to terms and conditions",
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                            ),
-                            leading: Checkbox(
-                              value: _isCheckboxChecked,
-                              onChanged: (bool? newValue) {
-                                setState(() {
-                                  _isCheckboxChecked = newValue!;
-                                });
-                              },
-                              activeColor: Colors.blue, // Color of the checkbox when checked
-                              checkColor: Colors.white, // Color of the checkmark
-                              fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                                // Change the border color when not checked
-                                if (states.contains(MaterialState.selected)) {
-                                  return Colors.blue;
-                                }
-                                return Colors.white; // Color of the checkbox border when not checked
-                              }),
-                            ),
-                            tileColor: Colors.transparent, // Color of the checkbox box
-                          ),
-
-                          SizedBox(
-                            height: 1,
-                          ),
-                          // Wrap the Sign Up button with GestureDetector
-                          GestureDetector(
-                            onTap: _isCheckboxChecked ? register : null, // Check the checkbox state
-                            child: Container(
-                              width: double.infinity,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                color: _isCheckboxChecked ? Colors.blue : Colors.grey, // Change button color when checkbox is unchecked
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                    color: Colors.white, // Change text color to white
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: Column(
                             children: [
-                              Text(
-                                "Already have an account?",
-                                style: TextStyle(color: Colors.white),
+                              DropdownButtonFormField(
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  hintText: 'Sign Up as',
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  prefixIcon: Icon(Icons.person, color: Colors.blue),
+                                ),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Select One";
+                                  }
+                                },
+                                value: userrole.isNotEmpty ? userrole : null,
+                                items: <String>['Buyer', 'Farmer'].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    userrole = value.toString();
+                                  });
+                                },
                               ),
                               SizedBox(
-                                width: 5,
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: _usernameController,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  hintText: 'Enter your Name',
+                                  prefixIcon: Icon(Icons.person, color: Colors.blue),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Name is required';
+                                  }
+                                  if (!(value.isEmpty) &&
+                                      !RegExp(r"(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)")
+                                          .hasMatch(value)) {
+                                    return "Enter a valid Name";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: _emailController,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  hintText: 'Enter your email',
+                                  prefixIcon: Icon(Icons.email, color: Colors.blue),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Email cannot be empty';
+                                  }
+                                  if (!RegExp(
+                                      r"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$")
+                                      .hasMatch(value)) {
+                                    return 'Please enter a valid email';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: _phoneController,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  hintText: 'Enter your Phone Number',
+                                  prefixIcon: Icon(Icons.phone, color: Colors.blue),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                ),
+                                validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'Phone Number cannot be empty';
+                                  }
+                                  if (!RegExp(r"^[6789]\d{9}$").hasMatch(val)) {
+                                    return 'Enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
+                                  }
+                                  if (RegExp(r"^(\d)\1*$").hasMatch(val)) {
+                                    return 'Avoid using all identical digits';
+                                  }
+                                  if (RegExp(r"0123456789|9876543210").hasMatch(val)) {
+                                    return 'Avoid using sequential digits';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: _passwordController,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  hintText: 'Enter your Password',
+                                  prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (!_isValidPassword(value!)) {
+                                    return 'Password must be at least 8 characters with at least one number and a special character.';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFormField(
+                                controller: _confirmPasswordController,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  hintText: 'Reenter Password',
+                                  prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(50),
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value != _passwordController.text) {
+                                    return 'Passwords do not match';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ListTile(
+                                title: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, '/terms');
+                                  },
+                                  child: Text(
+                                    'I agree to terms and conditions',
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
+                                ),
+                                leading: Checkbox(
+                                  value: _isCheckboxChecked,
+                                  onChanged: (bool? newValue) {
+                                    setState(() {
+                                      _isCheckboxChecked = newValue!;
+                                    });
+                                  },
+                                  activeColor: Colors.blue,
+                                  checkColor: Colors.white,
+                                  fillColor: MaterialStateProperty.resolveWith<Color?>(
+                                        (Set<MaterialState> states) {
+                                      if (states.contains(MaterialState.selected)) {
+                                        return Colors.blue;
+                                      }
+                                      return Colors.white;
+                                    },
+                                  ),
+                                ),
+                                tileColor: Colors.transparent,
+                              ),
+                              SizedBox(
+                                height: 10,
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => LoginPage(),
+                                onTap: _isCheckboxChecked ? register : null,
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    color: _isCheckboxChecked ? Colors.blue : Colors.grey,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Sign Up',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                        (route) => false,
-                                  );
-                                },
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Already have an account?',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginPage(),
+                                        ),
+                                            (route) => false,
+                                      );
+                                    },
+                                    child: Text(
+                                      'Login',
+                                      style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

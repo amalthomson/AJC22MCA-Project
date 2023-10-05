@@ -10,8 +10,7 @@ class UpdatePasswordPage extends StatefulWidget {
 class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -37,7 +36,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                 SizedBox(height: 100),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.transparent, // Set background color to transparent
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   padding: EdgeInsets.all(16),
@@ -48,17 +47,34 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                         "Update Password",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 22,
+                          fontSize: 32,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 50),
                       TextFormField(
                         controller: _oldPasswordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: InputDecoration(
-                          labelText: "Old Password",
-                          fillColor: Colors.white, // Set background color to white
+                          hintText: 'Enter Old Password',
                           filled: true,
+                          fillColor: Colors.white.withOpacity(0.9), // Match the background color
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50), // Match the border radius
+                            borderSide: BorderSide(color: Colors.blue), // Match the border color
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.blue, // Blue icon color
+                          ),
                           errorText: _isOldPasswordValid ? null : "Invalid password",
                         ),
                         obscureText: true,
@@ -72,15 +88,33 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                       TextFormField(
                         controller: _newPasswordController,
                         decoration: InputDecoration(
-                          labelText: "New Password",
-                          fillColor: Colors.white, // Set background color to white
+                          hintText: 'Enter New Password',
+                          fillColor: Colors.white,
                           filled: true,
                           errorText: _isNewPasswordValid ? null : "Invalid password",
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.blue,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
                         ),
                         obscureText: true,
                         onChanged: (value) {
                           setState(() {
-                            _isNewPasswordValid = value.length >= 8 && _isPasswordValid(value);
+                            _isNewPasswordValid = _isPasswordValid(value);
                           });
                         },
                       ),
@@ -88,19 +122,38 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                       TextFormField(
                         controller: _confirmPasswordController,
                         decoration: InputDecoration(
-                          labelText: "Confirm Password",
-                          fillColor: Colors.white, // Set background color to white
+                          hintText: "Confirm New Password",
                           filled: true,
-                          errorText: _isConfirmPasswordValid ? null : "Passwords do not match",
+                          fillColor: Colors.white.withOpacity(0.9),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.blue),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.blue, // Icon color
+                          ),
+                          errorText: _isConfirmPasswordValid
+                              ? null
+                              : "Passwords do not match",
                         ),
                         obscureText: true,
                         onChanged: (value) {
                           setState(() {
-                            _isConfirmPasswordValid = value == _newPasswordController.text;
+                            _isConfirmPasswordValid =
+                                value == _newPasswordController.text;
                           });
                         },
                       ),
-                      SizedBox(height: 16),
+                      SizedBox(height: 50),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -108,17 +161,18 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          onPrimary: Colors.white,
+                          primary: Colors.blue, // Change the button color
+                          onPrimary: Colors.white, // Change the text color
+                          elevation: 5, // Add elevation
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10), // Change the button shape
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                           child: Text(
                             "Update Password",
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
                       ),
@@ -137,7 +191,6 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     try {
       final String newPassword = _newPasswordController.text;
       final String confirmPassword = _confirmPasswordController.text;
-
       User? user = _auth.currentUser;
 
       if (user != null) {
@@ -146,19 +199,42 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
           password: _oldPasswordController.text,
         );
 
-        await user.reauthenticateWithCredential(credential);
+        try {
+          // Attempt to reauthenticate the user with the old password
+          await user.reauthenticateWithCredential(credential);
+        } catch (reauthError) {
+          // Handle reauthentication error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Old Password Incorrect"),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return; // Exit early if reauthentication fails
+        }
 
-        await user.updatePassword(newPassword);
+        if (_oldPasswordController.text == _newPasswordController.text) {
+          // Display an error message if old and new passwords are the same
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Old and new passwords are the same"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else {
+          // Reauthentication successful and passwords are different,
+          // so now update the password
+          await user.updatePassword(newPassword);
+          await FirebaseAuth.instance.signOut();
+          Navigator.pushNamed(context, "/login");
 
-        FirebaseAuth.instance.signOut();
-        Navigator.pushNamed(context, "/login");
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Password updated successfully"),
-            backgroundColor: Colors.green,
-          ),
-        );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Password updated successfully"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -179,8 +255,11 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   }
 
   bool _isPasswordValid(String value) {
-    // Implement your password validation logic here
-    // You can check for capital letters, small letters, digits, and special characters
-    return true; // Return true if the password is valid, false otherwise
+    // Define the regular expression pattern for password validation
+    final RegExp passwordRegExp = RegExp(
+      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])\S{8,}$',
+    );
+
+    return passwordRegExp.hasMatch(value);
   }
 }

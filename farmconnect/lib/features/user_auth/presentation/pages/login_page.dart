@@ -62,9 +62,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
-        ? Loading()
-        : Scaffold(
+    return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -75,32 +73,32 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext scaffoldContext) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 50.0), // Adjust the top padding as needed
+              padding: const EdgeInsets.only(top: 1.0), // Adjust the top padding as needed
               child: Stack(
                 children: [
                   // Container to align and crop the image
-                  Container(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2.0,
-                        ),
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/icons/app_logo.png',
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   alignment: Alignment.topCenter,
+                  //   child: Container(
+                  //     width: 100,
+                  //     height: 100,
+                  //     decoration: BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       border: Border.all(
+                  //         color: Colors.white,
+                  //         width: 2.0,
+                  //       ),
+                  //     ),
+                  //     child: ClipOval(
+                  //       child: Image.asset(
+                  //         'assets/icons/app_logo.png',
+                  //         width: 100,
+                  //         height: 100,
+                  //         fit: BoxFit.cover,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Form(
@@ -116,24 +114,18 @@ class _LoginPageState extends State<LoginPage> {
                             "Login to FarmConnect",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 48,
+                              fontSize: 40,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 14,
                           ),
                           TextFormField(
                             controller: _emailController,
-                            autovalidateMode:
-                            AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white.withOpacity(0.9),
-                              hintText: 'Email',
-                            ),
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                             validator: (value) {
-                              if (value!.length == 0) {
+                              if (value!.isEmpty) {
                                 return "Email cannot be empty";
                               }
                               if (!RegExp(
@@ -144,23 +136,60 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                               }
                             },
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.9),
+                              hintText: 'Email',
+                              prefixIcon: Container(
+                                padding: EdgeInsets.all(12.0),
+                                child: Icon(
+                                  Icons.email,
+                                  color: Colors.blue, // Set the icon color to blue
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(color: Colors.blue),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(color: Colors.blue),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                            ),
                           ),
                           SizedBox(
                             height: 10,
                           ),
                           TextFormField(
                             controller: _passwordController,
-                            autovalidateMode:
-                            AutovalidateMode.onUserInteraction,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            obscureText: true,
+                            validator: (value) => PasswordFieldValidator.validate(value!),
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
-                              labelText: 'Password',
                               hintText: 'Enter your Password',
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.blue, // Set the icon color to blue
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(color: Colors.blue),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(color: Colors.blue),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
                             ),
-                            obscureText: true,
-                            validator: (value) =>
-                                PasswordFieldValidator.validate(value!),
                           ),
                           SizedBox(
                             height: 10,
@@ -172,8 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        ForgotPassword(),
+                                    builder: (context) => ForgotPassword(),
                                   ),
                                       (route) => false,
                                 );
@@ -188,16 +216,24 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 14,
                           ),
                           GestureDetector(
                             onTap: () => signIn(scaffoldContext),
                             child: Container(
                               width: double.infinity,
-                              height: 45,
+                              height: 50,
                               decoration: BoxDecoration(
                                 color: Colors.blue,
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(50),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.blue.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
                               ),
                               child: Center(
                                 child: Text(
@@ -205,13 +241,14 @@ class _LoginPageState extends State<LoginPage> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 18, // Adjust the font size as needed
                                   ),
                                 ),
                               ),
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 14,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -220,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                                   style: TextStyle(
                                       color: Colors.white)),
                               SizedBox(
-                                width: 5,
+                                width: 10,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -256,7 +293,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void signIn(BuildContext scaffoldContext) async {
     if (_formKey.currentState!.validate()) {
-      setState(() => loading = true);
+      setState(() => loading = false);
       String email = _emailController.text;
       String password = _passwordController.text;
       try {

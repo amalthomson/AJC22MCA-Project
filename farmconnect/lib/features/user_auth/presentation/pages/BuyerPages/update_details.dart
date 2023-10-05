@@ -102,94 +102,301 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
               Center(
                 child: GestureDetector(
                   onTap: _updateProfilePicture,
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: _profileImageUrl != null
-                        ? NetworkImage(_profileImageUrl!)
-                        : null,
-                    child: Icon(Icons.camera_alt),
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: _profileImageUrl != null
+                            ? NetworkImage(_profileImageUrl!)
+                            : null,
+                      ),
+                      Positioned(
+                        bottom: 0, // Adjust this value to move the icon vertically within the circle
+                        right: 0, // Adjust this value to move the icon horizontally within the circle
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          padding: EdgeInsets.all(8), // Padding around the camera icon
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    filled: true,
-                    fillColor: Colors.white,
+              TextFormField(
+                controller: nameController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9), // Match the background color
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50), // Match the border radius
+                    borderSide: BorderSide(color: Colors.blue), // Match the border color
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  controller: phoneNumberController,
-                  decoration: InputDecoration(
-                    labelText: 'Phone Number',
-                    filled: true,
-                    fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  controller: streetController,
-                  decoration: InputDecoration(
-                    labelText: 'Street',
-                    filled: true,
-                    fillColor: Colors.white,
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.red),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  controller: townController,
-                  decoration: InputDecoration(
-                    labelText: 'Town',
-                    filled: true,
-                    fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.person, // Add the desired icon
+                    color: Colors.blue,
                   ),
+                  // Add other properties like prefixIcon if needed
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Name is required';
+                  }
+                  if (!RegExp(r"^[a-zA-Z]+(?: [a-zA-Z]+)*$").hasMatch(value)) {
+                    return 'Enter a valid name';
+                  }
+                  return null;
+                },
+                // Add other properties like onChanged if needed
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  controller: districtController,
-                  decoration: InputDecoration(
-                    labelText: 'District',
-                    filled: true,
-                    fillColor: Colors.white,
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: phoneNumberController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                keyboardType: TextInputType.phone, // Set the keyboard type to phone
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  controller: stateController,
-                  decoration: InputDecoration(
-                    labelText: 'State',
-                    filled: true,
-                    fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: TextField(
-                  controller: pincodeController,
-                  decoration: InputDecoration(
-                    labelText: 'Pincode',
-                    filled: true,
-                    fillColor: Colors.white,
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.red),
                   ),
+                  prefixIcon: Icon(
+                    Icons.phone, // Add the desired icon
+                    color: Colors.blue,
+                  ),
+                  // Add other properties like prefixIcon if needed
                 ),
+                validator: (val) {
+                  if (val!.isEmpty) {
+                    return 'Phone Number cannot be empty';
+                  }
+                  if (!RegExp(r"^[6789]\d{9}$").hasMatch(val)) {
+                    return 'Enter a valid 10-digit phone number starting with 6, 7, 8, or 9';
+                  }
+                  if (RegExp(r"^(\d)\1*$").hasMatch(val)) {
+                    return 'Avoid using all identical digits';
+                  }
+                  if (RegExp(r"0123456789|9876543210").hasMatch(val)) {
+                    return 'Avoid using sequential digits';
+                  }
+                  return null;
+                },
+                // Add other properties like onChanged if needed
               ),
-              SizedBox(height: 24),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: streetController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.location_on, // Add the desired icon
+                    color: Colors.blue,
+                  ),
+                  // Add other properties like hintText or labelText if needed
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Street is required';
+                  }
+                  // Add custom validation logic if needed
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: townController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.location_city, // Add the desired icon
+                    color: Colors.blue,
+                  ),
+                  // Add other properties like hintText or labelText if needed
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your city/town';
+                  }
+                  if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                    return 'Invalid city/town name';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: districtController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.location_city, // Add the desired icon (location_city is just an example)
+                    color: Colors.blue,
+                  ),
+                  // Add other properties like hintText or labelText if needed
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your district';
+                  }
+                  if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                    return 'Invalid District name';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: stateController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.map, // Add the desired icon
+                    color: Colors.blue,
+                  ),
+                  // Add other properties like hintText or labelText if needed
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your state';
+                  }
+                  if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                    return 'Invalid State name';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: pincodeController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.pin, // Add the desired icon
+                    color: Colors.blue,
+                  ),
+                  // Add other properties like hintText or labelText if needed
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your pincode';
+                  }
+                  if (value.length != 6) {
+                    return 'Pincode must be exactly 6 digits';
+                  }
+                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                    return 'Pincode should contain only numeric digits';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {

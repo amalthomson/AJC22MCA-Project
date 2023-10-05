@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
+import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 
 class BuyerFTLPage extends StatefulWidget {
   @override
@@ -92,7 +93,9 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: blackColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.green,
         title: RichText(
           text: TextSpan(
@@ -114,61 +117,80 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            //autovalidateMode: AutovalidateMode.onUserInteraction,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 20),
+                  SizedBox(height: 1),
                   // Centered CircleAvatar and Profile Picture Upload Button
                   Center(
                     child: Column(
                       children: [
                         CircleAvatar(
-                          radius: 50,
+                          radius: 60,
+                          backgroundColor: Colors.blue, // Background color
                           backgroundImage: _profileImageUrl != null
                               ? NetworkImage(_profileImageUrl!)
                               : null,
-                          child: InkWell(
-                            onTap: () async {
-                              final imagePicker = ImagePicker();
-                              final pickedFile = await imagePicker.pickImage(
-                                  source: ImageSource.gallery);
+                          child: Stack(
+                            alignment: Alignment.bottomRight, // Align content to the bottom right corner
+                            children: [
+                              Positioned(
+                                bottom: 0, // Adjust this value to move the icon vertically within the circle
+                                right: 0, // Adjust this value to move the icon horizontally within the circle
+                                child: InkWell(
+                                  onTap: () async {
+                                    final imagePicker = ImagePicker();
+                                    final pickedFile = await imagePicker.pickImage(
+                                      source: ImageSource.gallery,
+                                    );
 
-                              if (pickedFile != null) {
-                                final file = File(pickedFile.path);
-                                final imageName = 'profile_images/$_userId.png';
+                                    if (pickedFile != null) {
+                                      final file = File(pickedFile.path);
+                                      final imageName = 'profile_images/$_userId.png';
 
-                                try {
-                                  await firebase_storage
-                                      .FirebaseStorage.instance
-                                      .ref(imageName)
-                                      .putFile(file);
+                                      try {
+                                        await firebase_storage.FirebaseStorage.instance
+                                            .ref(imageName)
+                                            .putFile(file);
 
-                                  final downloadURL =
-                                  await firebase_storage
-                                      .FirebaseStorage.instance
-                                      .ref(imageName)
-                                      .getDownloadURL();
+                                        final downloadURL =
+                                        await firebase_storage.FirebaseStorage.instance
+                                            .ref(imageName)
+                                            .getDownloadURL();
 
-                                  setState(() {
-                                    _profileImageUrl = downloadURL;
-                                  });
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Failed to upload profile picture.'),
-                                      backgroundColor: Colors.red,
+                                        setState(() {
+                                          _profileImageUrl = downloadURL;
+                                        });
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Failed to upload profile picture.'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
                                     ),
-                                  );
-                                }
-                              }
-                            },
-                            child: Icon(Icons.camera_alt, color: Colors.white),
+                                    padding: EdgeInsets.all(8), // Padding around the camera icon
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.blue,
+                                      size: 36,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         DropdownButtonFormField<String>(
                           value: _selectedGender,
                           onChanged: (value) {
@@ -177,7 +199,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                             });
                           },
                           items: _genderOptions.map((gender) {
-                            return DropdownMenuItem(
+                            return DropdownMenuItem<String>(
                               value: gender,
                               child: Text(
                                 gender,
@@ -186,24 +208,42 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                             );
                           }).toList(),
                           decoration: InputDecoration(
-                            labelText: 'Gender',
                             hintText: 'Select gender',
-                            border: OutlineInputBorder(),
-                            fillColor: Colors.white.withOpacity(0.9),
                             filled: true,
-                            labelStyle: TextStyle(color: Colors.black),
+                            fillColor: Colors.white.withOpacity(0.9),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50), // Adjust the border radius as needed
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            prefixIcon: Icon(Icons.person, color: Colors.blue), // Add the prefix icon
                           ),
+                          validator: (value) {
+                            if (value == null) {
+                              return "Select One";
+                            }
+                          },
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         TextFormField(
                           controller: _streetController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction, // Add this line
                           decoration: InputDecoration(
-                            labelText: 'Street',
-                            hintText: 'Enter your street',
-                            border: OutlineInputBorder(),
-                            fillColor: Colors.white.withOpacity(0.9),
                             filled: true,
-                            labelStyle: TextStyle(color: Colors.black),
+                            fillColor: Colors.white.withOpacity(0.9),
+                            hintText: 'Enter your street',
+                            prefixIcon: Icon(Icons.person, color: Colors.blue), // Add the prefix icon
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -215,86 +255,159 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   TextFormField(
                     controller: _townController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
-                      labelText: 'City/Town',
-                      hintText: 'Enter your city/town',
-                      border: OutlineInputBorder(),
-                      fillColor: Colors.white.withOpacity(0.9),
                       filled: true,
-                      labelStyle: TextStyle(color: Colors.black),
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Enter your city/town',
+                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your city/town';
                       }
+                      if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                        return 'Invalid city/town name';
+                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   TextFormField(
                     controller: _districtController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
-                      labelText: 'District',
-                      hintText: 'Enter your district',
-                      border: OutlineInputBorder(),
-                      fillColor: Colors.white.withOpacity(0.9),
                       filled: true,
-                      labelStyle: TextStyle(color: Colors.black),
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Enter your district',
+                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your district';
                       }
+                      if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                        return 'Invalid District name';
+                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   TextFormField(
                     controller: _stateController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
-                      labelText: 'State',
-                      hintText: 'Enter your state',
-                      border: OutlineInputBorder(),
-                      fillColor: Colors.white.withOpacity(0.9),
                       filled: true,
-                      labelStyle: TextStyle(color: Colors.black),
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Enter your state',
+                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your state';
                       }
+                      if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
+                        return 'Invalid State name';
+                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   TextFormField(
                     controller: _pincodeController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
-                      labelText: 'Pincode',
-                      hintText: 'Enter your pincode',
-                      border: OutlineInputBorder(),
-                      fillColor: Colors.white.withOpacity(0.9),
                       filled: true,
-                      labelStyle: TextStyle(color: Colors.black),
+                      fillColor: Colors.white.withOpacity(0.9),
+                      hintText: 'Enter your pincode',
+                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.blue),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your pincode';
                       }
+                      if (value.length != 6) {
+                        return 'Pincode must be exactly 6 digits';
+                      }
+                      if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                        return 'Pincode should contain only numeric digits';
+                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Center(
                     child: ElevatedButton(
                       onPressed: _updateUserData,
-                      child: Text('Save Details'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, // Background color
+                        onPrimary: Colors.white, // Text color
+                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        'Save Details',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                 ],
               ),
             ),
