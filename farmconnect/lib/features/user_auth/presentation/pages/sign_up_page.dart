@@ -25,7 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
-  late String email, phone, username, password, userrole = '', ftl = '', address = '';
+  late String email, phone, username, password, userrole = '', ftl = '';
 
   final dbRef = FirebaseDatabase.instance.ref().child('users');
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
@@ -54,8 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
             "name": username,
             "phone": phone,
             "role": userrole,
-            "ftl" : 'yes',
-            "address" : ''
+            "ftl" : 'yes'
           },
         );
 

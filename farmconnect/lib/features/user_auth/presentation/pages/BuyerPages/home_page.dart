@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,9 +10,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: blackColor,
       appBar: AppBar(
         title: Text("Buyer Dashboard"),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.green,
       ),
       body: Center(
         child: StreamBuilder(
@@ -24,76 +27,65 @@ class HomePage extends StatelessWidget {
               return CircularProgressIndicator();
             }
             var userData = snapshot.data?.data();
-            var displayName = userData?["name"] ?? "User"; // Fetch the display name
+            var displayName = userData?["name"] ?? "User";
+            var profileImageUrl = userData?["profileImageUrl"];
 
             return Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/icons/bgImage.jpg'),
-                  fit: BoxFit.cover,
-                ),
-              ),
               child: ListView(
                 padding: EdgeInsets.all(16),
                 children: [
-                  SizedBox(height: 100),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 4.0,
-                            ),
-                          ),
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.transparent,
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/icons/dp.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
+                  SizedBox(height: 20), // Added spacing
+                  // Profile Image
+                  Center(
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.transparent,
+                      child: ClipOval(
+                        child: profileImageUrl != null
+                            ? Image.network(
+                          profileImageUrl,
+                          fit: BoxFit.cover,
+                        )
+                            : Icon(
+                          Icons.person,
+                          size: 60,
+                          color: Colors.white, // Fallback icon color
                         ),
-                        SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Welcome",
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20), // Added spacing
+                  Card(
+                    elevation: 5,
+                    color: Colors.transparent, // Set background color to transparent
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Welcome",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 12),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              displayName,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                                color: Colors.black,
+                                fontSize: 48,
+                                color: Colors.white,
                               ),
                             ),
-                            SizedBox(height: 12),
-                            Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                displayName, // Display the display name here
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 50),
@@ -108,18 +100,18 @@ class HomePage extends StatelessWidget {
                           primary: Colors.red,
                           onPrimary: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(50),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                            padding : EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
                           child: Text(
                             "Reset Password",
                             style: TextStyle(fontSize: 16),
                           ),
                         ),
                       ),
-                      SizedBox(width: 16),
+                      SizedBox(width: 30),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(context, "/update_details");
@@ -128,11 +120,11 @@ class HomePage extends StatelessWidget {
                           primary: Colors.blue,
                           onPrimary: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(50),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding : EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
                           child: Text(
                             "Edit Profile",
                             style: TextStyle(fontSize: 16),
@@ -141,15 +133,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 50),
-                  DashboardCard(
-                    title: "View Orders",
-                    icon: Icons.shopping_cart,
-                    onPressed: () {
-                      // Add action for viewing orders
-                    },
-                  ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 150),
                   DashboardCard(
                     title: "Sign Out",
                     icon: Icons.logout,
@@ -182,20 +166,22 @@ class DashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
+      elevation: 5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(50),
       ),
+      color: Colors.red, // Set the background color to red
       child: InkWell(
         onTap: onPressed,
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 icon,
                 size: 36,
-                color: Colors.blue,
+                color: Colors.white, // Set the text color to white
               ),
               SizedBox(width: 16),
               Text(
@@ -203,7 +189,7 @@ class DashboardCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Colors.white, // Set the text color to white
                 ),
               ),
             ],

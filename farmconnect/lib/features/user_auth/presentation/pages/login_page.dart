@@ -74,150 +74,179 @@ class _LoginPageState extends State<LoginPage> {
       body: Builder(
         builder: (BuildContext scaffoldContext) {
           return Center(
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Form(
-                    key: _formKey,
-                    autovalidateMode:
-                    AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 10,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50.0), // Adjust the top padding as needed
+              child: Stack(
+                children: [
+                  // Container to align and crop the image
+                  Container(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 2.0,
                         ),
-                        Text(
-                          "Login to FarmConnect",
-                          style: TextStyle(
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/icons/app_logo.png',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Login to FarmConnect",
+                            style: TextStyle(
                               color: Colors.white,
                               fontSize: 48,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        TextFormField(
-                          controller: _emailController,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.9),
-                            hintText: 'Email',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          validator: (value) {
-                            if (value!.length == 0) {
-                              return "Email cannot be empty";
-                            }
-                            if (!RegExp(
-                              r"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$",
-                            ).hasMatch(value)) {
-                              return "Please enter a valid email";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          controller: _passwordController,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white.withOpacity(0.9),
-                            labelText: 'Password',
-                            hintText: 'Enter your Password',
+                          SizedBox(
+                            height: 30,
                           ),
-                          obscureText: true,
-                          validator: (value) =>
-                              PasswordFieldValidator.validate(value!),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ForgotPassword(),
-                                ),
-                                    (route) => false,
-                              );
+                          TextFormField(
+                            controller: _emailController,
+                            autovalidateMode:
+                            AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.9),
+                              hintText: 'Email',
+                            ),
+                            validator: (value) {
+                              if (value!.length == 0) {
+                                return "Email cannot be empty";
+                              }
+                              if (!RegExp(
+                                  r"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$")
+                                  .hasMatch(value)) {
+                                return "Please enter a valid email";
+                              } else {
+                                return null;
+                              }
                             },
-                            child: Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () => signIn(scaffoldContext),
-                          child: Container(
-                            width: double.infinity,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                          SizedBox(
+                            height: 10,
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("New to FarmConnect?",
-                                style: TextStyle(
-                                    color: Colors.white)),
-                            SizedBox(
-                              width: 5,
+                          TextFormField(
+                            controller: _passwordController,
+                            autovalidateMode:
+                            AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.9),
+                              labelText: 'Password',
+                              hintText: 'Enter your Password',
                             ),
-                            GestureDetector(
+                            obscureText: true,
+                            validator: (value) =>
+                                PasswordFieldValidator.validate(value!),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: GestureDetector(
                               onTap: () {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SignUpPage(),
+                                    builder: (context) =>
+                                        ForgotPassword(),
                                   ),
                                       (route) => false,
                                 );
                               },
                               child: Text(
-                                "Sign Up",
+                                "Forgot Password?",
                                 style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ],
-                        )
-                      ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () => signIn(scaffoldContext),
+                            child: Container(
+                              width: double.infinity,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("New to FarmConnect?",
+                                  style: TextStyle(
+                                      color: Colors.white)),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SignUpPage(),
+                                    ),
+                                        (route) => false,
+                                  );
+                                },
+                                child: Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

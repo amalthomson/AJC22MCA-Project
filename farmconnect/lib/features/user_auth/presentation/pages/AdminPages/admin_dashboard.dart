@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
+
 
 void main() {
   runApp(MaterialApp(
@@ -45,7 +47,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: blackColor,
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: Text("Admin Dashboard"),
         automaticallyImplyLeading: false,
         actions: [

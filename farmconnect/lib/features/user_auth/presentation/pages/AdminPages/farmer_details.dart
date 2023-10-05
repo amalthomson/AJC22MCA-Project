@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 
 class FarmerDetailsPage extends StatefulWidget {
   @override
@@ -10,7 +11,9 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: blackColor,
       appBar: AppBar(
+        backgroundColor: Colors.green,
         title: Text("Farmer Details"),
       ),
       body: StreamBuilder<QuerySnapshot>(
