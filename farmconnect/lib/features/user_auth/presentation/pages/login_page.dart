@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_google.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/loading.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class EmailFieldValidator {
   static String? validate(String value) {
@@ -60,6 +62,70 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  Future<void> _signInWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        // The user canceled the sign-in process
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Update user information in Firestore
+        await _updateUserInformation(user);
+
+        // Navigate to the Home Page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GoogleHomePage(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Google Sign-In failed. Please try again."),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error occurred during Google Sign-In: $error"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _updateUserInformation(User user) async {
+    // You can update the user information in Firestore or your chosen database here.
+    final DocumentReference userDocRef =
+    FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+    await userDocRef.set({
+      'uid': user.uid,
+      'email': user.email,
+      'name': user.displayName!, // Use ! to assert non-nullability
+      // Add more user details as needed
+    }, SetOptions(merge: true)); // Use merge to update only specific fields
+
+    // You can add more fields or perform other operations as needed.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,29 +142,6 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.only(top: 1.0), // Adjust the top padding as needed
               child: Stack(
                 children: [
-                  // Container to align and crop the image
-                  // Container(
-                  //   alignment: Alignment.topCenter,
-                  //   child: Container(
-                  //     width: 100,
-                  //     height: 100,
-                  //     decoration: BoxDecoration(
-                  //       shape: BoxShape.circle,
-                  //       border: Border.all(
-                  //         color: Colors.white,
-                  //         width: 2.0,
-                  //       ),
-                  //     ),
-                  //     child: ClipOval(
-                  //       child: Image.asset(
-                  //         'assets/icons/app_logo.png',
-                  //         width: 100,
-                  //         height: 100,
-                  //         fit: BoxFit.cover,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Form(
@@ -168,7 +211,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _passwordController,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             obscureText: true,
-                            validator: (value) => PasswordFieldValidator.validate(value!),
+                            validator: (value) =>
+                                PasswordFieldValidator.validate(value!),
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white.withOpacity(0.9),
@@ -198,12 +242,11 @@ class _LoginPageState extends State<LoginPage> {
                             alignment: Alignment.bottomRight,
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.pushAndRemoveUntil(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ForgotPassword(),
                                   ),
-                                      (route) => false,
                                 );
                               },
                               child: Text(
@@ -261,12 +304,11 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pushAndRemoveUntil(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SignUpPage(),
+                                      builder: (context) => HomePage(),
                                     ),
-                                        (route) => false,
                                   );
                                 },
                                 child: Text(
@@ -277,7 +319,28 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                             ],
-                          )
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          ElevatedButton.icon(
+                            onPressed: () => _signInWithGoogle(context),
+                            icon: Image.asset(
+                              'assets/google_logo.png', // Replace with the path to your Google logo image
+                              height: 24, // Adjust the height as needed
+                              width: 24,  // Adjust the width as needed
+                            ),
+                            label: Text("Sign In with Google"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.white, // Button background color
+                              onPrimary: Colors.blue, // Text color
+                              elevation: 3, // Add elevation for a raised effect
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0), // Adjust border radius as needed
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24), // Adjust padding as needed
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -299,56 +362,54 @@ class _LoginPageState extends State<LoginPage> {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
-        if (userCredential != null) {
-          User? user = FirebaseAuth.instance.currentUser;
-          final DocumentSnapshot snap = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user?.uid)
-              .get();
-          setState(() {
-            role = snap['role'];
-            ftl = snap['ftl'];
-            // setState(() => loading = true);
-          });
-          if (ftl == 'no') {
-            if (role == 'Buyer') {
-              Navigator.pushNamed(context, "/buyer_home");
-            } else if (role == 'Admin') {
-              Navigator.pushNamed(context, "/admin_dashboard");
-            } else if (role == 'Farmer') {
-              Navigator.pushNamed(context, "/farmer_home");
-            }
-          } else if (ftl == 'yes') {
-            if (role == 'Farmer') {
-              Navigator.pushNamed(context, "/farmer_ftl");
-            } else if (role == 'Buyer') {
-              Navigator.pushNamed(context, "/buyer_ftl");
-            }
-          } else if (ftl == 'Verification Pending') {
-            loading = false;
-            ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-              SnackBar(
-                content: Text("Verification not complete yet, please wait"),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else if (role == 'rej') {
-            loading = false;
-            ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-              SnackBar(
-                content: Text("Your application has been rejected."),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else {
-            loading = false;
-            ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-              SnackBar(
-                content: Text("You don't have authorization to Login"),
-                backgroundColor: Colors.red,
-              ),
-            );
+        User user = userCredential.user!; // Assert non-nullability
+
+        final DocumentSnapshot snap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        setState(() {
+          role = snap['role'];
+          ftl = snap['ftl'];
+        });
+        if (ftl == 'no') {
+          if (role == 'Buyer') {
+            Navigator.pushNamed(context, "/buyer_home");
+          } else if (role == 'Admin') {
+            Navigator.pushNamed(context, "/admin_dashboard");
+          } else if (role == 'Farmer') {
+            Navigator.pushNamed(context, "/farmer_home");
           }
+        } else if (ftl == 'yes') {
+          if (role == 'Farmer') {
+            Navigator.pushNamed(context, "/farmer_ftl");
+          } else if (role == 'Buyer') {
+            Navigator.pushNamed(context, "/buyer_ftl");
+          }
+        } else if (ftl == 'Verification Pending') {
+          loading = false;
+          ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+            SnackBar(
+              content: Text("Verification not complete yet, please wait"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else if (role == 'rej') {
+          loading = false;
+          ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+            SnackBar(
+              content: Text("Your application has been rejected."),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else {
+          loading = false;
+          ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+            SnackBar(
+              content: Text("You don't have authorization to Login"),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       } on FirebaseAuthException catch (e) {
         setState(() {
