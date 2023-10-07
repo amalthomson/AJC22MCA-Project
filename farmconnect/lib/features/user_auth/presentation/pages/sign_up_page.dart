@@ -25,7 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
-  late String email, phone, username, password, userrole = '', ftl = '';
+  late String email, phone, username, password, userrole = '', ftl = '', isActive = '';
 
   final dbRef = FirebaseDatabase.instance.ref().child('users');
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
@@ -48,18 +48,22 @@ class _SignUpPageState extends State<SignUpPage> {
 
       if (newUser != null) {
         // Store user data in Firestore
+        await newUser.user!.sendEmailVerification();
         await FirebaseFirestore.instance.collection('users').doc(newUser.user?.uid).set(
           {
             "email": newUser.user?.email,
             "name": username,
             "phone": phone,
             "role": userrole,
-            "ftl" : 'yes'
+            "ftl" : 'yes',
+            "isActive": 'yes'
           },
         );
 
+        Navigator.pushNamed(context, '/email_verification_pending');
+
         // Navigate to the login page after successful registration
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
+        //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
       }
     } catch (e) {
       print(e);

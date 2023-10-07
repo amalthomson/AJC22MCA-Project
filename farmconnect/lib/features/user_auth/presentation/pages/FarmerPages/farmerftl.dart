@@ -323,7 +323,7 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.9),
                             hintText: 'Enter your street',
-                            prefixIcon: Icon(Icons.person, color: Colors.blue),
+                            prefixIcon: Icon(Icons.home, color: Colors.blue),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(50),
                               borderSide: BorderSide(color: Colors.blue),
@@ -355,7 +355,7 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your city/town',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.location_city, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),
@@ -387,7 +387,7 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your district',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.map, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),
@@ -419,7 +419,7 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your state',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.other_houses, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),
@@ -451,7 +451,7 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your pincode',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.location_on, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),

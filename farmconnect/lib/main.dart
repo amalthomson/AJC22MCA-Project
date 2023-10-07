@@ -14,6 +14,8 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/hom
 import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/email_verification_pending_page.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/admin_dashboard' : (context) => AdminDashboard(),
         '/buyer_details' : (context) => BuyerDetailsPage(),
         '/farmer_details' : (context) => FarmerDetailsPage(),
+        '/email_verification_pending': (context) => EmailVerificationPendingPage(),
         '/terms' : (context) => TermsPage()
       },
     );

@@ -1,11 +1,27 @@
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleHomePage extends StatelessWidget {
   const GoogleHomePage({Key? key});
+
+  // Function to sign out both Firebase and Google accounts
+  Future<void> _signOut(BuildContext context) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    try {
+      await _auth.signOut();
+      await googleSignIn.signOut();
+      Navigator.popAndPushNamed(context, "/login");
+    } catch (error) {
+      print("Error signing out: $error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +59,14 @@ class GoogleHomePage extends StatelessWidget {
                       child: ClipOval(
                         child: profileImageUrl != null
                             ? Image.network(
-                                profileImageUrl,
-                                fit: BoxFit.cover,
-                              )
+                          profileImageUrl,
+                          fit: BoxFit.cover,
+                        )
                             : Icon(
-                                Icons.person,
-                                size: 60,
-                                color: Colors.white, // Fallback icon color
-                              ),
+                          Icons.person,
+                          size: 60,
+                          color: Colors.white, // Fallback icon color
+                        ),
                       ),
                     ),
                   ),
@@ -103,7 +119,7 @@ class GoogleHomePage extends StatelessWidget {
                     ),
                     child: Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
+                      EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
                       child: Text(
                         "Edit Profile",
                         style: TextStyle(fontSize: 16),
@@ -114,63 +130,13 @@ class GoogleHomePage extends StatelessWidget {
                   DashboardCard(
                     title: "Sign Out",
                     icon: Icons.logout,
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.popAndPushNamed(context, "/login");
-                    },
-                  ),
+                    onPressed: () => _signOut(context), // Sign out function
+                    backgroundColor: Colors.red, textColor: Colors.white, // Add the backgroundColor parameter here
+                  )
                 ],
               ),
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-class DashboardCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  DashboardCard({
-    required this.title,
-    required this.icon,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      color: Colors.red, // Set the background color to red
-      child: InkWell(
-        onTap: onPressed,
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 36,
-                color: Colors.white, // Set the text color to white
-              ),
-              SizedBox(width: 16),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Set the text color to white
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

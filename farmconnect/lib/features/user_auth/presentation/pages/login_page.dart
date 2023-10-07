@@ -10,6 +10,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/loading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'sign_up_page.dart'; // Import your SignUpPage
+import 'email_verification_pending_page.dart'; // Import the EmailVerificationPendingPage
 
 class EmailFieldValidator {
   static String? validate(String value) {
@@ -49,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
   String role = 'Buyer';
   String ftl = 'yes';
   final FirebaseAuthService _auth = FirebaseAuthService();
+  GoogleSignInAccount? _googleUser;
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -63,8 +66,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _signInWithGoogle(BuildContext context) async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
         // The user canceled the sign-in process
@@ -83,8 +88,13 @@ class _LoginPageState extends State<LoginPage> {
       final User? user = userCredential.user;
 
       if (user != null) {
+        // Store the signed-in Google account
+        setState(() {
+          _googleUser = googleUser;
+        });
+
         // Update user information in Firestore
-        await _updateUserInformation(user);
+        await _updateUserInformation(user, googleUser);
 
         // Navigate to the Home Page
         Navigator.pushReplacement(
@@ -111,19 +121,37 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _updateUserInformation(User user) async {
-    // You can update the user information in Firestore or your chosen database here.
-    final DocumentReference userDocRef =
-    FirebaseFirestore.instance.collection('users').doc(user.uid);
+  Future<void> _updateUserInformation(User user, GoogleSignInAccount? googleUser) async {
+    final DocumentReference userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
 
+    // Retrieve additional user details from GoogleSignInAccount (if available)
+    String displayName = user.displayName ?? '';
+    String email = user.email ?? '';
+    String photoUrl = user.photoURL ?? '';
+    String phone = user.phoneNumber ?? '';
+    // Profile picture URL
+
+    // You can also retrieve additional user details from googleUser if needed
+
+    // Update user information in Firestore
     await userDocRef.set({
       'uid': user.uid,
-      'email': user.email,
-      'name': user.displayName!, // Use ! to assert non-nullability
+      'email': email,
+      'name': displayName,
+      'profileImageUrl': photoUrl, // Save profile picture URL
+      'phone': phone, // Add phone number here if available
+      'role': "Buyer",
       // Add more user details as needed
     }, SetOptions(merge: true)); // Use merge to update only specific fields
+  }
 
-    // You can add more fields or perform other operations as needed.
+  Future<void> _signOutGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    try {
+      await googleSignIn.signOut();
+    } catch (error) {
+      print("Error signing out from Google: $error");
+    }
   }
 
   @override
@@ -131,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
         title: Text("FarmConnect"),
         automaticallyImplyLeading: false,
       ),
@@ -151,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
                           Text(
                             "Login to FarmConnect",
@@ -307,7 +335,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => HomePage(),
+                                      builder: (context) => SignUpPage(),
                                     ),
                                   );
                                 },
@@ -321,7 +349,7 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 25,
                           ),
                           ElevatedButton.icon(
                             onPressed: () => _signInWithGoogle(context),
@@ -356,60 +384,75 @@ class _LoginPageState extends State<LoginPage> {
 
   void signIn(BuildContext scaffoldContext) async {
     if (_formKey.currentState!.validate()) {
-      setState(() => loading = false);
+      setState(() => loading = true);
       String email = _emailController.text;
       String password = _passwordController.text;
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
-        User user = userCredential.user!; // Assert non-nullability
+        if (userCredential != null) {
+          User? user = FirebaseAuth.instance.currentUser;
+          final DocumentSnapshot snap = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user?.uid)
+              .get();
 
-        final DocumentSnapshot snap = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-        setState(() {
-          role = snap['role'];
-          ftl = snap['ftl'];
-        });
-        if (ftl == 'no') {
-          if (role == 'Buyer') {
-            Navigator.pushNamed(context, "/buyer_home");
-          } else if (role == 'Admin') {
-            Navigator.pushNamed(context, "/admin_dashboard");
-          } else if (role == 'Farmer') {
-            Navigator.pushNamed(context, "/farmer_home");
+          if (snap.exists) {
+            // Check if the user is verified and active in Firestore
+            String isActive = snap['isActive'];
+            bool isEmailVerified = user?.emailVerified ?? false;
+
+            if (isEmailVerified) {
+              if (isActive == 'yes') {
+                setState(() {
+                  role = snap['role'];
+                  ftl = snap['ftl'];
+                });
+
+                if (ftl == 'no') {
+                  if (role == 'Buyer') {
+                    Navigator.pushNamed(context, "/buyer_home");
+                  } else if (role == 'Admin') {
+                    Navigator.pushNamed(context, "/admin_dashboard");
+                  } else if (role == 'Farmer') {
+                    Navigator.pushNamed(context, "/farmer_home");
+                  }
+                } else if (ftl == 'yes') {
+                  if (role == 'Farmer') {
+                    Navigator.pushNamed(context, "/farmer_ftl");
+                  } else if (role == 'Buyer') {
+                    Navigator.pushNamed(context, "/buyer_ftl");
+                  }
+                } else {
+                  loading = false;
+                  ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+                    SnackBar(
+                      content: Text("You don't have authorization to Login"),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              } else {
+                loading = false;
+                ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+                  SnackBar(
+                    content: Text("The Account is Blocked"),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            } else {
+              // Email is not verified
+              loading = false;
+              ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+                SnackBar(
+                  content: Text("Email not Verified"),
+                  backgroundColor: Colors.red,
+                ),
+              );
+              await FirebaseAuth.instance.signOut(); // Sign out the user
+            }
           }
-        } else if (ftl == 'yes') {
-          if (role == 'Farmer') {
-            Navigator.pushNamed(context, "/farmer_ftl");
-          } else if (role == 'Buyer') {
-            Navigator.pushNamed(context, "/buyer_ftl");
-          }
-        } else if (ftl == 'Verification Pending') {
-          loading = false;
-          ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-            SnackBar(
-              content: Text("Verification not complete yet, please wait"),
-              backgroundColor: Colors.red,
-            ),
-          );
-        } else if (role == 'rej') {
-          loading = false;
-          ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-            SnackBar(
-              content: Text("Your application has been rejected."),
-              backgroundColor: Colors.red,
-            ),
-          );
-        } else {
-          loading = false;
-          ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-            SnackBar(
-              content: Text("You don't have authorization to Login"),
-              backgroundColor: Colors.red,
-            ),
-          );
         }
       } on FirebaseAuthException catch (e) {
         setState(() {
