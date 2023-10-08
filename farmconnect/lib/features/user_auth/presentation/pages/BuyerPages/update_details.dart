@@ -91,7 +91,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
       backgroundColor: blackColor,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Update Details", style: TextStyle(color: Colors.green, fontSize: 20,
+        title: Text("Update User Details", style: TextStyle(color: Colors.green, fontSize: 20,
             fontWeight: FontWeight.bold)),
       ),
       body: Container(
@@ -135,6 +135,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                 controller: nameController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
+                  hintText: 'Enter your Name',
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.9), // Match the background color
                   border: OutlineInputBorder(
@@ -174,6 +175,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.phone, // Set the keyboard type to phone
                 decoration: InputDecoration(
+                  hintText: 'Enter your Phone Number',
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.9),
                   border: OutlineInputBorder(
@@ -218,6 +220,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                 controller: streetController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
+                  hintText: 'Enter your Street',
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.9),
                   border: OutlineInputBorder(
@@ -253,6 +256,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                 controller: townController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
+                  hintText: 'Enter your City/Town',
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.9),
                   border: OutlineInputBorder(
@@ -290,6 +294,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                 controller: districtController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
+                  hintText: 'Enter your District',
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.9),
                   border: OutlineInputBorder(
@@ -327,6 +332,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                 controller: stateController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
+                  hintText: 'Enter your State',
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.9),
                   border: OutlineInputBorder(
@@ -364,6 +370,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                 controller: pincodeController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
+                  hintText: 'Enter your Pin Code',
                   filled: true,
                   fillColor: Colors.white.withOpacity(0.9),
                   border: OutlineInputBorder(
@@ -400,6 +407,14 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // Change the button color
+                    onPrimary: Colors.white, // Change the text color
+                    elevation: 5, // Add elevation
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50), // Change the button shape
+                    ),
+                  ),
                   onPressed: () async {
                     final String name = nameController.text;
                     final String phone = phoneNumberController.text;
@@ -421,13 +436,12 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
                         'state': state,
                         'pincode': pincode,
                       });
-
                       Navigator.pop(context);
                     } catch (e) {
                       print('Error updating user data: $e');
                     }
                   },
-                  child: Text('Update'),
+                  child: Text('Update Details'),
                 ),
               ),
             ],

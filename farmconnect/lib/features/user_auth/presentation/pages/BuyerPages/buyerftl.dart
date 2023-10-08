@@ -122,13 +122,14 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
       backgroundColor: blackColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blueGrey[900],
         title: RichText(
           text: TextSpan(
             children: [
               TextSpan(
-                text: "FarmConnect",
+                text: "Update User Profile",
                 style: TextStyle(
+                  color: Colors.green,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

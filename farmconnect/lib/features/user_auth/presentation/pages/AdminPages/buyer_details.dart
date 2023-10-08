@@ -95,7 +95,7 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
+                        //scrollDirection: Axis.horizontal,
                         child: _buildDetailItem(
                           icon: Icons.location_on,
                           label: "Address",

@@ -12,7 +12,8 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Farmer Details"),
+        title: Text("Farmer Details", style: TextStyle(color: Colors.green, fontSize: 20,
+            fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

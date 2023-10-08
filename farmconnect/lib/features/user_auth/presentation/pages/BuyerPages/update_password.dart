@@ -23,8 +23,9 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text("Update Password"),
+        backgroundColor: Colors.blueGrey[900],
+        title: Text("Update Password", style: TextStyle(color: Colors.green, fontSize: 20,
+        fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Container(
@@ -165,7 +166,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                           onPrimary: Colors.white, // Change the text color
                           elevation: 5, // Add elevation
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10), // Change the button shape
+                            borderRadius: BorderRadius.circular(50), // Change the button shape
                           ),
                         ),
                         child: Padding(
