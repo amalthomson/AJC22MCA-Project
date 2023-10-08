@@ -28,9 +28,10 @@ class GoogleHomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        title: Text("Buyer Dashboard"),
+        title: Text("Buyer Dashboard", style: TextStyle(color: Colors.green, fontSize: 20,
+            fontWeight: FontWeight.bold)),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blueGrey[900],
       ),
       body: Center(
         child: StreamBuilder(
@@ -96,7 +97,7 @@ class GoogleHomePage extends StatelessWidget {
                               displayName,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 48,
+                                fontSize: 36,
                                 color: Colors.white,
                               ),
                             ),

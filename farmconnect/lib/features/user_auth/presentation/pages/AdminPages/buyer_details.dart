@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart'; // Import Firebase Storage for image loading
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 
 class BuyerDetailsPage extends StatefulWidget {
   @override
@@ -12,9 +10,9 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.black,
         title: Text("Buyer Details"),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -35,63 +33,94 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
             itemCount: buyers.length,
             itemBuilder: (context, index) {
               final buyer = buyers[index].data() as Map<String, dynamic>;
+              final userId = buyers[index].id;
 
-              // Get the profile picture URL from the database
               final profilePictureUrl = buyer['profileImageUrl'] ?? '';
+              var isActive = buyer['isActive'] ?? 'no'; // Initialize with 'no'
 
-              // Define a list of background colors
               final tileColors = [
+                Colors.purple,
                 Colors.lightBlue,
                 Colors.lightGreen,
                 Colors.amber,
                 Colors.pink,
-                Colors.purple,
               ];
 
-              // Get the color based on index
               final tileColor = tileColors[index % tileColors.length];
 
               return Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Card(
-                  color: tileColor,
                   elevation: 4,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  child: ListTile(
+                  child: ExpansionTile(
+                    tilePadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(profilePictureUrl),
+                      radius: 30,
+                    ),
                     title: Text(
                       buyer['name'] ?? 'N/A',
                       style: TextStyle(
-                        color: Colors.white,
                         fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Gender: ${buyer['gender'] ?? 'N/A'}",
-                          style: TextStyle(color: Colors.white),
+                    childrenPadding: EdgeInsets.all(16),
+                    children: [
+                      SingleChildScrollView(
+                        //scrollDirection: Axis.horizontal,
+                        child: _buildDetailItem(
+                          icon: Icons.person,
+                          label: "Gender",
+                          value: buyer['gender'] ?? 'N/A',
                         ),
-                        Text(
-                          "Email: ${buyer['email'] ?? 'N/A'}",
-                          style: TextStyle(color: Colors.white),
+                      ),
+                      SingleChildScrollView(
+                        //scrollDirection: Axis.horizontal,
+                        child: _buildDetailItem(
+                          icon: Icons.email,
+                          label: "Email",
+                          value: buyer['email'] ?? 'N/A',
                         ),
-                        Text(
-                          "Phone: ${buyer['phone'] ?? 'N/A'}",
-                          style: TextStyle(color: Colors.white),
+                      ),
+                      SingleChildScrollView(
+                       //scrollDirection: Axis.horizontal,
+                        child: _buildDetailItem(
+                          icon: Icons.phone,
+                          label: "Phone",
+                          value: buyer['phone'] ?? 'N/A',
                         ),
-                        Text(
-                          "Address: ${buyer['street'] ?? 'N/A'}, ${buyer['town'] ?? 'N/A'}, ${buyer['state'] ?? 'N/A'}, ${buyer['district'] ?? 'N/A'}",
-                          style: TextStyle(color: Colors.white),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: _buildDetailItem(
+                          icon: Icons.location_on,
+                          label: "Address",
+                          value: "${buyer['street'] ?? 'N/A'}, ${buyer['town'] ?? 'N/A'}, ${buyer['district'] ?? 'N/A'}, ${buyer['state'] ?? 'N/A'}, ${buyer['pincode'] ?? 'N/A'}",
                         ),
-                      ],
-                    ),
-                    leading: CircleAvatar(
-                      // Display the profile picture
-                      backgroundImage: NetworkImage(profilePictureUrl),
-                      radius: 30, // Set the radius as needed
+                      ),
+                    ],
+                    trailing: Container(
+                      width: 70,
+                      height: 42,
+                      child: Switch(
+                        value: isActive == 'yes',
+                        onChanged: (value) {
+                          // Update the 'isActive' field in Firestore as a string
+                          FirebaseFirestore.instance.collection('users').doc(userId).update({
+                            'isActive': value ? 'yes' : 'no',
+                          });
+                          setState(() {
+                            isActive = value ? 'yes' : 'no';
+                          });
+                        },
+                        activeColor: Colors.green,
+                        inactiveThumbColor: Colors.grey,
+                        inactiveTrackColor: Colors.grey.withOpacity(0.5),
+                      ),
                     ),
                   ),
                 ),
@@ -99,6 +128,40 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
             },
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildDetailItem({required IconData icon, required String label, required String value}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Colors.green,
+            size: 28,
+          ),
+          SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

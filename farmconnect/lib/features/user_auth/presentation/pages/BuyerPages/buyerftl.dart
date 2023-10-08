@@ -90,6 +90,32 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
     }
   }
 
+  Future<void> _pickImage() async {
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      final file = File(pickedImage.path);
+      final imageName = 'profile_images/$_userId.png';
+
+      try {
+        await firebase_storage.FirebaseStorage.instance.ref(imageName).putFile(file);
+
+        final downloadURL = await firebase_storage.FirebaseStorage.instance.ref(imageName).getDownloadURL();
+
+        setState(() {
+          _profileImageUrl = downloadURL;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to upload profile picture.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +143,6 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,39 +165,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                                 bottom: 0, // Adjust this value to move the icon vertically within the circle
                                 right: 0, // Adjust this value to move the icon horizontally within the circle
                                 child: InkWell(
-                                  onTap: () async {
-                                    final imagePicker = ImagePicker();
-                                    final pickedFile = await imagePicker.pickImage(
-                                      source: ImageSource.gallery,
-                                    );
-
-                                    if (pickedFile != null) {
-                                      final file = File(pickedFile.path);
-                                      final imageName = 'profile_images/$_userId.png';
-
-                                      try {
-                                        await firebase_storage.FirebaseStorage.instance
-                                            .ref(imageName)
-                                            .putFile(file);
-
-                                        final downloadURL =
-                                        await firebase_storage.FirebaseStorage.instance
-                                            .ref(imageName)
-                                            .getDownloadURL();
-
-                                        setState(() {
-                                          _profileImageUrl = downloadURL;
-                                        });
-                                      } catch (e) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text('Failed to upload profile picture.'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  },
+                                  onTap: _pickImage, // Use the _pickImage function to select an image
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.white,
@@ -193,6 +186,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                         SizedBox(height: 10),
                         DropdownButtonFormField<String>(
                           value: _selectedGender,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           onChanged: (value) {
                             setState(() {
                               _selectedGender = value;
@@ -386,7 +380,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 30),
                   Center(
                     child: ElevatedButton(
                       onPressed: _updateUserData,

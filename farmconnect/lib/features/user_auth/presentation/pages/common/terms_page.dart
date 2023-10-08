@@ -7,24 +7,32 @@ class TermsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        title: Text("Terms and Conditions"),
-        backgroundColor: Colors.green, // Change the app bar color
+        title: Text(
+          "Terms and Conditions",
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.green,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blueGrey[900], // Change the app bar color
       ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 30),
               Text(
-                "FarmConnect Terms and Conditions",
+                "Terms and Conditions",
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.green, // Change the title color
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               StyledTerms(
                 number: "1",
                 text:
@@ -49,6 +57,11 @@ class TermsPage extends StatelessWidget {
                 number: "5",
                 text:
                 "Any disputes arising from the use of FarmConnect will be resolved through arbitration.",
+              ),
+              StyledTerms(
+                number: "6", // Add the new point number
+                text:
+                "Only users who are Buyers can register with the 'Sign In with Google' option.",
               ),
               // Add more styled terms and conditions as needed
             ],

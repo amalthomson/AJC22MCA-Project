@@ -128,7 +128,6 @@ class _LoginPageState extends State<LoginPage> {
     String displayName = user.displayName ?? '';
     String email = user.email ?? '';
     String photoUrl = user.photoURL ?? '';
-    String phone = user.phoneNumber ?? '';
     // Profile picture URL
 
     // You can also retrieve additional user details from googleUser if needed
@@ -139,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
       'email': email,
       'name': displayName,
       'profileImageUrl': photoUrl, // Save profile picture URL
-      'phone': phone, // Add phone number here if available
       'role': "Buyer",
       // Add more user details as needed
     }, SetOptions(merge: true)); // Use merge to update only specific fields
@@ -159,15 +157,23 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text("FarmConnect"),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          "Login to FarmConnect",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
       ),
       body: Builder(
         builder: (BuildContext scaffoldContext) {
-          return Center(
+          return SingleChildScrollView(
+          child: Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 1.0), // Adjust the top padding as needed
+              padding: const EdgeInsets.only(top: 99.0), // Adjust the top padding as needed
               child: Stack(
                 children: [
                   Padding(
@@ -190,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(
-                            height: 14,
+                            height: 20,
                           ),
                           TextFormField(
                             controller: _emailController,
@@ -264,7 +270,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
                           Align(
                             alignment: Alignment.bottomRight,
@@ -279,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: Text(
                                 "Forgot Password?",
-                                style: TextStyle(
+                                style: TextStyle(fontSize: 16,
                                   color: Colors.blue,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -287,7 +293,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(
-                            height: 14,
+                            height: 20,
                           ),
                           GestureDetector(
                             onTap: () => signIn(scaffoldContext),
@@ -319,13 +325,13 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(
-                            height: 14,
+                            height: 20,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text("New to FarmConnect?",
-                                  style: TextStyle(
+                                  style: TextStyle(fontSize: 16,
                                       color: Colors.white)),
                               SizedBox(
                                 width: 10,
@@ -341,7 +347,7 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                                 child: Text(
                                   "Sign Up",
-                                  style: TextStyle(
+                                  style: TextStyle(fontSize: 16,
                                       color: Colors.blue,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -349,7 +355,7 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                           SizedBox(
-                            height: 25,
+                            height: 20,
                           ),
                           ElevatedButton.icon(
                             onPressed: () => _signInWithGoogle(context),
@@ -364,7 +370,7 @@ class _LoginPageState extends State<LoginPage> {
                               onPrimary: Colors.blue, // Text color
                               elevation: 3, // Add elevation for a raised effect
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0), // Adjust border radius as needed
+                                borderRadius: BorderRadius.circular(50.0), // Adjust border radius as needed
                               ),
                               padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24), // Adjust padding as needed
                             ),
@@ -376,6 +382,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
+          ),
           );
         },
       ),

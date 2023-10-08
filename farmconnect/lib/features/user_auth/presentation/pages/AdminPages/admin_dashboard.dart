@@ -2,12 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: AdminDashboard(),
-  ));
-}
-
 class AdminDashboard extends StatefulWidget {
   @override
   _AdminDashboardState createState() => _AdminDashboardState();
@@ -16,8 +10,6 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   int numberOfBuyers = 0;
   int numberOfFarmers = 0;
-  int numberOfPendingRequests = 0; // New
-  int numberOfRequestApprovals = 0; // New
 
   @override
   void initState() {
@@ -34,14 +26,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
     final farmerQuery = await usersCollection.where('role', isEqualTo: 'Farmer').get();
     numberOfFarmers = farmerQuery.docs.length;
 
-    // Fetch the count of pending requests (customize as needed)
-    final pendingRequestsQuery = await FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'Pending').get();
-    numberOfPendingRequests = pendingRequestsQuery.docs.length;
-
-    // Fetch the count of request approvals (customize as needed)
-    final requestApprovalsQuery = await FirebaseFirestore.instance.collection('requests').where('status', isEqualTo: 'Approved').get();
-    numberOfRequestApprovals = requestApprovalsQuery.docs.length;
-
     setState(() {});
   }
 
@@ -54,7 +38,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.black,
         title: Text(
           "Admin Dashboard",
           style: TextStyle(
@@ -96,28 +80,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
               ),
               onTap: () {
                 Navigator.pushNamed(context, '/farmer_details');
-              },
-            ),
-            InkWell(
-              child: AdminDashboardTile(
-                title: "      User\nVerification",
-                count: numberOfPendingRequests,
-                tileColor: Colors.orange,
-              ),
-              onTap: () {
-                // Handle navigation for "User Verification"
-                // Navigator.pushNamed(context, '/user_verification');
-              },
-            ),
-            InkWell(
-              child: AdminDashboardTile(
-                title: "   Product\nVerification",
-                count: numberOfRequestApprovals,
-                tileColor: Colors.red,
-              ),
-              onTap: () {
-                // Handle navigation for "Product Verification"
-                // Navigator.pushNamed(context, '/product_verification');
               },
             ),
           ],
@@ -240,3 +202,4 @@ class DashboardCard extends StatelessWidget {
     );
   }
 }
+

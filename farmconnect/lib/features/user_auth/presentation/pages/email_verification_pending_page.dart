@@ -28,8 +28,9 @@ class EmailVerificationPendingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Email Verification Pending'),
+        backgroundColor: Colors.blueGrey[900],
+        title: Text('FarmConnect', style: TextStyle(color: Colors.green, fontSize: 26,
+            fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Padding(
@@ -44,7 +45,12 @@ class EmailVerificationPendingPage extends StatelessWidget {
               ),
               SizedBox(height: 30),
               Text(
-                'Email Verification is Pending.',
+                'Welcome',
+                style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Verify Email to Continue',
                 style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 30),
@@ -59,6 +65,13 @@ class EmailVerificationPendingPage extends StatelessWidget {
                   _resendVerificationEmail(context);
                 },
                 child: Text('Resend Verification Email'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue, // Background color
+                  onPrimary: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0), // 50% rounding
+                  ),
+                ),
               ),
               SizedBox(height: 30),
               GestureDetector(

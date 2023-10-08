@@ -90,8 +90,9 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("Update Details"),
+        backgroundColor: Colors.blueGrey[900],
+        title: Text("Update Details", style: TextStyle(color: Colors.green, fontSize: 20,
+            fontWeight: FontWeight.bold)),
       ),
       body: Container(
         padding: EdgeInsets.all(16),

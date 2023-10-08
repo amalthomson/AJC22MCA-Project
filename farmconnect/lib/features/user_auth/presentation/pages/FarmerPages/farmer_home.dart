@@ -14,7 +14,7 @@ class FarmerHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Farmer Dashboard"),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.black,
       ),
       body: Center(
         child: StreamBuilder(
@@ -79,7 +79,7 @@ class FarmerHomePage extends StatelessWidget {
                               displayName,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 48,
+                                fontSize: 36,
                                 color: Colors.white,
                               ),
                             ),

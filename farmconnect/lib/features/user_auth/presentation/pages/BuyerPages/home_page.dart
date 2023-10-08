@@ -12,9 +12,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        title: Text("Buyer Dashboard"),
+        title: Text("Buyer Dashboard", style: TextStyle(color: Colors.green, fontSize: 26,
+            fontWeight: FontWeight.bold)),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blueGrey[900],
       ),
       body: Center(
         child: StreamBuilder(
@@ -79,7 +80,7 @@ class HomePage extends StatelessWidget {
                               displayName,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 48,
+                                fontSize: 36,
                                 color: Colors.white,
                               ),
                             ),
@@ -104,7 +105,10 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         child: Padding(
-                            padding : EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 8.0,
+                          ),
                           child: Text(
                             "Reset Password",
                             style: TextStyle(fontSize: 16),
@@ -124,7 +128,10 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         child: Padding(
-                          padding : EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 8.0,
+                          ),
                           child: Text(
                             "Edit Profile",
                             style: TextStyle(fontSize: 16),
@@ -133,7 +140,13 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 150),
+                  SizedBox(height: 30), // Added spacing
+                  Divider(
+                    height: 20,
+                    thickness: 2,
+                    color: Colors.white.withOpacity(0.5),
+                  ),
+                  SizedBox(height: 20), // Added spacing
                   DashboardCard(
                     title: "Sign Out",
                     icon: Icons.logout,

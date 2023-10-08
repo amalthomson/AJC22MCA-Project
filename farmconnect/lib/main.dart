@@ -1,5 +1,5 @@
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_home.dart';
+//import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_home.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/buyer_details.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_details.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerftl.dart';
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/update_details': (context) => UpdateDetailsPage(), // Define the route for UpdateDetailsPage
         '/update_password': (context) => UpdatePasswordPage(),
         '/farmer_home' : (context) => FarmerHomePage(),
-        '/admin_home' : (context) => AdminHomePage(),
+        //'/admin_home' : (context) => AdminHomePage(),
         '/buyer_ftl' : (context) => BuyerFTLPage(),
         '/farmer_ftl' : (context) => FarmerFTLPage(),
         '/admin_dashboard' : (context) => AdminDashboard(),

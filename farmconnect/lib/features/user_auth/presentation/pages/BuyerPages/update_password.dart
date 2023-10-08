@@ -23,7 +23,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.black,
         title: Text("Update Password"),
       ),
       body: Center(

@@ -92,18 +92,13 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: "FarmConnect",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          "Sign Up with FarmConnect",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
           ),
         ),
       ),
@@ -122,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: 25,
                         ),
                         Text(
-                          "Sign Up with FarmConnect",
+                          "Registration",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 28,
@@ -392,7 +387,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   height: 45,
                                   decoration: BoxDecoration(
                                     color: _isCheckboxChecked ? Colors.blue : Colors.grey,
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Center(
                                     child: Text(

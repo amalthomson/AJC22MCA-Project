@@ -40,8 +40,9 @@ class ForgotPassword extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text("Forgot Password", style: TextStyle(color: Colors.white)), // White text color
+        backgroundColor: Colors.blueGrey[900],
+        title: Text("Forget Password", style: TextStyle(color: Colors.green, fontSize: 20,
+          fontWeight: FontWeight.bold)), // White text color
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white), // White icon color
           onPressed: () {
@@ -80,13 +81,44 @@ class ForgotPassword extends StatelessWidget {
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
+              autovalidateMode: AutovalidateMode.onUserInteraction, // Enable validation
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Email cannot be empty";
+                }
+                if (!RegExp(
+                    r"^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$")
+                    .hasMatch(value)) {
+                  return "Please enter a valid email";
+                } else {
+                  return null;
+                }
+              },
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.9),
                 hintText: 'Enter your email',
-                border: OutlineInputBorder(),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Icon(
+                    Icons.email,
+                    color: Colors.blue, // Set the icon color to blue
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50), // Round the edges by 50
+                  borderSide: BorderSide.none, // Remove the border
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50), // Round the edges by 50
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50), // Round the edges by 50
+                  borderSide: BorderSide(color: Colors.red),
+                ),
               ),
-              style: TextStyle(color: Colors.black), // White text color
+              style: TextStyle(color: Colors.black), // Black text color
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -97,6 +129,9 @@ class ForgotPassword extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue, // Background color
                 onPrimary: Colors.white, // Text color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0), // 50% rounding
+                ),
               ),
             ),
           ],
