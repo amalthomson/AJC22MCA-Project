@@ -12,6 +12,7 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[900],
         title: Text("Farmer Details", style: TextStyle(color: Colors.green, fontSize: 20,
             fontWeight: FontWeight.bold)),
       ),

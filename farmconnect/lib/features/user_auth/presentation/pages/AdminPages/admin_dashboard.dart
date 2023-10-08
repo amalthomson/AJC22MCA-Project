@@ -38,12 +38,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey[900],
         title: Text(
           "Admin Dashboard",
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
+            color: Colors.green,
+            fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
         ),

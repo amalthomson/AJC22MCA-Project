@@ -12,8 +12,9 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text("Buyer Details"),
+        backgroundColor: Colors.blueGrey[900],
+        title: Text("Buyer Details", style: TextStyle(color: Colors.green, fontSize: 20,
+        fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -95,7 +96,7 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        //scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.horizontal,
                         child: _buildDetailItem(
                           icon: Icons.location_on,
                           label: "Address",

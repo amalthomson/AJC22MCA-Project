@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Unable to establish connection on channel, verify the fields or try again later"),
+          content: Text("Email already registered or invalid, verify the fields or try again later"),
           backgroundColor: Colors.red,
         ),
       );
