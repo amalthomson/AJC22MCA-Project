@@ -4,17 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
 
-class FarmerHomePage extends StatelessWidget {
-  const FarmerHomePage({Key? key});
+class BuyerProfilePage extends StatelessWidget {
+  const BuyerProfilePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        title: Text("Farmer Dashboard", style: TextStyle(color: Colors.green, fontSize: 20,
+        title: Text("Buyer Profile", style: TextStyle(color: Colors.green, fontSize: 26,
             fontWeight: FontWeight.bold)),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         backgroundColor: Colors.blueGrey[900],
       ),
       body: Center(
@@ -106,7 +106,9 @@ class FarmerHomePage extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 8.0),
+                            vertical: 16,
+                            horizontal: 8.0,
+                          ),
                           child: Text(
                             "Reset Password",
                             style: TextStyle(fontSize: 16),
@@ -127,7 +129,9 @@ class FarmerHomePage extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 8.0),
+                            vertical: 16,
+                            horizontal: 8.0,
+                          ),
                           child: Text(
                             "Edit Profile",
                             style: TextStyle(fontSize: 16),
@@ -136,7 +140,13 @@ class FarmerHomePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 150),
+                  SizedBox(height: 30), // Added spacing
+                  Divider(
+                    height: 20,
+                    thickness: 2,
+                    color: Colors.white.withOpacity(0.5),
+                  ),
+                  SizedBox(height: 20), // Added spacing
                   DashboardCard(
                     title: "Sign Out",
                     icon: Icons.logout,

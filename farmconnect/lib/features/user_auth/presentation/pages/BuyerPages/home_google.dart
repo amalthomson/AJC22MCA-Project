@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_google.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleHomePage extends StatelessWidget {
@@ -109,7 +109,7 @@ class GoogleHomePage extends StatelessWidget {
                   SizedBox(height: 50),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/update_details");
+                      Navigator.pushNamed(context, "/update_google");
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue,

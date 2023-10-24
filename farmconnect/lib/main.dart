@@ -1,16 +1,24 @@
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
-//import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_home.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/aprovedproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/buyer_details.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/rejectedproducts.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerftl.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmer_home.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/poultry_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_google.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmer_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_password.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/addproducts.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/pendingapproval.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/myproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/terms_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:farmconnect/features/app/splash_screen/splash_screen.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_profile.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
@@ -36,18 +44,27 @@ class MyApp extends StatelessWidget {
         ),
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
-        '/buyer_home': (context) => HomePage(),
-        '/update_details': (context) => UpdateDetailsPage(), // Define the route for UpdateDetailsPage
+        '/buyer_profile': (context) => BuyerProfilePage(),
+        '/buyer_home' : (context) => BuyerDashboard(),
+        '/update_details': (context) => UpdateDetailsPage(),
+        '/update_google': (context) => UpdateGoogleDetails(),
         '/update_password': (context) => UpdatePasswordPage(),
-        '/farmer_home' : (context) => FarmerHomePage(),
-        //'/admin_home' : (context) => AdminHomePage(),
+        '/add_products' : (context) => AddProducts(),
+        '/farmer_page' : (context) => FarmerPage(),
+        '/farmer_dash': (context) => FarmerDashboard(),
         '/buyer_ftl' : (context) => BuyerFTLPage(),
         '/farmer_ftl' : (context) => FarmerFTLPage(),
         '/admin_dashboard' : (context) => AdminDashboard(),
         '/buyer_details' : (context) => BuyerDetailsPage(),
         '/farmer_details' : (context) => FarmerDetailsPage(),
         '/email_verification_pending': (context) => EmailVerificationPendingPage(),
-        '/terms' : (context) => TermsPage()
+        '/terms' : (context) => TermsPage(),
+        '/pendingapproval' : (context) => PendingApprovalPage(),
+        '/approvedproducts' : (context) => ApprovedProductsPage(),
+        '/rejectedproducts' : (context) => RejectedProductsPage(),
+        '/myproducts' : (context) => MyProductsPage(),
+        '/poultry_page' : (context) => PoultryProductsPage(),
+
       },
     );
   }

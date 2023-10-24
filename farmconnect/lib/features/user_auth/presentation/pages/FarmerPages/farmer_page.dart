@@ -4,20 +4,43 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key});
+class FarmerPage extends StatelessWidget {
+  const FarmerPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        title: Text("Buyer Dashboard", style: TextStyle(color: Colors.green, fontSize: 26,
-            fontWeight: FontWeight.bold)),
-        automaticallyImplyLeading: false,
+        title: Text(
+          "Farmer Dashboard",
+          style: TextStyle(
+            color: Colors.green,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Colors.blueGrey[900],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/add_products");
+            },
+            icon: Icon(Icons.home),
+            color: Colors.white,
+            iconSize: 30,
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/profile");
+            },
+            icon: Icon(Icons.person),
+            color: Colors.white,
+            iconSize: 30,
+          ),
+        ],
       ),
-      body: Center(
+        body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("users")
@@ -35,8 +58,7 @@ class HomePage extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.all(16),
                 children: [
-                  SizedBox(height: 20), // Added spacing
-                  // Profile Image
+                  SizedBox(height: 20),
                   Center(
                     child: CircleAvatar(
                       radius: 60,
@@ -50,15 +72,15 @@ class HomePage extends StatelessWidget {
                             : Icon(
                           Icons.person,
                           size: 60,
-                          color: Colors.white, // Fallback icon color
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), // Added spacing
+                  SizedBox(height: 20),
                   Card(
                     elevation: 5,
-                    color: Colors.transparent, // Set background color to transparent
+                    color: Colors.transparent,
                     child: Padding(
                       padding: EdgeInsets.all(16),
                       child: Column(
@@ -106,9 +128,7 @@ class HomePage extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 8.0,
-                          ),
+                              vertical: 16, horizontal: 8.0),
                           child: Text(
                             "Reset Password",
                             style: TextStyle(fontSize: 16),
@@ -129,9 +149,7 @@ class HomePage extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 8.0,
-                          ),
+                              vertical: 16, horizontal: 8.0),
                           child: Text(
                             "Edit Profile",
                             style: TextStyle(fontSize: 16),
@@ -140,13 +158,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 30), // Added spacing
-                  Divider(
-                    height: 20,
-                    thickness: 2,
-                    color: Colors.white.withOpacity(0.5),
-                  ),
-                  SizedBox(height: 20), // Added spacing
+                  SizedBox(height: 150),
                   DashboardCard(
                     title: "Sign Out",
                     icon: Icons.logout,
@@ -183,7 +195,7 @@ class DashboardCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
       ),
-      color: Colors.red, // Set the background color to red
+      color: Colors.red,
       child: InkWell(
         onTap: onPressed,
         child: Padding(
@@ -194,7 +206,7 @@ class DashboardCard extends StatelessWidget {
               Icon(
                 icon,
                 size: 36,
-                color: Colors.white, // Set the text color to white
+                color: Colors.white,
               ),
               SizedBox(width: 16),
               Text(
@@ -202,7 +214,7 @@ class DashboardCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Set the text color to white
+                  color: Colors.white,
                 ),
               ),
             ],

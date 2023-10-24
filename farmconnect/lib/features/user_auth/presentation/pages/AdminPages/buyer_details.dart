@@ -150,14 +150,14 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 value,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
             ],

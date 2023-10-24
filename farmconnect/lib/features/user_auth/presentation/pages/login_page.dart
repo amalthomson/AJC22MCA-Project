@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_google.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_profile.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -88,21 +88,39 @@ class _LoginPageState extends State<LoginPage> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        // Store the signed-in Google account
-        setState(() {
-          _googleUser = googleUser;
-        });
+        // Check if the user is signing in for the first time
+        final DocumentSnapshot userSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+        final bool isFirstTimeSignIn = userSnapshot.data() == null;
 
-        // Update user information in Firestore
-        await _updateUserInformation(user, googleUser);
+        if (isFirstTimeSignIn) {
+          // Set "isActive" to "yes" for a new user
+          await _updateUserInformation(user, googleUser, isActive: "yes");
+        }
 
-        // Navigate to the Home Page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GoogleHomePage(),
-          ),
-        );
+        // Check if the user is active before allowing login
+        if (userSnapshot.exists && userSnapshot['isActive'] == 'yes') {
+          // Store the signed-in Google account
+          setState(() {
+            _googleUser = googleUser;
+          });
+
+          // Navigate to the Home Page
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GoogleHomePage(),
+            ),
+          );
+        } else {
+          // User is not active, show an error message or block login
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Your account is not active. Please contact support."),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -121,16 +139,15 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _updateUserInformation(User user, GoogleSignInAccount? googleUser) async {
-    final DocumentReference userDocRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+  Future<void> _updateUserInformation(User user, GoogleSignInAccount? googleUser,
+      {String isActive = "yes"}) async {
+    final DocumentReference userDocRef =
+    FirebaseFirestore.instance.collection('users').doc(user.uid);
 
     // Retrieve additional user details from GoogleSignInAccount (if available)
     String displayName = user.displayName ?? '';
     String email = user.email ?? '';
     String photoUrl = user.photoURL ?? '';
-    // Profile picture URL
-
-    // You can also retrieve additional user details from googleUser if needed
 
     // Update user information in Firestore
     await userDocRef.set({
@@ -139,17 +156,9 @@ class _LoginPageState extends State<LoginPage> {
       'name': displayName,
       'profileImageUrl': photoUrl, // Save profile picture URL
       'role': "Buyer",
+      'isActive': isActive, // Add the isActive field
       // Add more user details as needed
     }, SetOptions(merge: true)); // Use merge to update only specific fields
-  }
-
-  Future<void> _signOutGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    try {
-      await googleSignIn.signOut();
-    } catch (error) {
-      print("Error signing out from Google: $error");
-    }
   }
 
   @override
@@ -422,7 +431,7 @@ class _LoginPageState extends State<LoginPage> {
                   } else if (role == 'Admin') {
                     Navigator.pushNamed(context, "/admin_dashboard");
                   } else if (role == 'Farmer') {
-                    Navigator.pushNamed(context, "/farmer_home");
+                    Navigator.pushNamed(context, "/farmer_dash");
                   }
                 } else if (ftl == 'yes') {
                   if (role == 'Farmer') {
