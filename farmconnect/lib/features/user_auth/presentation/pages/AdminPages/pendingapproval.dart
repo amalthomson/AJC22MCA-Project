@@ -5,8 +5,10 @@ class PendingApprovalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black, // Set background color to black
       appBar: AppBar(
         title: Text("Pending Approval Products"),
+        backgroundColor: Colors.blueGrey[900], // Set app bar background color
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -15,7 +17,7 @@ class PendingApprovalPage extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
 
           final products = snapshot.data!.docs;
@@ -37,53 +39,84 @@ class PendingApprovalPage extends StatelessWidget {
               final productImage = product['productImage'] ?? '';
               final userId = product['userId'];
 
-              return ExpansionTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(productImage), // Display the product image
-                ),
-                title: Text(productName),
-                children: [
-                  ListTile(
-                    title: Text("Price: $productPrice"),
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  ListTile(
-                    title: Text("Description: $productDescription"),
-                  ),
-                  ListTile(
-                    title: Text("Category: $category"),
-                  ),
-                  // Fetch and display farmer details
-                  FarmerDetailsWidget(userId: userId),
-                  // Add approve/reject buttons
-                  ButtonBar(
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Approve the product
-                          FirebaseFirestore.instance
-                              .collection('products')
-                              .doc(product.id)
-                              .update({'isApproved': 'approved'});
-                        },
-                        child: Text('Approve'),
+                  child: ExpansionTile(
+                    tilePadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(productImage),
+                      radius: 30,
+                    ),
+                    title: Text(
+                      productName,
+                      style: TextStyle(
+                        color: Colors.green, // Change text color to green
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Reject the product
-                          FirebaseFirestore.instance
-                              .collection('products')
-                              .doc(product.id)
-                              .update({'isApproved': 'rejected'});
-                        },
-                        child: Text('Reject'),
+                    ),
+                    childrenPadding: EdgeInsets.all(16),
+                    children: [
+                      buildDetailItem(Icons.attach_money, "Price", productPrice),
+                      buildDetailItem(Icons.description, "Description", productDescription),
+                      buildDetailItem(Icons.category, "Category", category),
+                      // Fetch and display farmer details
+                      FarmerDetailsWidget(userId: userId),
+                      // Add approve/reject buttons
+                      ButtonBar(
+                        alignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              // Approve the product
+                              FirebaseFirestore.instance
+                                  .collection('products')
+                                  .doc(product.id)
+                                  .update({'isApproved': 'approved'});
+                            },
+                            child: Text('Approve'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Reject the product
+                              FirebaseFirestore.instance
+                                  .collection('products')
+                                  .doc(product.id)
+                                  .update({'isApproved': 'rejected'});
+                            },
+                            child: Text('Reject'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
+                ),
               );
             },
           );
         },
+      ),
+    );
+  }
+
+  Widget buildDetailItem(IconData icon, String label, String value) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: Colors.black, // Set icon color to black
+        size: 28,
+      ),
+      title: Text(
+        "$label: $value",
+        style: TextStyle(
+          color: Colors.black, // Set text color to black
+          fontSize: 16,
+        ),
       ),
     );
   }
@@ -114,10 +147,18 @@ class FarmerDetailsWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                title: Text("Farmer: $farmerName"),
-              ),
-              ListTile(
-                title: Text("Farmer Email: $farmerEmail"),
+                leading: Icon(
+                  Icons.person,
+                  color: Colors.black, // Set icon color to black
+                  size: 28,
+                ),
+                title: Text(
+                  "Farmer: $farmerName",
+                  style: TextStyle(
+                    color: Colors.black, // Set text color to black
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ],
           );
