@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     borderRadius: BorderRadius.circular(
                         60), // Same radius as the container
                     child: Image.asset(
-                      'assets/icons/app_logo.png',
+                      'assets/icons/appLogoLight.png',
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,

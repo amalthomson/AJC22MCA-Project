@@ -5,8 +5,10 @@ class RejectedProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black, // Set background color to black
       appBar: AppBar(
         title: Text("Rejected Products"),
+        backgroundColor: Colors.blueGrey[900], // Set app bar background color
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -15,7 +17,7 @@ class RejectedProductsPage extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
 
           final products = snapshot.data!.docs;
@@ -37,24 +39,98 @@ class RejectedProductsPage extends StatelessWidget {
               final productImage = product['productImage'] ?? '';
               final userId = product['userId'];
 
-              return ExpansionTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(productImage),
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: ExpansionTile(
+                    tilePadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(productImage),
+                      radius: 30,
+                    ),
+                    title: Text(
+                      productName,
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.attach_money,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Price",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          productPrice,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.description,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Description",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          productDescription,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.category,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Category",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          category,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      FarmerDetailsWidget(userId: userId),
+                    ],
+                  ),
                 ),
-                title: Text(productName),
-                children: [
-                  ListTile(
-                    title: Text("Price: $productPrice"),
-                  ),
-                  ListTile(
-                    title: Text("Description: $productDescription"),
-                  ),
-                  ListTile(
-                    title: Text("Category: $category"),
-                  ),
-                  // Fetch and display farmer details
-                  FarmerDetailsWidget(userId: userId),
-                ],
               );
             },
           );
@@ -83,16 +159,31 @@ class FarmerDetailsWidget extends StatelessWidget {
         if (snapshot.hasData) {
           final farmerData = snapshot.data!.data();
           final farmerName = farmerData!['name'];
-          final farmerEmail = farmerData['email'];
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
-                title: Text("Farmer: $farmerName"),
-              ),
-              ListTile(
-                title: Text("Farmer Email: $farmerEmail"),
+                leading: Icon(
+                  Icons.person,
+                  color: Colors.green,
+                  size: 28,
+                ),
+                title: Text(
+                  "Farmer",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text(
+                  farmerName,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
               ),
             ],
           );

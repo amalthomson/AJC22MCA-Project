@@ -141,20 +141,6 @@ class BuyerProfilePage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 30), // Added spacing
-                  Divider(
-                    height: 20,
-                    thickness: 2,
-                    color: Colors.white.withOpacity(0.5),
-                  ),
-                  SizedBox(height: 20), // Added spacing
-                  DashboardCard(
-                    title: "Sign Out",
-                    icon: Icons.logout,
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.popAndPushNamed(context, "/login");
-                    },
-                  ),
                 ],
               ),
             );

@@ -7,7 +7,7 @@ class PendingApprovalPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black, // Set background color to black
       appBar: AppBar(
-        title: Text("Pending Approval Products"),
+        title: Text("Pending Approval"),
         backgroundColor: Colors.blueGrey[900], // Set app bar background color
       ),
       body: StreamBuilder(
@@ -24,7 +24,7 @@ class PendingApprovalPage extends StatelessWidget {
 
           if (products.isEmpty) {
             return Center(
-              child: Text("No pending approval products found."),
+              child: Text("No Pending Approval Products Found."),
             );
           }
 
@@ -55,41 +55,117 @@ class PendingApprovalPage extends StatelessWidget {
                     title: Text(
                       productName,
                       style: TextStyle(
-                        color: Colors.green, // Change text color to green
-                        fontSize: 20,
+                        color: Colors.green,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    childrenPadding: EdgeInsets.all(16),
                     children: [
-                      buildDetailItem(Icons.attach_money, "Price", productPrice),
-                      buildDetailItem(Icons.description, "Description", productDescription),
-                      buildDetailItem(Icons.category, "Category", category),
-                      // Fetch and display farmer details
+                      ListTile(
+                        leading: Icon(
+                          Icons.attach_money,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Price",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          productPrice,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.description,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Description",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          productDescription,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.category,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Category",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          category,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
                       FarmerDetailsWidget(userId: userId),
-                      // Add approve/reject buttons
                       ButtonBar(
                         alignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              // Approve the product
                               FirebaseFirestore.instance
                                   .collection('products')
                                   .doc(product.id)
                                   .update({'isApproved': 'approved'});
                             },
-                            child: Text('Approve'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.green, // Set green color for "Approve" button
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20), // Make button edges round
+                              ),
+                            ),
+                            child: Text(
+                              'Approve',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              // Reject the product
                               FirebaseFirestore.instance
                                   .collection('products')
                                   .doc(product.id)
                                   .update({'isApproved': 'rejected'});
                             },
-                            child: Text('Reject'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red, // Set red color for "Reject" button
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20), // Make button edges round
+                              ),
+                            ),
+                            child: Text(
+                              'Reject',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ],
                       ),
@@ -100,23 +176,6 @@ class PendingApprovalPage extends StatelessWidget {
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget buildDetailItem(IconData icon, String label, String value) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: Colors.black, // Set icon color to black
-        size: 28,
-      ),
-      title: Text(
-        "$label: $value",
-        style: TextStyle(
-          color: Colors.black, // Set text color to black
-          fontSize: 16,
-        ),
       ),
     );
   }
@@ -141,7 +200,6 @@ class FarmerDetailsWidget extends StatelessWidget {
         if (snapshot.hasData) {
           final farmerData = snapshot.data!.data();
           final farmerName = farmerData!['name'];
-          final farmerEmail = farmerData['email'];
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,14 +207,21 @@ class FarmerDetailsWidget extends StatelessWidget {
               ListTile(
                 leading: Icon(
                   Icons.person,
-                  color: Colors.black, // Set icon color to black
+                  color: Colors.green,
                   size: 28,
                 ),
                 title: Text(
-                  "Farmer: $farmerName",
+                  "Farmer",
                   style: TextStyle(
-                    color: Colors.black, // Set text color to black
-                    fontSize: 16,
+                    color: Colors.black, fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                subtitle: Text(
+                  farmerName,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
                   ),
                 ),
               ),

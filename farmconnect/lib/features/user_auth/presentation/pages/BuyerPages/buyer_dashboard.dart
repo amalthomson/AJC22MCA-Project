@@ -13,7 +13,7 @@ class BuyerDashboard extends StatelessWidget {
         title: Text(
           "Buyer Dashboard",
           style: TextStyle(
-            color: Colors.blue,
+            color: Colors.green,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -22,6 +22,7 @@ class BuyerDashboard extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout),
+            color: Colors.red,
             onPressed: () {
               FirebaseAuth.instance.signOut();
               Navigator.pushNamed(context, "/login");
@@ -41,16 +42,20 @@ class BuyerDashboard extends StatelessWidget {
           var userData = snapshot.data?.data();
           var displayName = userData?["name"] ?? "User";
           var email = FirebaseAuth.instance.currentUser?.email;
+          var profileImageUrl = userData?["profileImageUrl"] ?? ""; // Replace with your field name
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: NetworkImage(profileImageUrl),
+              ),
               Card(
                 elevation: 5,
                 color: Colors.lightBlue[900],
                 child: InkWell(
                   onTap: () {
-                    // Redirect to another page
                     Navigator.pushNamed(context, "/buyer_profile");
                   },
                   child: Padding(

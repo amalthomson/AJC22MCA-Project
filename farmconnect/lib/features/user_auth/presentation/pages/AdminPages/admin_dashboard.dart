@@ -98,7 +98,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   child: AdminDashboardTile(
                     title: "Farmers",
                     count: numberOfFarmers,
-                    tileColor: Colors.green,
+                    tileColor: Colors.blue,
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, '/farmer_details');
@@ -106,9 +106,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   child: AdminDashboardTile(
-                    title: "Pending Products",
+                    title: " Pending\nApproval",
                     count: pendingProducts,
-                    tileColor: Colors.deepOrange,
+                    tileColor: Colors.orange,
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, '/pendingapproval');
@@ -116,9 +116,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   child: AdminDashboardTile(
-                    title: "Approved Products",
+                    title: "Approved\nProducts",
                     count: approvedProducts,
-                    tileColor: Colors.cyanAccent,
+                    tileColor: Colors.green,
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, '/approvedproducts');
@@ -126,20 +126,30 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   child: AdminDashboardTile(
-                    title: "Rejected Products",
+                    title: "Rejected\nProducts",
                     count: rejectedProducts,
-                    tileColor: Colors.purpleAccent,
+                    tileColor: Colors.red,
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, '/rejectedproducts');
                   },
                 ),
+                InkWell(
+                  child: AdminDashboardTile(
+                    title: "Complaints",
+                    count: 0,
+                    tileColor: Colors.grey,
+                  ),
+                  // onTap: () {
+                  //   Navigator.pushNamed(context, '/rejectedproducts');
+                  // },
+                ),
               ],
             ),
             Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
+              bottom: 50,
+              left: 50,
+              right: 50,
               child: DashboardCard(
                 title: "Sign Out",
                 icon: Icons.logout,
@@ -173,7 +183,7 @@ class AdminDashboardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(25.0),
       ),
       color: tileColor,
       child: Column(

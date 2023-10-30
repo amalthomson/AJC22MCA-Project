@@ -16,10 +16,9 @@ class _AddProductsState extends State<AddProducts> {
   final TextEditingController farmNameController = TextEditingController();
   final TextEditingController productPriceController = TextEditingController();
   String? _imageUrl;
-  String? _selectedCategory; // Variable to store the selected category
-
-  // List of available categories
+  String? _selectedCategory;
   List<String> categories = ["Dairy", "Fruit", "Vegetable", "Poultry"];
+  String? uploadStatus;
 
   Future<void> _uploadProduct() async {
     final imagePicker = ImagePicker();
@@ -31,7 +30,6 @@ class _AddProductsState extends State<AddProducts> {
 
       try {
         await firebase_storage.FirebaseStorage.instance.ref(imageName).putFile(file);
-
         final downloadURL =
         await firebase_storage.FirebaseStorage.instance.ref(imageName).getDownloadURL();
 
@@ -39,36 +37,50 @@ class _AddProductsState extends State<AddProducts> {
           _imageUrl = downloadURL;
         });
 
-        // Add product details to Firestore
-        await FirebaseFirestore.instance.collection('products').add({
-          'productName': productNameController.text,
-          'productDescription': productDescriptionController.text,
-          'farmName': farmNameController.text,
-          'productPrice': productPriceController.text,
-          'productImage': _imageUrl,
-          'category': _selectedCategory, // Add the selected category
-          'userId': FirebaseAuth.instance.currentUser?.uid,
-          'isApproved' : 'no',
+        setState(() {
+          uploadStatus = 'Image uploaded successfully';
         });
-
-        // Clear input fields and category selection
-        productNameController.clear();
-        productDescriptionController.clear();
-        farmNameController.clear();
-        productPriceController.clear();
-        _selectedCategory = null; // Clear the selected category
       } catch (e) {
+        setState(() {
+          uploadStatus = 'Failed to upload product image: $e';
+        });
         print('Failed to upload product image: $e');
       }
+    }
+  }
+
+  // Function to handle database update
+  Future<void> _updateDatabase() async {
+    if (_imageUrl != null) {
+      await FirebaseFirestore.instance.collection('products').add({
+        'productName': productNameController.text,
+        'productDescription': productDescriptionController.text,
+        'farmName': farmNameController.text,
+        'productPrice': productPriceController.text,
+        'productImage': _imageUrl,
+        'category': _selectedCategory,
+        'userId': FirebaseAuth.instance.currentUser?.uid,
+        'isApproved': 'no',
+      });
+
+      productNameController.clear();
+      productDescriptionController.clear();
+      farmNameController.clear();
+      productPriceController.clear();
+      _selectedCategory = null;
+
+      setState(() {
+        uploadStatus = 'Product uploaded successfully';
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF141414), // Dark background color
+      backgroundColor: Color(0xFF141414),
       appBar: AppBar(
-        backgroundColor: Color(0xFF1B1D1F), // Darker app bar color
+        backgroundColor: Color(0xFF1B1D1F),
         title: Text(
           'FarmConnect',
           style: TextStyle(
@@ -121,9 +133,17 @@ class _AddProductsState extends State<AddProducts> {
               SizedBox(height: 16.0),
               _buildTextField(productPriceController, 'Product Price', TextInputType.number),
               SizedBox(height: 16.0),
-              _buildCategoryDropdown(), // Dropdown for selecting the category
-              SizedBox(height: 32.0),
+              _buildCategoryDropdown(),
+              SizedBox(height: 30.0),
               _buildUploadButton(),
+              if (uploadStatus != null)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    uploadStatus!,
+                    style: TextStyle(color: Colors.green, fontSize: 18),
+                  ),
+                ),
             ],
           ),
         ),
@@ -131,7 +151,8 @@ class _AddProductsState extends State<AddProducts> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String labelText, [TextInputType inputType = TextInputType.text]) {
+  Widget _buildTextField(TextEditingController controller, String labelText,
+      [TextInputType inputType = TextInputType.text]) {
     return TextField(
       controller: controller,
       style: TextStyle(color: Colors.white),
@@ -139,11 +160,11 @@ class _AddProductsState extends State<AddProducts> {
         labelText: labelText,
         labelStyle: TextStyle(color: Colors.white),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.green), // Border color when focused
+          borderSide: BorderSide(color: Colors.green),
           borderRadius: BorderRadius.circular(10.0),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey), // Border color when not focused
+          borderSide: BorderSide(color: Colors.grey),
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),
@@ -155,20 +176,26 @@ class _AddProductsState extends State<AddProducts> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.green), // Border color
+        border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         children: <Widget>[
           Expanded(
             child: DropdownButton<String>(
+              hint: Text(
+                'Select Category',
+                style: TextStyle(
+                  color: Colors.white, // Set text color to white
+                ),
+              ),
               value: _selectedCategory,
               icon: Icon(Icons.arrow_drop_down, color: Colors.black),
               iconSize: 24,
               elevation: 16,
               style: TextStyle(color: Colors.blue, fontSize: 16),
               underline: Container(
-                height: 0, // Remove the underline
+                height: 0,
               ),
               onChanged: (String? newValue) {
                 setState(() {
@@ -191,12 +218,12 @@ class _AddProductsState extends State<AddProducts> {
   Widget _buildUploadButton() {
     return Center(
       child: ElevatedButton(
-        onPressed: _uploadProduct,
+        onPressed: _updateDatabase, // Change this to _updateDatabase
         style: ElevatedButton.styleFrom(
-          primary: Colors.green, // Button color
-          onPrimary: Colors.white, // Text color
+          primary: Colors.green,
+          onPrimary: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30), // Rounded button
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
         child: Padding(

@@ -13,7 +13,7 @@ class FarmerPage extends StatelessWidget {
       backgroundColor: blackColor,
       appBar: AppBar(
         title: Text(
-          "Farmer Dashboard",
+          "Farmer Profile",
           style: TextStyle(
             color: Colors.green,
             fontSize: 20,
@@ -21,24 +21,6 @@ class FarmerPage extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.blueGrey[900],
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/add_products");
-            },
-            icon: Icon(Icons.home),
-            color: Colors.white,
-            iconSize: 30,
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/profile");
-            },
-            icon: Icon(Icons.person),
-            color: Colors.white,
-            iconSize: 30,
-          ),
-        ],
       ),
         body: Center(
         child: StreamBuilder(
@@ -87,14 +69,6 @@ class FarmerPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            "Welcome",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.white,
-                            ),
-                          ),
                           SizedBox(height: 12),
                           Container(
                             alignment: Alignment.center,
@@ -159,14 +133,6 @@ class FarmerPage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 150),
-                  DashboardCard(
-                    title: "Sign Out",
-                    icon: Icons.logout,
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Navigator.popAndPushNamed(context, "/login");
-                    },
-                  ),
                 ],
               ),
             );
