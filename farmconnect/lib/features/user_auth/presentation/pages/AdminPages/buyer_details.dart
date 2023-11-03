@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class BuyerDetailsPage extends StatefulWidget {
   @override
@@ -13,14 +15,10 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Buyer Details", style: TextStyle(color: Colors.green, fontSize: 20,
-        fontWeight: FontWeight.bold)),
+        title: Text("Buyer Details", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('users')
-            .where('role', isEqualTo: 'Buyer')
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'Buyer').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -37,7 +35,7 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
               final userId = buyers[index].id;
 
               final profilePictureUrl = buyer['profileImageUrl'] ?? '';
-              var isActive = buyer['isActive'] ?? 'no'; // Initialize with 'no'
+              var isActive = buyer['isActive'] ?? 'no';
 
               final tileColors = [
                 Colors.purple,
@@ -72,7 +70,6 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                     childrenPadding: EdgeInsets.all(16),
                     children: [
                       SingleChildScrollView(
-                        //scrollDirection: Axis.horizontal,
                         child: _buildDetailItem(
                           icon: Icons.person,
                           label: "Gender",
@@ -80,7 +77,6 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        //scrollDirection: Axis.horizontal,
                         child: _buildDetailItem(
                           icon: Icons.email,
                           label: "Email",
@@ -88,7 +84,6 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                       //scrollDirection: Axis.horizontal,
                         child: _buildDetailItem(
                           icon: Icons.phone,
                           label: "Phone",
@@ -109,14 +104,26 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                       height: 42,
                       child: Switch(
                         value: isActive == 'yes',
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           // Update the 'isActive' field in Firestore as a string
-                          FirebaseFirestore.instance.collection('users').doc(userId).update({
+                          await FirebaseFirestore.instance.collection('users').doc(userId).update({
                             'isActive': value ? 'yes' : 'no',
                           });
                           setState(() {
                             isActive = value ? 'yes' : 'no';
                           });
+
+                          // Show a Snackbar
+                          final snackBarMessage = isActive == 'yes' ? 'User Enabled' : 'User Disabled';
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(snackBarMessage),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+
+                          // Send a notification email
+                          sendNotificationEmail(buyer['email'], isActive == 'yes');
                         },
                         activeColor: Colors.green,
                         inactiveThumbColor: Colors.grey,
@@ -165,5 +172,21 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
         ],
       ),
     );
+  }
+
+  void sendNotificationEmail(String recipient, bool isActive) async {
+    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422');
+    final message = Message()
+      ..from = Address('admin@farmconnect.com', 'FarmConnect Admin')
+      ..recipients.add(recipient)
+      ..subject = 'Account Status Update'
+      ..text = isActive ? 'Your account has been enabled.' : 'Your account has been disabled.';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ${sendReport}');
+    } on MailerException catch (e) {
+      print('Message not sent. ${e.message}');
+    }
   }
 }
