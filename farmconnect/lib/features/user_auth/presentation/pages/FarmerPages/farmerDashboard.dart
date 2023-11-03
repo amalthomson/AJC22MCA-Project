@@ -51,7 +51,19 @@ class FarmerDashboard extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 25.0),
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundImage: NetworkImage(profileImageUrl),
+                  backgroundColor: Colors.transparent,
+                  child: ClipOval(
+                    child: profileImageUrl != null
+                        ? Image.network(
+                      profileImageUrl,
+                      fit: BoxFit.cover,
+                    )
+                        : Icon(
+                      Icons.person,
+                      size: 60,
+                      color: Colors.white, // Fallback icon color
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 12),

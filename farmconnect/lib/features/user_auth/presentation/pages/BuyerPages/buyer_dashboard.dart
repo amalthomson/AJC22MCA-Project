@@ -49,7 +49,19 @@ class BuyerDashboard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 60,
-                backgroundImage: NetworkImage(profileImageUrl),
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: profileImageUrl != null
+                      ? Image.network(
+                    profileImageUrl,
+                    fit: BoxFit.cover,
+                  )
+                      : Icon(
+                    Icons.person,
+                    size: 60,
+                    color: Colors.white, // Fallback icon color
+                  ),
+                ),
               ),
               Card(
                 elevation: 5,
@@ -111,6 +123,7 @@ class BuyerDashboard extends StatelessWidget {
                     child: BuyerDashboardTile(
                       title: "Dairy",
                       onPressed: () {
+                        Navigator.pushNamed(context, "/dairy_page");
                         // Add your action here
                       },
                     ),
@@ -125,7 +138,7 @@ class BuyerDashboard extends StatelessWidget {
                     child: BuyerDashboardTile(
                       title: "Fruits",
                       onPressed: () {
-                        // Add your action here
+                        Navigator.pushNamed(context, "/fruits_page");// Add your action here
                       },
                     ),
                   ),
@@ -133,7 +146,7 @@ class BuyerDashboard extends StatelessWidget {
                     child: BuyerDashboardTile(
                       title: "Vegetables",
                       onPressed: () {
-                        // Add your action here
+                        Navigator.pushNamed(context, "/vegetables_page");// Add your action here
                       },
                     ),
                   ),

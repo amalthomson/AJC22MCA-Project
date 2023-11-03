@@ -38,6 +38,7 @@ class PendingApprovalPage extends StatelessWidget {
               final category = product['category'];
               final productImage = product['productImage'] ?? '';
               final userId = product['userId'];
+              String remark = "";
 
               return Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -136,7 +137,7 @@ class PendingApprovalPage extends StatelessWidget {
                               FirebaseFirestore.instance
                                   .collection('products')
                                   .doc(product.id)
-                                  .update({'isApproved': 'approved'});
+                                  .update({'isApproved': 'approved', 'remark': 'The Product is Approved'});
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.green, // Set green color for "Approve" button
@@ -151,10 +152,38 @@ class PendingApprovalPage extends StatelessWidget {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              FirebaseFirestore.instance
-                                  .collection('products')
-                                  .doc(product.id)
-                                  .update({'isApproved': 'rejected'});
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Reject Product'),
+                                    content: TextFormField(
+                                      onChanged: (value) {
+                                        remark = value;
+                                      },
+                                      decoration: InputDecoration(labelText: 'Enter Remark'),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('Reject'),
+                                        onPressed: () {
+                                          FirebaseFirestore.instance
+                                              .collection('products')
+                                              .doc(product.id)
+                                              .update({'isApproved': 'rejected', 'remark': remark});
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.red, // Set red color for "Reject" button

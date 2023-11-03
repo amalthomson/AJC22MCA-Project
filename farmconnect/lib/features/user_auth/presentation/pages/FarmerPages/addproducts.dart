@@ -61,6 +61,7 @@ class _AddProductsState extends State<AddProducts> {
         'category': _selectedCategory,
         'userId': FirebaseAuth.instance.currentUser?.uid,
         'isApproved': 'no',
+        'remark': 'Approval Pending', // Set the initial value of "remark" to "null"
       });
 
       productNameController.clear();

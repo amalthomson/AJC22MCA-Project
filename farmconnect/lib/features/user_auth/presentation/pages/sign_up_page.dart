@@ -48,9 +48,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
       if (newUser != null) {
         // Store user data in Firestore
+        final userUid = newUser.user?.uid;
         await newUser.user!.sendEmailVerification();
         await FirebaseFirestore.instance.collection('users').doc(newUser.user?.uid).set(
           {
+            "uid": userUid,
             "email": newUser.user?.email,
             "name": username,
             "phone": phone,
@@ -114,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 25,
+                          height: 11,
                         ),
                         Text(
                           "Registration",
@@ -401,7 +403,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                               ),
                               SizedBox(
-                                height: 10,
+                                height: 25,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

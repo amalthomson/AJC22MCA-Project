@@ -5,8 +5,11 @@ import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/far
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/rejectedproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerftl.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/dairy_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/fruits_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/poultry_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_google.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/vegetables_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmer_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
@@ -64,7 +67,9 @@ class MyApp extends StatelessWidget {
         '/rejectedproducts' : (context) => RejectedProductsPage(),
         '/myproducts' : (context) => MyProductsPage(),
         '/poultry_page' : (context) => PoultryProductsPage(),
-
+        '/dairy_page' : (context) => DairyProductsPage(),
+        '/fruits_page' : (context) => FruitsProductsPage(),
+        '/vegetables_page' : (context) => VegetableProductsPage(),
       },
     );
   }

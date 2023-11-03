@@ -40,6 +40,7 @@ class MyProductsPage extends StatelessWidget {
               final category = product['category'];
               final isApproved = product['isApproved'];
               final productImage = product['productImage'] ?? ''; // Get product image URL
+              final remark = product['remark']; // Get the remark field
 
               String status = 'Pending Approval';
               if (isApproved == 'approved') {
@@ -89,12 +90,34 @@ class MyProductsPage extends StatelessWidget {
                         ),
                       ),
                       ListTile(
-                        title: Text("Status: $status",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                        title: GestureDetector(
+                          child: Text("Status: $status",
+                            style: TextStyle(
+                              color: Colors.blue, // Make the status clickable
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline, // Add an underline
+                            ),
                           ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Remark"),
+                                  content: Text(remark != null ? remark : "No remark available"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("Close"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                     ],

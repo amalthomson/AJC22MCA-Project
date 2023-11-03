@@ -182,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
           return SingleChildScrollView(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 99.0), // Adjust the top padding as needed
+              padding: const EdgeInsets.only(top: 11.0), // Adjust the top padding as needed
               child: Stack(
                 children: [
                   Padding(
@@ -194,13 +194,13 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 20,
+                            height: 99,
                           ),
                           Text(
                             "Login to FarmConnect",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 40,
+                              fontSize: 48,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
