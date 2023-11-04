@@ -16,6 +16,9 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
   TextEditingController _districtController = TextEditingController();
   TextEditingController _stateController = TextEditingController();
   TextEditingController _pincodeController = TextEditingController();
+  TextEditingController _aadhaarController = TextEditingController();
+  TextEditingController _farmNameController = TextEditingController();
+  String? _idCardImageUrl;
   String? _profileImageUrl;
   String? _userId;
   String? _selectedGender;
@@ -37,10 +40,7 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
         _userId = user.uid;
       });
 
-      final userData = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(_userId)
-          .get();
+      final userData = await FirebaseFirestore.instance.collection('users').doc(_userId).get();
 
       setState(() {
         _profileImageUrl = userData['profileImageUrl'];
@@ -50,17 +50,18 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
         _stateController.text = userData['state'];
         _pincodeController.text = userData['pincode'];
         _selectedGender = userData['gender'];
+        _aadhaarController.text = userData['aadhaar'];
+        _farmNameController.text = userData['farmName'];
+        _idCardImageUrl = userData['idCardImageUrl'];
       });
+
     }
   }
 
   Future<void> _updateUserData() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(_userId)
-            .update({
+        await FirebaseFirestore.instance.collection('users').doc(_userId).update({
           'street': _streetController.text,
           'town': _townController.text,
           'district': _districtController.text,
@@ -69,7 +70,11 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
           'ftl': 'no',
           'gender': _selectedGender,
           'profileImageUrl': _profileImageUrl,
+          'aadhaar': _aadhaarController.text,
+          'farmName': _farmNameController.text,
+          'idCardImageUrl': _idCardImageUrl,
         });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Details updated successfully!'),
@@ -110,6 +115,29 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
       }
     }
   }
+
+  Future<void> _pickIdCardImage() async {
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      final file = File(pickedImage.path);
+      final imageName = 'id_card_images/$_userId.png';
+
+      try {
+        await firebase_storage.FirebaseStorage.instance.ref(imageName).putFile(file);
+
+        final downloadURL =
+        await firebase_storage.FirebaseStorage.instance.ref(imageName).getDownloadURL();
+
+        setState(() {
+          _idCardImageUrl = downloadURL;
+        });
+      } catch (e) {
+        print('Failed to upload ID card image: $e');
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -362,6 +390,108 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
                             }
                             return null;
                           },
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: _aadhaarController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.9),
+                            hintText: 'Enter your Aadhaar card number',
+                            prefixIcon: Icon(Icons.credit_card, color: Colors.blue),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your Aadhaar card number';
+                            }
+                            if (value.length != 12) {
+                              return 'Aadhaar card number must be 12 digits';
+                            }
+                            if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                              return 'Aadhaar card number should contain only numeric digits';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: _farmNameController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.9),
+                            hintText: 'Enter your farm name',
+                            prefixIcon: Icon(Icons.agriculture, color: Colors.blue),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your farm name';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'ID Card Image',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: _pickIdCardImage,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    padding: EdgeInsets.all(8),
+                                    child: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         SizedBox(height: 30),
                         Center(
