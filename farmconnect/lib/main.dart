@@ -1,6 +1,7 @@
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/aprovedproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/buyer_details.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_approval_pending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_details.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/rejectedproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
@@ -17,6 +18,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/upd
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/addproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/pendingapproval.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/myproducts.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/admin_approval_pending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/terms_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +72,9 @@ class MyApp extends StatelessWidget {
         '/dairy_page' : (context) => DairyProductsPage(),
         '/fruits_page' : (context) => FruitsProductsPage(),
         '/vegetables_page' : (context) => VegetableProductsPage(),
+        '/added_product' : (context) => FarmerDashboard(),
+        '/admin_approval_pending' : (context) => AdminApprovalPendingPage(),
+        '/farmer_approval_pending' : (context) => PendingFarmerApprovalPage(),
       },
     );
   }

@@ -13,7 +13,6 @@ class AddProducts extends StatefulWidget {
 class _AddProductsState extends State<AddProducts> {
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController productDescriptionController = TextEditingController();
-  final TextEditingController farmNameController = TextEditingController();
   final TextEditingController productPriceController = TextEditingController();
   String? _imageUrl;
   String? _selectedCategory;
@@ -55,7 +54,6 @@ class _AddProductsState extends State<AddProducts> {
       await FirebaseFirestore.instance.collection('products').add({
         'productName': productNameController.text,
         'productDescription': productDescriptionController.text,
-        'farmName': farmNameController.text,
         'productPrice': productPriceController.text,
         'productImage': _imageUrl,
         'category': _selectedCategory,
@@ -66,13 +64,23 @@ class _AddProductsState extends State<AddProducts> {
 
       productNameController.clear();
       productDescriptionController.clear();
-      farmNameController.clear();
       productPriceController.clear();
       _selectedCategory = null;
 
       setState(() {
         uploadStatus = 'Product uploaded successfully';
       });
+
+      // Show a Snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Product added successfully'),
+          duration: Duration(seconds: 3), // You can adjust the duration
+          backgroundColor: Colors.green, // Set the background color to green
+        ),
+      );
+      // Navigate to the "added_product" page
+      Navigator.pushNamed(context, "/added_product");
     }
   }
 
@@ -129,8 +137,6 @@ class _AddProductsState extends State<AddProducts> {
               _buildTextField(productNameController, 'Product Name'),
               SizedBox(height: 16.0),
               _buildTextField(productDescriptionController, 'Product Description'),
-              SizedBox(height: 16.0),
-              _buildTextField(farmNameController, 'Farm Name'),
               SizedBox(height: 16.0),
               _buildTextField(productPriceController, 'Product Price', TextInputType.number),
               SizedBox(height: 16.0),
@@ -219,7 +225,7 @@ class _AddProductsState extends State<AddProducts> {
   Widget _buildUploadButton() {
     return Center(
       child: ElevatedButton(
-        onPressed: _updateDatabase, // Change this to _updateDatabase
+        onPressed: _updateDatabase,
         style: ElevatedButton.styleFrom(
           primary: Colors.green,
           onPrimary: Colors.white,
@@ -242,7 +248,6 @@ class _AddProductsState extends State<AddProducts> {
   void dispose() {
     productNameController.dispose();
     productDescriptionController.dispose();
-    farmNameController.dispose();
     productPriceController.dispose();
     super.dispose();
   }

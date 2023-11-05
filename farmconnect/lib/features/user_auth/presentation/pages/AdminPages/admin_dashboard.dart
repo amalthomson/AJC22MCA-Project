@@ -86,6 +86,16 @@ class _AdminDashboardState extends State<AdminDashboard> {
               children: [
                 InkWell(
                   child: AdminDashboardTile(
+                    title: "Farmers",
+                    count: numberOfFarmers,
+                    tileColor: Colors.blue,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/farmer_details');
+                  },
+                ),
+                InkWell(
+                  child: AdminDashboardTile(
                     title: "Buyers",
                     count: numberOfBuyers,
                     tileColor: Colors.blue,
@@ -96,12 +106,22 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   child: AdminDashboardTile(
-                    title: "Farmers",
-                    count: numberOfFarmers,
-                    tileColor: Colors.blue,
+                    title: "Farmer Approval\n       Pending",
+                    count: 0,
+                    tileColor: Colors.orange,
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, '/farmer_details');
+                    Navigator.pushNamed(context, '/farmer_approval_pending');
+                  },
+                ),
+                InkWell(
+                  child: AdminDashboardTile(
+                    title: "Farmer Approval\n       Rejected",
+                    count: 0,
+                    tileColor: Colors.red,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/farmer_approval_pending');
                   },
                 ),
                 InkWell(
@@ -133,16 +153,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   onTap: () {
                     Navigator.pushNamed(context, '/rejectedproducts');
                   },
-                ),
-                InkWell(
-                  child: AdminDashboardTile(
-                    title: "Complaints",
-                    count: 0,
-                    tileColor: Colors.grey,
-                  ),
-                  // onTap: () {
-                  //   Navigator.pushNamed(context, '/rejectedproducts');
-                  // },
                 ),
               ],
             ),

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +17,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   final _formKey = GlobalKey<FormState>();
+  bool _isObscure = true;
+  bool _isObscureConfirmPassword = true;
 
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -25,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
-  late String email, phone, username, password, userrole = '', ftl = '', isActive = '';
+  late String email, phone, username, password, userrole = '', ftl = '', isActive = '', isAdminApproved = '';
 
   final dbRef = FirebaseDatabase.instance.ref().child('users');
   CollectionReference collectionReference = FirebaseFirestore.instance.collection('users');
@@ -34,7 +35,6 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isCheckboxChecked = false; // Add this variable
 
   void register() async {
-    // Get the values from the text fields
     email = _emailController.text;
     username = _usernameController.text;
     phone = _phoneController.text;
@@ -47,7 +47,6 @@ class _SignUpPageState extends State<SignUpPage> {
       );
 
       if (newUser != null) {
-        // Store user data in Firestore
         final userUid = newUser.user?.uid;
         await newUser.user!.sendEmailVerification();
         await FirebaseFirestore.instance.collection('users').doc(newUser.user?.uid).set(
@@ -58,14 +57,11 @@ class _SignUpPageState extends State<SignUpPage> {
             "phone": phone,
             "role": userrole,
             "ftl" : 'yes',
-            "isActive": 'yes'
+            "isActive": 'yes',
+            "isAdminApproved": "no"
           },
         );
-
         Navigator.pushNamed(context, '/email_verification_pending');
-
-        // Navigate to the login page after successful registration
-        //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
       }
     } catch (e) {
       print(e);
@@ -288,12 +284,26 @@ class _SignUpPageState extends State<SignUpPage> {
                               TextFormField(
                                 controller: _passwordController,
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                                obscureText: true,
+                                obscureText: _isObscure,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.white.withOpacity(0.9),
                                   hintText: 'Enter your Password',
-                                  prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                                  prefixIcon: Icon(
+                                    Icons.lock,
+                                    color: Colors.blue,
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isObscure ? Icons.visibility : Icons.visibility_off,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscure = !_isObscure;
+                                      });
+                                    },
+                                  ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50),
                                     borderSide: BorderSide(color: Colors.blue),
@@ -320,12 +330,26 @@ class _SignUpPageState extends State<SignUpPage> {
                               TextFormField(
                                 controller: _confirmPasswordController,
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                                obscureText: true,
+                                obscureText: _isObscureConfirmPassword,
                                 decoration: InputDecoration(
                                   filled: true,
                                   fillColor: Colors.white.withOpacity(0.9),
                                   hintText: 'Reenter Password',
-                                  prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                                  prefixIcon: Icon(
+                                    Icons.lock,
+                                    color: Colors.blue,
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isObscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscureConfirmPassword = !_isObscureConfirmPassword;
+                                      });
+                                    },
+                                  ),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(50),
                                     borderSide: BorderSide(color: Colors.blue),
