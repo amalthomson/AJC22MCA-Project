@@ -2,6 +2,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/adm
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/aprovedproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/buyer_details.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_approval_pending.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_approval_rejected.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmer_details.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/rejectedproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         '/added_product' : (context) => FarmerDashboard(),
         '/admin_approval_pending' : (context) => AdminApprovalPendingPage(),
         '/farmer_approval_pending' : (context) => PendingFarmerApprovalPage(),
+        '/farmer_approval_rejected' : (context) => RejectedFarmerApprovalPage(),
       },
     );
   }

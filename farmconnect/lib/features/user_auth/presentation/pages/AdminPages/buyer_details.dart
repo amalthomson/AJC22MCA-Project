@@ -175,7 +175,7 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
   }
 
   void sendNotificationEmail(String recipient, bool isActive) async {
-    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422');
+    final smtpServer = gmail('farmconnectadm@gmail.com', 'FarmConnect');
     final message = Message()
       ..from = Address('admin@farmconnect.com', 'FarmConnect Admin')
       ..recipients.add(recipient)

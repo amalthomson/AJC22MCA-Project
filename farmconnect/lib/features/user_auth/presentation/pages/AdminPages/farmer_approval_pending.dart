@@ -10,10 +10,26 @@ class PendingFarmerApprovalPage extends StatefulWidget {
 
 class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
   void updateApprovalStatus(String userId, String status, String email) {
-    FirebaseFirestore.instance.collection('users').doc(userId).update({'isAdminApproved': status});
+    String messageSubject, messageText;
+
+    if (status == 'approved') {
+      messageSubject = 'Account Approved';
+      messageText = 'Your account has been approved by the Admin, You can now log in to your account.';
+    } else if (status == 'rejected') {
+      messageSubject = 'Account Rejected';
+      messageText = 'Your account has been rejected by the Admin. Please contact Admin for further inquiries.';
+    } else {
+      // Handle other cases if necessary
+      return;
+    }
+
+    FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'isAdminApproved': status,
+      'remark': status == 'approved' ? 'The User is Approved' : '', // Update the remark field
+    });
 
     // Send email notification
-    sendNotificationEmail(email, status);
+    sendNotificationEmail(email, messageSubject, messageText);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -23,19 +39,145 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
     );
   }
 
-  void sendNotificationEmail(String recipient, String status) async {
-    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422');
+  void sendNotificationEmail(String recipient, String subject, String text) async {
+    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422'); // Replace with your email and password
     final message = Message()
       ..from = Address('admin@farmconnect.com', 'Admin FarmConnect')
       ..recipients.add(recipient)
-      ..subject = 'Account Status Update'
-      ..text = status == 'approved' ? 'Your account has been approved by the Admin, You can now login to your account.' : 'Your account has been rejected by the admin. Please contact Admin for further Quries';
+      ..subject = subject
+      ..text = text;
 
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: $sendReport');
     } on MailerException catch (e) {
       print('Message not sent. ${e.message}');
+    }
+  }
+
+  Future<void> showRemarkDialog(String userId, String email) async {
+    String remark = '';
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Enter Remark'),
+          content: TextField(
+            onChanged: (value) {
+              remark = value;
+            },
+            decoration: InputDecoration(hintText: 'Enter your remark'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (remark.isNotEmpty) {
+                  FirebaseFirestore.instance.collection('users').doc(userId).update({
+                    'isAdminApproved': 'rejected',
+                    'remark': remark, // Update the remark field with the entered value
+                  });
+
+                  // Send email notification for rejection
+                  sendNotificationEmail(email, 'Account Rejected', 'Your account has been rejected by the Admin. Please contact Admin for further inquiries');
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('User rejected'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text('Reject'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailItem({
+    required IconData icon,
+    required String label,
+    required String value,
+    String? imageIdCardUrl,
+  }) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                color: Colors.green,
+                size: 28,
+              ),
+              SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  label == "ID Card Image"
+                      ? GestureDetector(
+                    onTap: () {
+                      _showIdCardImage(imageIdCardUrl);
+                    },
+                    child: Text(
+                      'Click to view ID Card',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  )
+                      : Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showIdCardImage(String? imageUrl) {
+    if (imageUrl != null && imageUrl.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Image.network(imageUrl),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -137,24 +279,24 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
                       Padding(
                         padding: EdgeInsets.only(top: 16),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center, // Align buttons to the center
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
                               onPressed: () {
                                 updateApprovalStatus(farmerId, 'approved', farmer['email']);
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.green, // Set the button color to green
+                                primary: Colors.green,
                               ),
                               child: Text('Approve'),
                             ),
-                            SizedBox(width: 30,),
+                            SizedBox(width: 30),
                             ElevatedButton(
                               onPressed: () {
-                                updateApprovalStatus(farmerId, 'rejected', farmer['email']);
+                                showRemarkDialog(farmerId, farmer['email']);
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.red, // Set the button color to red
+                                primary: Colors.red,
                               ),
                               child: Text('Reject'),
                             ),
@@ -170,83 +312,5 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
         },
       ),
     );
-  }
-
-  Widget _buildDetailItem({
-    required IconData icon,
-    required String label,
-    required String value,
-    String? imageIdCardUrl,
-  }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                icon,
-                color: Colors.green,
-                size: 28,
-              ),
-              SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  label == "ID Card Image"
-                      ? GestureDetector(
-                    onTap: () {
-                      _showIdCardImage(imageIdCardUrl);
-                    },
-                    child: Text(
-                      'Click to view ID Card',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  )
-                      : Text(
-                    value,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showIdCardImage(String? imageUrl) {
-    if (imageUrl != null && imageUrl.isNotEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Image.network(imageUrl),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Close'),
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 }

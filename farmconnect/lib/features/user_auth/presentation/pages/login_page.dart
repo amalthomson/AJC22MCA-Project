@@ -39,11 +39,13 @@ class PasswordFieldValidator {
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
 
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _isObscure = true;
   bool _isSigning = false;
   bool loading = false;
   final dbRef = FirebaseDatabase.instance.ref().child('users');
@@ -189,7 +191,6 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Form(
                         key: _formKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -253,16 +254,26 @@ class _LoginPageState extends State<LoginPage> {
                             TextFormField(
                               controller: _passwordController,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
-                              obscureText: true,
-                              validator: (value) =>
-                                  PasswordFieldValidator.validate(value!),
+                              obscureText: _isObscure,
+                              validator: (value) => PasswordFieldValidator.validate(value!),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white.withOpacity(0.9),
                                 hintText: 'Enter your Password',
                                 prefixIcon: Icon(
                                   Icons.lock,
-                                  color: Colors.blue, // Set the icon color to blue
+                                  color: Colors.blue,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isObscure ? Icons.visibility : Icons.visibility_off,
+                                    color: Colors.blue,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isObscure = !_isObscure;
+                                    });
+                                  },
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50),
@@ -431,7 +442,7 @@ class _LoginPageState extends State<LoginPage> {
                   } else if (role == 'Admin') {
                     Navigator.pushNamed(context, "/admin_dashboard");
                   } else if (role == 'Farmer') {
-                    if (isAdminApproved == 'yes') {
+                    if (isAdminApproved == 'approved') {
                       Navigator.pushNamed(context, "/farmer_dash");
                     } else {
                       Navigator.pushNamed(context, '/admin_approval_pending');

@@ -34,7 +34,6 @@ class PendingApprovalPage extends StatelessWidget {
               final product = products[index];
               final productName = product['productName'];
               final productPrice = product['productPrice'];
-              final farmName = product['farmName'];
               final productDescription = product['productDescription'];
               final category = product['category'];
               final productImage = product['productImage'] ?? '';
@@ -79,28 +78,6 @@ class PendingApprovalPage extends StatelessWidget {
                         ),
                         subtitle: Text(
                           productPrice,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(
-                          Icons.house,
-                          color: Colors.green,
-                          size: 28,
-                        ),
-                        title: Text(
-                          "Farm Name",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(
-                          farmName,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,

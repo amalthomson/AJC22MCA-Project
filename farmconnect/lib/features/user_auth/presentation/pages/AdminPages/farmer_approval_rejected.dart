@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
 
-class FarmerDetailsPage extends StatefulWidget {
+class RejectedFarmerApprovalPage extends StatefulWidget {
   @override
-  _FarmerDetailsPageState createState() => _FarmerDetailsPageState();
+  _RejectedFarmerApprovalPageState createState() => _RejectedFarmerApprovalPageState();
 }
 
-class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
+class _RejectedFarmerApprovalPageState extends State<RejectedFarmerApprovalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Farmer Details", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
+        title: Text("Rejected Farmers", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('users')
-            .where('role', isEqualTo: 'Farmer')
-            .where('isAdminApproved', isEqualTo: 'approved')
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'Farmer').where('isAdminApproved', isEqualTo: 'rejected').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -33,20 +28,8 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
             itemCount: farmers.length,
             itemBuilder: (context, index) {
               final farmer = farmers[index].data() as Map<String, dynamic>;
-              final userId = farmers[index].id;
-
               final profilePictureUrl = farmer['profileImageUrl'] ?? '';
-              var isActive = farmer['isActive'] ?? 'no';
-
-              final tileColors = [
-                Colors.purple,
-                Colors.lightBlue,
-                Colors.lightGreen,
-                Colors.amber,
-                Colors.pink,
-              ];
-
-              final tileColor = tileColors[index % tileColors.length];
+              final remark = farmer['remark'] ?? '';
 
               return Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -92,11 +75,11 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
                         child: _buildDetailItem(
                           icon: Icons.location_on,
                           label: "Address",
-                          value: "${farmer['street'] ?? 'N/A'}, ${farmer['town'] ?? 'N/A'}, ${farmer['district'] ?? 'N/A'}, ${farmer['state'] ?? 'N/A'}, ${farmer['pincode'] ?? 'N/A'}",
+                          value:
+                          "${farmer['street'] ?? 'N/A'}, ${farmer['town'] ?? 'N/A'}, ${farmer['district'] ?? 'N/A'}, ${farmer['state'] ?? 'N/A'}, ${farmer['pincode'] ?? 'N/A'}",
                         ),
                       ),
                       SingleChildScrollView(
@@ -119,43 +102,13 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                         value: '',
                         imageIdCardUrl: farmer['idCardImageUrl'],
                       ),
-                    ],
-                    trailing: Container(
-                      width: 70,
-                      height: 42,
-                      child: Switch(
-                        value: isActive == 'yes',
-                        onChanged: (value) {
-                          // Update the 'isActive' field in Firestore as a string
-                          FirebaseFirestore.instance.collection('users').doc(userId).update({
-                            'isActive': value ? 'yes' : 'no',
-                          });
-                          setState(() {
-                            isActive = value ? 'yes' : 'no';
-                          });
-
-                          // Show a Snackbar
-                          final snackBarMessage = isActive == 'yes' ? 'User Enabled' : 'User Disabled';
-                          final snackBarColor = isActive == 'yes' ? Colors.green : Colors.red; // Set color based on status
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                snackBarMessage,
-                                style: TextStyle(color: Colors.white), // Text color
-                              ),
-                              backgroundColor: snackBarColor, // Background color
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-
-                          // Send a notification email
-                          sendNotificationEmail(farmer['email'], isActive == 'yes');
-                        },
-                        activeColor: Colors.green,
-                        inactiveThumbColor: Colors.grey,
-                        inactiveTrackColor: Colors.grey.withOpacity(0.5),
+                      _buildDetailItem(
+                        icon: Icons.comment,
+                        label: "Remark",
+                        value: '',
+                        remark: remark,
                       ),
-                    ),
+                    ],
                   ),
                 ),
               );
@@ -171,6 +124,7 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
     required String label,
     required String value,
     String? imageIdCardUrl,
+    String? remark,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8),
@@ -195,8 +149,7 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  label == "ID Card Image"
-                      ? GestureDetector(
+                  if (label == "ID Card Image") GestureDetector(
                     onTap: () {
                       _showIdCardImage(imageIdCardUrl);
                     },
@@ -207,8 +160,18 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                  )
-                      : Text(
+                  ) else if (label == "Remark" && remark != null && remark.isNotEmpty) GestureDetector(
+                    onTap: () {
+                      _showRemarkDialog(remark);
+                    },
+                    child: Text(
+                      'Click to view Remark',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ) else Text(
                     value,
                     style: TextStyle(
                       fontSize: 18,
@@ -244,20 +207,23 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
     }
   }
 
-  void sendNotificationEmail(String recipient, bool isActive) async {
-    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422');
-    final message = Message()
-      ..from = Address('admin@farmconnect.com', 'Admin FarmConnect')
-      ..recipients.add(recipient)
-      ..subject = 'Account Status Update'
-      ..text = isActive ? 'Your account has been enabled by the Admin, You can now login to your account.' : 'Your account has been disabled by the Admin, please contact the Admin for further support.';
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: ${sendReport}');
-    } on MailerException catch (e) {
-      print('Message not sent. ${e.message}');
-    }
+  void _showRemarkDialog(String remark) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Remark'),
+          content: Text(remark),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
-

@@ -10,6 +10,8 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   int numberOfBuyers = 0;
   int numberOfFarmers = 0;
+  int farmerApprovalPending = 0;
+  int farmerApprovalRejected = 0;
   int pendingProducts = 0;
   int approvedProducts = 0;
   int rejectedProducts = 0;
@@ -27,8 +29,23 @@ class _AdminDashboardState extends State<AdminDashboard> {
     final buyerQuery = await usersCollection.where('role', isEqualTo: 'Buyer').get();
     numberOfBuyers = buyerQuery.docs.length;
 
-    final farmerQuery = await usersCollection.where('role', isEqualTo: 'Farmer').get();
-    numberOfFarmers = farmerQuery.docs.length;
+    final farmerApprovedQuery = await usersCollection
+        .where('role', isEqualTo: 'Farmer')
+        .where('isAdminApproved', isEqualTo: 'approved')
+        .get();
+    numberOfFarmers = farmerApprovedQuery.docs.length;
+
+    final farmerPendingQuery = await usersCollection
+        .where('role', isEqualTo: 'Farmer')
+        .where('isAdminApproved', isEqualTo: 'no')
+        .get();
+    farmerApprovalPending = farmerPendingQuery.docs.length;
+
+    final farmerRejectedQuery = await usersCollection
+        .where('role', isEqualTo: 'Farmer')
+        .where('isAdminApproved', isEqualTo: 'rejected')
+        .get();
+    farmerApprovalRejected = farmerRejectedQuery.docs.length;
 
     setState(() {});
   }
@@ -69,6 +86,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
         ),
         automaticallyImplyLeading: false,
         actions: [
+          IconButton(  // Add this IconButton for signout
+            icon: Icon(Icons.logout),  // You can use the appropriate logout icon
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamed(context, "/login");
+            },
+          ),
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
@@ -107,7 +131,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 InkWell(
                   child: AdminDashboardTile(
                     title: "Farmer Approval\n       Pending",
-                    count: 0,
+                    count: farmerApprovalPending,
                     tileColor: Colors.orange,
                   ),
                   onTap: () {
@@ -117,11 +141,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 InkWell(
                   child: AdminDashboardTile(
                     title: "Farmer Approval\n       Rejected",
-                    count: 0,
+                    count: farmerApprovalRejected,
                     tileColor: Colors.red,
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, '/farmer_approval_pending');
+                    Navigator.pushNamed(context, '/farmer_approval_rejected');
                   },
                 ),
                 InkWell(
@@ -156,21 +180,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
               ],
             ),
-            Positioned(
-              bottom: 50,
-              left: 50,
-              right: 50,
-              child: DashboardCard(
-                title: "Sign Out",
-                icon: Icons.logout,
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushNamed(context, "/login");
-                },
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-              ),
-            ),
+            //
           ],
         ),
       ),
