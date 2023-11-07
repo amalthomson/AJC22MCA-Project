@@ -13,12 +13,9 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/pou
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_google.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/vegetables_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmer_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_password.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/addproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/pendingapproval.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/myproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/admin_approval_pending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/terms_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -55,8 +52,6 @@ class MyApp extends StatelessWidget {
         '/update_details': (context) => UpdateDetailsPage(),
         '/update_google': (context) => UpdateGoogleDetails(),
         '/update_password': (context) => UpdatePasswordPage(),
-        '/add_products' : (context) => AddProducts(),
-        '/farmer_page' : (context) => FarmerPage(),
         '/farmer_dash': (context) => FarmerDashboard(),
         '/buyer_ftl' : (context) => BuyerFTLPage(),
         '/farmer_ftl' : (context) => FarmerFTLPage(),
@@ -68,7 +63,6 @@ class MyApp extends StatelessWidget {
         '/pendingapproval' : (context) => PendingApprovalPage(),
         '/approvedproducts' : (context) => ApprovedProductsPage(),
         '/rejectedproducts' : (context) => RejectedProductsPage(),
-        '/myproducts' : (context) => MyProductsPage(),
         '/poultry_page' : (context) => PoultryProductsPage(),
         '/dairy_page' : (context) => DairyProductsPage(),
         '/fruits_page' : (context) => FruitsProductsPage(),

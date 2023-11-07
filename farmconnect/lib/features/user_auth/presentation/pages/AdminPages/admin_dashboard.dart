@@ -86,8 +86,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
         ),
         automaticallyImplyLeading: false,
         actions: [
-          IconButton(  // Add this IconButton for signout
-            icon: Icon(Icons.logout),  // You can use the appropriate logout icon
+          IconButton(
+            icon: Icon(Icons.logout),
+            color: Colors.red,
             onPressed: () {
               FirebaseAuth.instance.signOut();
               Navigator.pushNamed(context, "/login");
@@ -95,6 +96,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ),
           IconButton(
             icon: Icon(Icons.refresh),
+            color: Colors.green,
             onPressed: () {
               _refreshData();
             },
@@ -113,70 +115,84 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     title: "Farmers",
                     count: numberOfFarmers,
                     tileColor: Colors.blue,
+                    iconData: Icons.people,
+                    gradientColors: [Colors.blue.shade300, Colors.blue.shade900],
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, '/farmer_details');
                   },
                 ),
                 InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/buyer_details');
+                  },
                   child: AdminDashboardTile(
                     title: "Buyers",
                     count: numberOfBuyers,
                     tileColor: Colors.blue,
+                    iconData: Icons.shopping_cart,
+                    gradientColors: [Colors.blue.shade300, Colors.blue.shade900],
                   ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/buyer_details');
-                  },
                 ),
                 InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/farmer_approval_pending');
+                  },
                   child: AdminDashboardTile(
                     title: "Farmer Approval\n       Pending",
                     count: farmerApprovalPending,
                     tileColor: Colors.orange,
+                    iconData: Icons.pending,
+                    gradientColors: [Colors.orange.shade300, Colors.orange.shade900],
                   ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/farmer_approval_pending');
-                  },
                 ),
                 InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/farmer_approval_rejected');
+                  },
                   child: AdminDashboardTile(
                     title: "Farmer Approval\n       Rejected",
                     count: farmerApprovalRejected,
                     tileColor: Colors.red,
+                    iconData: Icons.cancel,
+                    gradientColors: [Colors.red.shade300, Colors.red.shade900],
                   ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/farmer_approval_rejected');
-                  },
                 ),
                 InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/pendingapproval');
+                  },
                   child: AdminDashboardTile(
                     title: " Pending\nApproval",
                     count: pendingProducts,
                     tileColor: Colors.orange,
+                    iconData: Icons.timer,
+                    gradientColors: [Colors.orange.shade300, Colors.orange.shade900],
                   ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/pendingapproval');
-                  },
                 ),
                 InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/approvedproducts');
+                  },
                   child: AdminDashboardTile(
                     title: "Approved\nProducts",
                     count: approvedProducts,
                     tileColor: Colors.green,
+                    iconData: Icons.check_circle,
+                    gradientColors: [Colors.green.shade300, Colors.green.shade900],
                   ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/approvedproducts');
-                  },
                 ),
                 InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/rejectedproducts');
+                  },
                   child: AdminDashboardTile(
                     title: "Rejected\nProducts",
                     count: rejectedProducts,
                     tileColor: Colors.red,
+                    iconData: Icons.cancel,
+                    gradientColors: [Colors.red.shade300, Colors.red.shade900],
                   ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/rejectedproducts');
-                  },
                 ),
               ],
             ),
@@ -192,47 +208,66 @@ class AdminDashboardTile extends StatelessWidget {
   final String title;
   final int count;
   final Color tileColor;
+  final IconData iconData; // Icon data for the tile
+  final List<Color> gradientColors; // List of colors for gradient
 
   const AdminDashboardTile({
     required this.title,
     required this.count,
     required this.tileColor,
+    required this.iconData,
+    required this.gradientColors,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0),
+        borderRadius: BorderRadius.circular(25.0), // Rounded edges
       ),
-      color: tileColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors, // Use the provided gradient colors
           ),
-          SizedBox(height: 10.0),
-          Center(
-            child: Text(
-              count.toString(),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              iconData, // Use the provided icon data
+              color: Colors.white,
+              size: 40.0,
+            ),
+            SizedBox(height: 10.0),
+            Text(
+              title,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 36.0,
+                fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 10.0),
+            Center(
+              child: Text(
+                count.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 36.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class DashboardCard extends StatelessWidget {
   final String title;
@@ -254,8 +289,9 @@ class DashboardCard extends StatelessWidget {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(20), // Rounded edges
       ),
+      clipBehavior: Clip.antiAlias, // Ensure anti-aliasing for border
       color: backgroundColor,
       child: InkWell(
         onTap: onPressed,
@@ -285,3 +321,4 @@ class DashboardCard extends StatelessWidget {
     );
   }
 }
+

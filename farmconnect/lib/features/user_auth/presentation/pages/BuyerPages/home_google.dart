@@ -1,9 +1,10 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/dairy_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/fruits_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/poultry_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/vegetables_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_google.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleHomePage extends StatelessWidget {
@@ -23,64 +24,120 @@ class GoogleHomePage extends StatelessWidget {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: blackColor,
-      appBar: AppBar(
-        title: Text("Buyer Dashboard", style: TextStyle(color: Colors.green, fontSize: 20,
-            fontWeight: FontWeight.bold)),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.blueGrey[900],
-      ),
-      body: Center(
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("users")
-              .doc(FirebaseAuth.instance.currentUser?.uid)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return CircularProgressIndicator();
-            }
-            var userData = snapshot.data?.data();
-            var displayName = userData?["name"] ?? "User";
-            var profileImageUrl = userData?["profileImageUrl"];
+    return DefaultTabController(
+      length: 6, // Number of tabs
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Buyer Dashboard",
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          backgroundColor: Colors.lightBlue[900],
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.logout),
+              color: Colors.red,
+              onPressed: () => _signOut(context),
+              // onPressed: () {
+              //   FirebaseAuth.instance.signOut();
+              //   Navigator.pushNamed(context, "/login");
+              // },
+            ),
+          ],
+          bottom: TabBar(
+            isScrollable: true, // Enable scrolling for the TabBar
+            tabs: [
+              Tab(
+                icon: Icon(Icons.shopping_basket),
+                text: 'Dairy Products',
+              ),
+              Tab(
+                icon: Icon(Icons.shopping_basket),
+                text: 'Poultry Products',
+              ),
+              Tab(
+                icon: Icon(Icons.shopping_basket),
+                text: 'Fruits',
+              ),
+              Tab(
+                icon: Icon(Icons.shopping_basket),
+                text: 'Vegetables',
+              ),
+              Tab(
+                icon: Icon(Icons.shopping_cart),
+                text: 'Cart',
+              ),
+              Tab(
+                icon: Icon(Icons.person),
+                text: 'Profile',
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            DairyProductsPage(),
+            PoultryProductsPage(),
+            FruitsProductsPage(),
+            VegetableProductsPage(),
+// Display Vegetables content
 
-            return Container(
-              child: ListView(
-                padding: EdgeInsets.all(16),
-                children: [
-                  SizedBox(height: 20), // Added spacing
-                  // Profile Image
-                  Center(
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.transparent,
-                      child: ClipOval(
-                        child: profileImageUrl != null
-                            ? Image.network(
-                          profileImageUrl,
-                          fit: BoxFit.cover,
-                        )
-                            : Icon(
-                          Icons.person,
-                          size: 60,
-                          color: Colors.white, // Fallback icon color
+            // Cart
+            Center(
+              child: Text("Cart Content"),
+            ),
+
+            // Profile
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
+                var userData = snapshot.data?.data();
+                var displayName = userData?["name"] ?? "User";
+                var email = FirebaseAuth.instance.currentUser?.email;
+                var profileImageUrl = userData?["profileImageUrl"] ?? "";
+
+                return Container(
+                  child: ListView(
+                    padding: EdgeInsets.all(16),
+                    children: [
+                      SizedBox(height: 20),
+                      Center(
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundColor: Colors.blue, // Customize the background color
+                          child: ClipOval(
+                            child: profileImageUrl != null
+                                ? Image.network(
+                              profileImageUrl,
+                              fit: BoxFit.cover,
+                              width: 160, // Adjust the image size
+                              height: 160,
+                            )
+                                : Icon(
+                              Icons.person,
+                              size: 120,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20), // Added spacing
-                  Card(
-                    elevation: 5,
-                    color: Colors
-                        .transparent, // Set background color to transparent
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      SizedBox(height: 50),
+                      Column(
                         children: [
                           Text(
                             "Welcome",
@@ -91,53 +148,58 @@ class GoogleHomePage extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 12),
-                          Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              displayName,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 36,
-                                color: Colors.white,
+                          Text(
+                            displayName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 36,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(height: 12),
+                          Text(
+                            "Email: $email",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 50),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/update_google");
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue,
+                              onPrimary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 8.0,
+                              ),
+                              child: Text(
+                                "Edit Profile",
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                  SizedBox(height: 50),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/update_google");
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                    child: Padding(
-                      padding:
-                      EdgeInsets.symmetric(vertical: 16, horizontal: 8.0),
-                      child: Text(
-                        "Edit Profile",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 150),
-                  DashboardCard(
-                    title: "Sign Out",
-                    icon: Icons.logout,
-                    onPressed: () => _signOut(context), // Sign out function
-                    backgroundColor: Colors.red, textColor: Colors.white, // Add the backgroundColor parameter here
-                  )
-                ],
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

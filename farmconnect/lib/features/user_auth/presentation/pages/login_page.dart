@@ -1,17 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_google.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_profile.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/loading.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'sign_up_page.dart'; // Import your SignUpPage
-import 'email_verification_pending_page.dart'; // Import the EmailVerificationPendingPage
+import 'sign_up_page.dart';
 
 class EmailFieldValidator {
   static String? validate(String value) {
