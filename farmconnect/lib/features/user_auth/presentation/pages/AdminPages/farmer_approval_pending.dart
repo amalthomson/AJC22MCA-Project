@@ -17,7 +17,7 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
       messageText = 'Your account has been approved by the Admin, You can now log in to your account.';
     } else if (status == 'rejected') {
       messageSubject = 'Account Rejected';
-      messageText = 'Your account has been rejected by the Admin. Please contact Admin for further inquiries.';
+      messageText = 'Your account has been rejected by the Admin. Please contact Admin for further assistance.';
     } else {
       // Handle other cases if necessary
       return;

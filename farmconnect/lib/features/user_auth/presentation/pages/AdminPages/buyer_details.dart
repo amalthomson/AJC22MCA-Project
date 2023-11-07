@@ -175,12 +175,12 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
   }
 
   void sendNotificationEmail(String recipient, bool isActive) async {
-    final smtpServer = gmail('farmconnectadm@gmail.com', 'FarmConnect');
+    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal9469');
     final message = Message()
       ..from = Address('admin@farmconnect.com', 'FarmConnect Admin')
       ..recipients.add(recipient)
       ..subject = 'Account Status Update'
-      ..text = isActive ? 'Your account has been enabled.' : 'Your account has been disabled.';
+      ..text = isActive ? 'Your account has been enabled. You can now login to you Account' : 'Your account has been disabled. Please contact Admin for further assistance';
 
     try {
       final sendReport = await send(message, smtpServer);

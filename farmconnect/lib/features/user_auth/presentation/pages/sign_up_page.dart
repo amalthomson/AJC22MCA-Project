@@ -112,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 11,
+                          height: 88,
                         ),
                         Text(
                           "Registration",

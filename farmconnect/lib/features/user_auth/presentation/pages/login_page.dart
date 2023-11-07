@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
           return SingleChildScrollView(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 11.0), // Adjust the top padding as needed
+                padding: const EdgeInsets.only(top: 88.0), // Adjust the top padding as needed
                 child: Stack(
                   children: [
                     Padding(
