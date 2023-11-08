@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AdminDashboard extends StatefulWidget {
   @override
@@ -89,9 +90,22 @@ class _AdminDashboardState extends State<AdminDashboard> {
           IconButton(
             icon: Icon(Icons.logout),
             color: Colors.red,
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushNamed(context, "/login");
+            onPressed: () async {
+              final FirebaseAuth _auth = FirebaseAuth.instance;
+              final GoogleSignIn googleSignIn = GoogleSignIn();
+
+              try {
+                // Sign out of Firebase Authentication
+                await _auth.signOut();
+
+                // Sign out of Google Sign-In
+                await googleSignIn.signOut();
+
+                // Navigate to the login page
+                Navigator.pushNamed(context, "/login");
+              } catch (error) {
+                print("Error signing out: $error");
+              }
             },
           ),
           IconButton(

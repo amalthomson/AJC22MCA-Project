@@ -63,7 +63,7 @@ class ApprovedProductsPage extends StatelessWidget {
                     children: [
                       ListTile(
                         leading: Icon(
-                          Icons.attach_money,
+                          Icons.currency_rupee,
                           color: Colors.green,
                           size: 28,
                         ),

@@ -226,7 +226,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                             filled: true,
                             fillColor: Colors.white.withOpacity(0.9),
                             hintText: 'Enter your street',
-                            prefixIcon: Icon(Icons.person, color: Colors.blue), // Add the prefix icon
+                            prefixIcon: Icon(Icons.home, color: Colors.blue), // Add the prefix icon
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(50),
                               borderSide: BorderSide(color: Colors.blue),
@@ -258,7 +258,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your city/town',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.location_city, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),
@@ -290,7 +290,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your district',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.map, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),
@@ -322,7 +322,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your state',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.other_houses, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),
@@ -354,7 +354,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.9),
                       hintText: 'Enter your pincode',
-                      prefixIcon: Icon(Icons.person, color: Colors.blue),
+                      prefixIcon: Icon(Icons.location_on, color: Colors.blue),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
                         borderSide: BorderSide(color: Colors.blue),

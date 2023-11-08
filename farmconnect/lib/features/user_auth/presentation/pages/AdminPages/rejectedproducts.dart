@@ -63,7 +63,7 @@ class RejectedProductsPage extends StatelessWidget {
                     children: [
                       ListTile(
                         leading: Icon(
-                          Icons.attach_money,
+                          Icons.currency_rupee,
                           color: Colors.green,
                           size: 28,
                         ),
@@ -127,7 +127,7 @@ class RejectedProductsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      FarmerDetailsWidget(userId: userId),
+                      //FarmerDetailsWidget(userId: userId),
                     ],
                   ),
                 ),

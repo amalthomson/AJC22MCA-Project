@@ -249,11 +249,15 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        child: _buildDetailItem(
-                          icon: Icons.location_on,
-                          label: "Address",
-                          value:
-                          "${farmer['street'] ?? 'N/A'}, ${farmer['town'] ?? 'N/A'}, ${farmer['district'] ?? 'N/A'}, ${farmer['state'] ?? 'N/A'}, ${farmer['pincode'] ?? 'N/A'}",
+                        scrollDirection: Axis.horizontal, // Allow horizontal scrolling
+                        child: Row(
+                          children: <Widget>[
+                            _buildDetailItem(
+                              icon: Icons.location_on,
+                              label: "Address",
+                              value: "${farmer['street'] ?? 'N/A'}, ${farmer['town'] ?? 'N/A'}, ${farmer['district'] ?? 'N/A'}, ${farmer['state'] ?? 'N/A'}, ${farmer['pincode'] ?? 'N/A'}",
+                            ),
+                          ],
                         ),
                       ),
                       SingleChildScrollView(

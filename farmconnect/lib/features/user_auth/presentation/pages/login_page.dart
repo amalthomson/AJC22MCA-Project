@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_google.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
@@ -99,18 +100,33 @@ class _LoginPageState extends State<LoginPage> {
 
         // Check if the user is active before allowing login
         if (userSnapshot.exists && userSnapshot['isActive'] == 'yes') {
-          // Store the signed-in Google account
-          setState(() {
-            _googleUser = googleUser;
-          });
+          // Get the user's role
+          final String userRole = userSnapshot['role'];
 
-          // Navigate to the Home Page
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => GoogleHomePage(),
-            ),
-          );
+          // Check the user's role and navigate accordingly
+          if (userRole == 'buyer') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GoogleHomePage(),
+              ),
+            );
+          } else if (userRole == 'Admin') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AdminDashboard(),
+              ),
+            );
+          } else {
+            // Handle other roles as needed
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Unknown role: $userRole"),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         } else {
           // User is not active, show an error message or block login
           ScaffoldMessenger.of(context).showSnackBar(
@@ -137,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
+
 
   Future<void> _updateUserInformation(User user, GoogleSignInAccount? googleUser,
       {String isActive = "yes"}) async {
