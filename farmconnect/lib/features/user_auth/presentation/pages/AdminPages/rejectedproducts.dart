@@ -38,6 +38,7 @@ class RejectedProductsPage extends StatelessWidget {
               final category = product['category'];
               final productImage = product['productImage'] ?? '';
               final userId = product['userId'];
+              final remark = product['remark'] ?? ''; // New line to get "remark" field
 
               return Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -121,6 +122,28 @@ class RejectedProductsPage extends StatelessWidget {
                         ),
                         subtitle: Text(
                           category,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.note,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Remark",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          remark,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
