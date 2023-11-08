@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -41,9 +42,22 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
             IconButton(
               icon: Icon(Icons.logout),
               color: Colors.red,
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushNamed(context, "/login");
+              onPressed: () async {
+                final FirebaseAuth _auth = FirebaseAuth.instance;
+                final GoogleSignIn googleSignIn = GoogleSignIn();
+
+                try {
+                  // Sign out of Firebase Authentication
+                  await _auth.signOut();
+
+                  // Sign out of Google Sign-In
+                  await googleSignIn.signOut();
+
+                  // Navigate to the login page
+                  Navigator.pushNamed(context, "/login");
+                } catch (error) {
+                  print("Error signing out: $error");
+                }
               },
             ),
           ],

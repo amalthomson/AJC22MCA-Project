@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_google.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,8 +104,7 @@ class _LoginPageState extends State<LoginPage> {
           // Get the user's role
           final String userRole = userSnapshot['role'];
 
-          // Check the user's role and navigate accordingly
-          if (userRole == 'buyer') {
+          if (userRole == 'Buyer') {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -116,6 +116,13 @@ class _LoginPageState extends State<LoginPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => AdminDashboard(),
+              ),
+            );
+          } else if (userRole == 'Farmer') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FarmerDashboard(),
               ),
             );
           } else {
