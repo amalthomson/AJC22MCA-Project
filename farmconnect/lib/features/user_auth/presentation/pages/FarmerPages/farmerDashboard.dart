@@ -145,7 +145,7 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
               stream: FirebaseFirestore.instance
                   .collection('products')
                   .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-                  .where('isApproved', whereIn: ['approved', 'no', 'rejected'])
+                  .where('isApproved', whereIn: ['Approved', 'no', 'Rejected'])
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -172,9 +172,9 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
                     final remark = product['remark']; // Get the remark field
 
                     String status = 'Pending Approval';
-                    if (isApproved == 'approved') {
+                    if (isApproved == 'Approved') {
                       status = 'Approved';
-                    } else if (isApproved == 'rejected') {
+                    } else if (isApproved == 'Rejected') {
                       status = 'Rejected';
                     }
 
@@ -444,7 +444,7 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
         'productImage': _imageUrl,
         'category': _selectedCategory,
         'userId': FirebaseAuth.instance.currentUser?.uid,
-        'isApproved': 'no',
+        'isApproved': 'Pending',
         'remark': 'Approval Pending', // Set the initial value of "remark" to "null"
       });
 

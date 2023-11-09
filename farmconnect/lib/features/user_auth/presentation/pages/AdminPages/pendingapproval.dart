@@ -13,7 +13,7 @@ class PendingApprovalPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('isApproved', isEqualTo: 'no')
+            .where('isApproved', isEqualTo: 'Pending')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -137,7 +137,7 @@ class PendingApprovalPage extends StatelessWidget {
                               FirebaseFirestore.instance
                                   .collection('products')
                                   .doc(product.id)
-                                  .update({'isApproved': 'approved', 'remark': 'The Product is Approved'});
+                                  .update({'isApproved': 'Approved', 'remark': 'The Product is Approved'});
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.green, // Set green color for "Approve" button

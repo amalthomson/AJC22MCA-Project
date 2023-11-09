@@ -39,22 +39,6 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
     );
   }
 
-  void sendNotificationEmail(String recipient, String subject, String text) async {
-    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422'); // Replace with your email and password
-    final message = Message()
-      ..from = Address('admin@farmconnect.com', 'Admin FarmConnect')
-      ..recipients.add(recipient)
-      ..subject = subject
-      ..text = text;
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: $sendReport');
-    } on MailerException catch (e) {
-      print('Message not sent. ${e.message}');
-    }
-  }
-
   Future<void> showRemarkDialog(String userId, String email) async {
     String remark = '';
     await showDialog(
@@ -316,5 +300,77 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
         },
       ),
     );
+  }
+  void sendNotificationEmail(String recipient, String subject, String text) async {
+    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422');
+    final message = Message()
+      ..from = Address('admin@farmconnect.com', 'Admin FarmConnect')
+      ..recipients.add(recipient)
+      ..subject = subject
+      ..html = '''
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #3498db;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          }
+          .header {
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            background-color: #2980b9; /* Darker blue */
+          }
+          h1 {
+            color: #fff;
+          }
+          .content {
+            padding: 30px;
+            background-color: #ffffff; /* White */
+          }
+          p {
+            line-height: 1.6;
+            color: #333; /* Dark gray for better visibility on white */
+          }
+          .footer {
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            font-style: italic;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>${subject}</h1>
+          </div>
+          <div class="content">
+            <p>${text}</p>
+          </div>
+          <div class="footer">Best regards, Admin FarmConnect</div>
+        </div>
+      </body>
+      </html>
+    ''';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: $sendReport');
+    } on MailerException catch (e) {
+      print('Message not sent. ${e.message}');
+    }
   }
 }

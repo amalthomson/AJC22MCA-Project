@@ -13,7 +13,7 @@ class RejectedProductsPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('isApproved', isEqualTo: 'rejected') // Filter rejected products
+            .where('isApproved', isEqualTo: 'Rejected') // Filter rejected products
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {

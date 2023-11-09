@@ -1,3 +1,4 @@
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/farmerwiseProductsListing.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mailer/mailer.dart';
@@ -118,6 +119,35 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                         label: "ID Card Image",
                         value: '',
                         imageIdCardUrl: farmer['idCardImageUrl'],
+                      ),
+                      SingleChildScrollView(
+                        child: ListTile(
+                          contentPadding: EdgeInsets.only(left: 1),
+                          leading: Icon(
+                            Icons.shopping_cart,
+                            color: Colors.green,
+                            size: 28,
+                          ),
+                          title: Padding(
+                            padding: EdgeInsets.only(left: 1),
+                            child: Text(
+                              'All Products',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            // Navigate to the new page to display products
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailsPage(userId),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                     trailing: Container(
@@ -250,7 +280,127 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
       ..from = Address('admin@farmconnect.com', 'Admin FarmConnect')
       ..recipients.add(recipient)
       ..subject = 'Account Status Update'
-      ..text = isActive ? 'Your account has been enabled by the Admin, You can now login to your account.' : 'Your account has been disabled by the Admin, please contact the Admin for further support.';
+      ..html = isActive
+          ? '''
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Helvetica Neue', Arial, sans-serif;
+              background-color: #f9f9f9;
+              color: #333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #4CAF50; /* Green */
+              border-radius: 10px;
+              overflow: hidden;
+              box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .header {
+              color: #fff;
+              text-align: center;
+              padding: 20px;
+              background-color: #45a049; /* Darker green */
+            }
+            h1 {
+              color: #fff;
+            }
+            .content {
+              padding: 30px;
+              background-color: #ffffff; /* White */
+            }
+            p {
+              line-height: 1.6;
+              color: #333; /* Dark gray for better visibility on white */
+            }
+            .footer {
+              background-color: #f9f9f9;
+              padding: 20px;
+              text-align: center;
+              color: #888;
+              font-style: italic;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Account Enabled</h1>
+            </div>
+            <div class="content">
+              <p>Dear User,</p>
+              <p>Your FarmConnect account has been successfully enabled by the Admin. You can now log in and enjoy the services.</p>
+              <p>Thank you for choosing FarmConnect!</p>
+            </div>
+            <div class="footer">Best regards, Admin FarmConnect</div>
+          </div>
+        </body>
+        </html>
+        '''
+          : '''
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Helvetica Neue', Arial, sans-serif;
+              background-color: #f9f9f9;
+              color: #333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #e74c3c;
+              border-radius: 10px;
+              overflow: hidden;
+              box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .header {
+              color: #fff;
+              text-align: center;
+              padding: 20px;
+              background-color: #c0392b; /* Darker red */
+            }
+            h1 {
+              color: #fff;
+            }
+            .content {
+              padding: 30px;
+              background-color: #ffffff; /* White */
+            }
+            p {
+              line-height: 1.6;
+              color: #333; /* Dark gray for better visibility on white */
+            }
+            .footer {
+              background-color: #f9f9f9;
+              padding: 20px;
+              text-align: center;
+              color: #888;
+              font-style: italic;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Account Disabled</h1>
+            </div>
+            <div class="content">
+              <p>Dear User,</p>
+              <p>We regret to inform you that your FarmConnect account has been disabled by the Admin. Please contact our support team for further assistance.</p>
+              <p>Thank you for your understanding.</p>
+            </div>
+            <div class="footer">Best regards, Admin FarmConnect</div>
+          </div>
+        </body>
+        </html>
+        ''';
 
     try {
       final sendReport = await send(message, smtpServer);

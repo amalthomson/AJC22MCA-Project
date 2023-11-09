@@ -13,7 +13,7 @@ class ApprovedProductsPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('isApproved', isEqualTo: 'approved') // Filter approved products
+            .where('isApproved', isEqualTo: 'Approved') // Filter approved products
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {

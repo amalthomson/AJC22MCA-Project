@@ -115,9 +115,11 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
 
                           // Show a Snackbar
                           final snackBarMessage = isActive == 'yes' ? 'User Enabled' : 'User Disabled';
+                          final snackBarColor = isActive == 'yes' ? Colors.green : Colors.red;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(snackBarMessage),
+                              backgroundColor: snackBarColor,
                               duration: Duration(seconds: 2),
                             ),
                           );
@@ -180,7 +182,127 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
       ..from = Address('admin@farmconnect.com', 'FarmConnect Admin')
       ..recipients.add(recipient)
       ..subject = 'Account Status Update'
-      ..text = isActive ? 'Your account has been enabled. You can now login to you Account' : 'Your account has been disabled. Please contact Admin for further assistance';
+      ..html = isActive
+          ? '''
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Helvetica Neue', Arial, sans-serif;
+              background-color: #f4f4f4;
+              color: #333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #3498db;
+              border-radius: 10px;
+              overflow: hidden;
+              box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .header {
+              color: #fff;
+              text-align: center;
+              padding: 20px;
+              background-color: #2980b9; /* Darker blue */
+            }
+            h1 {
+              color: #fff;
+            }
+            .content {
+              padding: 30px;
+              background-color: #ffffff; /* White */
+            }
+            p {
+              line-height: 1.6;
+              color: #333; /* Dark gray for better visibility on white */
+            }
+            .footer {
+              background-color: #f4f4f4;
+              padding: 20px;
+              text-align: center;
+              color: #888;
+              font-style: italic;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Account Enabled</h1>
+            </div>
+            <div class="content">
+              <p>Dear User,</p>
+              <p>Your FarmConnect account has been successfully enabled. You can now log in and explore all the features available to you.</p>
+              <p>Thank you for choosing FarmConnect!</p>
+            </div>
+            <div class="footer">Best regards, FarmConnect Admin</div>
+          </div>
+        </body>
+        </html>
+        '''
+          : '''
+        <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Helvetica Neue', Arial, sans-serif;
+              background-color: #f4f4f4;
+              color: #333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #e74c3c;
+              border-radius: 10px;
+              overflow: hidden;
+              box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .header {
+              color: #fff;
+              text-align: center;
+              padding: 20px;
+              background-color: #c0392b; /* Darker red */
+            }
+            h1 {
+              color: #fff;
+            }
+            .content {
+              padding: 30px;
+              background-color: #ffffff; /* White */
+            }
+            p {
+              line-height: 1.6;
+              color: #333; /* Dark gray for better visibility on white */
+            }
+            .footer {
+              background-color: #f4f4f4;
+              padding: 20px;
+              text-align: center;
+              color: #888;
+              font-style: italic;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Account Disabled</h1>
+            </div>
+            <div class="content">
+              <p>Dear User,</p>
+              <p>We regret to inform you that your FarmConnect account has been disabled. Please contact our support team for further assistance.</p>
+              <p>Thank you for your understanding.</p>
+            </div>
+            <div class="footer">Best regards, FarmConnect Admin</div>
+          </div>
+        </body>
+        </html>
+        ''';
 
     try {
       final sendReport = await send(message, smtpServer);

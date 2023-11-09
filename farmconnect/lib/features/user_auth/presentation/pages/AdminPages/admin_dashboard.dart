@@ -38,7 +38,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
     final farmerPendingQuery = await usersCollection
         .where('role', isEqualTo: 'Farmer')
-        .where('isAdminApproved', isEqualTo: 'no')
+        .where('isAdminApproved', isEqualTo: 'pending')
         .get();
     farmerApprovalPending = farmerPendingQuery.docs.length;
 
@@ -54,13 +54,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Future<void> fetchProductCounts() async {
     final productsCollection = FirebaseFirestore.instance.collection('products');
 
-    final pendingQuery = await productsCollection.where('isApproved', isEqualTo: 'no').get();
+    final pendingQuery = await productsCollection.where('isApproved', isEqualTo: 'Pending').get();
     pendingProducts = pendingQuery.docs.length;
 
-    final approvedQuery = await productsCollection.where('isApproved', isEqualTo: 'approved').get();
+    final approvedQuery = await productsCollection.where('isApproved', isEqualTo: 'Approved').get();
     approvedProducts = approvedQuery.docs.length;
 
-    final rejectedQuery = await productsCollection.where('isApproved', isEqualTo: 'rejected').get();
+    final rejectedQuery = await productsCollection.where('isApproved', isEqualTo: 'Rejected').get();
     rejectedProducts = rejectedQuery.docs.length;
 
     setState(() {});
@@ -206,6 +206,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     tileColor: Colors.red,
                     iconData: Icons.cancel,
                     gradientColors: [Colors.red.shade300, Colors.red.shade900],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/testing');
+                  },
+                  child: AdminDashboardTile(
+                    title: "Testing",
+                    count: rejectedProducts,
+                    tileColor: Colors.red,
+                    iconData: Icons.cancel,
+                    gradientColors: [Colors.grey, Colors.grey],
                   ),
                 ),
               ],
