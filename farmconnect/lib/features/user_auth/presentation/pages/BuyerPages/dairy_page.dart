@@ -23,7 +23,7 @@ class DairyProductsPage extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection('products')
             .where('category', isEqualTo: 'Dairy')
-            .where('isApproved', isEqualTo: 'approved')
+            .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -43,8 +43,8 @@ class DairyProductsPage extends StatelessWidget {
           return ListView.builder(
             itemCount: dairyProducts.length,
             itemBuilder: (context, index) {
-              final product = dairyProducts[index];
-              final productName = product['productName'];
+              final product = dairyProducts[index].data() as Map<String, dynamic>;
+              final productName = product['productDescription'];
               final productDescription = product['productDescription'];
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
               final productImage = product['productImage'];

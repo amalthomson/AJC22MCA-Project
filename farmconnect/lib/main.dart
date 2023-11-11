@@ -13,6 +13,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/fru
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/poultry_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_google.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/vegetables_page.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/addproducts.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_password.dart';
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
         '/admin_approval_pending' : (context) => AdminApprovalPendingPage(),
         '/farmer_approval_pending' : (context) => PendingFarmerApprovalPage(),
         '/farmer_approval_rejected' : (context) => RejectedFarmerApprovalPage(),
+        '/testing' : (context) => AddProducts(),
       },
     );
   }

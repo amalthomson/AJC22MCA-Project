@@ -5,10 +5,10 @@ class PendingApprovalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Set background color to black
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text("Pending Approval"),
-        backgroundColor: Colors.blueGrey[900], // Set app bar background color
+        backgroundColor: Colors.blueGrey[900],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -32,7 +32,7 @@ class PendingApprovalPage extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              final productName = product['productName'];
+              final subcategory = product['subCategory'];
               final productPrice = product['productPrice'];
               final productDescription = product['productDescription'];
               final category = product['category'];
@@ -54,7 +54,7 @@ class PendingApprovalPage extends StatelessWidget {
                       radius: 30,
                     ),
                     title: Text(
-                      productName,
+                      subcategory, // Use subcategory instead of productName
                       style: TextStyle(
                         color: Colors.green,
                         fontSize: 30,
@@ -140,9 +140,9 @@ class PendingApprovalPage extends StatelessWidget {
                                   .update({'isApproved': 'Approved', 'remark': 'The Product is Approved'});
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.green, // Set green color for "Approve" button
+                              primary: Colors.green,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20), // Make button edges round
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                             child: Text(
@@ -176,7 +176,7 @@ class PendingApprovalPage extends StatelessWidget {
                                           FirebaseFirestore.instance
                                               .collection('products')
                                               .doc(product.id)
-                                              .update({'isApproved': 'rejected', 'remark': remark});
+                                              .update({'isApproved': 'Rejected', 'remark': remark});
                                           Navigator.of(context).pop();
                                         },
                                       ),
@@ -186,9 +186,9 @@ class PendingApprovalPage extends StatelessWidget {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.red, // Set red color for "Reject" button
+                              primary: Colors.red,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20), // Make button edges round
+                                borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                             child: Text(
@@ -242,8 +242,9 @@ class FarmerDetailsWidget extends StatelessWidget {
                 title: Text(
                   "Farmer",
                   style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold,
+                    color: Colors.black,
                     fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 subtitle: Text(

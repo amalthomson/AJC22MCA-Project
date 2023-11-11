@@ -23,7 +23,7 @@ class VegetableProductsPage extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection('products')
             .where('category', isEqualTo: 'Vegetable')
-            .where('isApproved', isEqualTo: 'approved')
+            .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -44,7 +44,7 @@ class VegetableProductsPage extends StatelessWidget {
             itemCount: vegetableProducts.length,
             itemBuilder: (context, index) {
               final product = vegetableProducts[index];
-              final productName = product['productName'];
+              final subCategory = product['subCategory'];
               final productDescription = product['productDescription'];
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
               final productImage = product['productImage'];
@@ -97,7 +97,7 @@ class VegetableProductsPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              productName,
+                              subCategory,
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -126,7 +126,7 @@ class VegetableProductsPage extends StatelessWidget {
                                 // For simplicity, you can show a SnackBar as a placeholder.
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text("Added $productName to the cart"),
+                                    content: Text("Added $subCategory to the cart"),
                                   ),
                                 );
                               },

@@ -1,3 +1,5 @@
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/pendingapproval.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/rejectedproducts.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -5,15 +7,15 @@ class ApprovedProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Set background color to black
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text("Approved Products"),
-        backgroundColor: Colors.blueGrey[900], // Set app bar background color
+        backgroundColor: Colors.blueGrey[900],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('isApproved', isEqualTo: 'Approved') // Filter approved products
+            .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -32,7 +34,7 @@ class ApprovedProductsPage extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              final productName = product['productName'];
+              final subcategory = product['subCategory'];
               final productPrice = product['productPrice'];
               final productDescription = product['productDescription'];
               final category = product['category'];
@@ -53,7 +55,7 @@ class ApprovedProductsPage extends StatelessWidget {
                       radius: 30,
                     ),
                     title: Text(
-                      productName,
+                      subcategory, // Use subcategory instead of productName
                       style: TextStyle(
                         color: Colors.green,
                         fontSize: 30,
@@ -136,60 +138,6 @@ class ApprovedProductsPage extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class FarmerDetailsWidget extends StatelessWidget {
-  final String userId;
-
-  FarmerDetailsWidget({required this.userId});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        }
-        if (snapshot.hasError) {
-          return Text("Error fetching farmer details");
-        }
-        if (snapshot.hasData) {
-          final farmerData = snapshot.data!.data();
-          final farmerName = farmerData!['name'];
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: Icon(
-                  Icons.person,
-                  color: Colors.green,
-                  size: 28,
-                ),
-                title: Text(
-                  "Farmer",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  farmerName,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
-        return Text("No farmer details found");
-      },
     );
   }
 }

@@ -5,15 +5,15 @@ class RejectedProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Set background color to black
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text("Rejected Products"),
-        backgroundColor: Colors.blueGrey[900], // Set app bar background color
+        backgroundColor: Colors.blueGrey[900],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('isApproved', isEqualTo: 'Rejected') // Filter rejected products
+            .where('isApproved', isEqualTo: 'Rejected')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -32,13 +32,13 @@ class RejectedProductsPage extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              final productName = product['productName'];
+              final productName = product['subCategory']; // Use subcategory instead of productName
               final productPrice = product['productPrice'];
               final productDescription = product['productDescription'];
               final category = product['category'];
               final productImage = product['productImage'] ?? '';
               final userId = product['userId'];
-              final remark = product['remark'] ?? ''; // New line to get "remark" field
+              final remark = product['remark'] ?? ''; // Include the "remark" field
 
               return Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -150,7 +150,6 @@ class RejectedProductsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      //FarmerDetailsWidget(userId: userId),
                     ],
                   ),
                 ),
@@ -159,60 +158,6 @@ class RejectedProductsPage extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class FarmerDetailsWidget extends StatelessWidget {
-  final String userId;
-
-  FarmerDetailsWidget({required this.userId});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        }
-        if (snapshot.hasError) {
-          return Text("Error fetching farmer details");
-        }
-        if (snapshot.hasData) {
-          final farmerData = snapshot.data!.data();
-          final farmerName = farmerData!['name'];
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: Icon(
-                  Icons.person,
-                  color: Colors.green,
-                  size: 28,
-                ),
-                title: Text(
-                  "Farmer",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  farmerName,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
-        return Text("No farmer details found");
-      },
     );
   }
 }

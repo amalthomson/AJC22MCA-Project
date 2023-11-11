@@ -11,12 +11,18 @@ class AddProducts extends StatefulWidget {
 }
 
 class _AddProductsState extends State<AddProducts> {
-  final TextEditingController productNameController = TextEditingController();
   final TextEditingController productDescriptionController = TextEditingController();
   final TextEditingController productPriceController = TextEditingController();
   String? _imageUrl;
   String? _selectedCategory;
+  String? _selectedSubCategory;
   List<String> categories = ["Dairy", "Fruit", "Vegetable", "Poultry"];
+  Map<String, List<String>> subCategories = {
+    "Dairy": ["Milk", "Cheese", "Curd"],
+    "Fruit": ["Apple", "Orange", "Mango"],
+    "Vegetable": ["Potato", "Onion", "Chilly"],
+    "Poultry": ["Chicken", "Egg"],
+  };
   String? uploadStatus;
 
   Future<void> _uploadProduct() async {
@@ -50,22 +56,24 @@ class _AddProductsState extends State<AddProducts> {
 
   // Function to handle database update
   Future<void> _updateDatabase() async {
-    if (_imageUrl != null) {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (_imageUrl != null && user != null) {
       await FirebaseFirestore.instance.collection('products').add({
-        'productName': productNameController.text,
         'productDescription': productDescriptionController.text,
         'productPrice': productPriceController.text,
         'productImage': _imageUrl,
         'category': _selectedCategory,
-        'userId': FirebaseAuth.instance.currentUser?.uid,
-        'isApproved': 'no',
-        'remark': 'Approval Pending', // Set the initial value of "remark" to "null"
+        'subCategory': _selectedSubCategory,
+        'userId': user.uid,
+        'isApproved': 'Pending',
+        'remark': 'Approval Pending',
       });
 
-      productNameController.clear();
       productDescriptionController.clear();
       productPriceController.clear();
       _selectedCategory = null;
+      _selectedSubCategory = null;
 
       setState(() {
         uploadStatus = 'Product uploaded successfully';
@@ -75,10 +83,11 @@ class _AddProductsState extends State<AddProducts> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Product added successfully'),
-          duration: Duration(seconds: 3), // You can adjust the duration
-          backgroundColor: Colors.green, // Set the background color to green
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.green,
         ),
       );
+
       // Navigate to the "added_product" page
       Navigator.pushNamed(context, "/added_product");
     }
@@ -87,21 +96,22 @@ class _AddProductsState extends State<AddProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF141414),
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Color(0xFF1B1D1F),
+        backgroundColor: Colors.black,
         title: Text(
-          'FarmConnect',
+          "Add New Products",
           style: TextStyle(
-            color: Colors.green,
-            fontSize: 24,
+            color: Colors.white,
+            fontSize: 24.0,
             fontWeight: FontWeight.bold,
           ),
         ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Color(0xFF141414),
           padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,14 +143,14 @@ class _AddProductsState extends State<AddProducts> {
                   ),
                 ),
               ),
-              SizedBox(height: 16.0),
-              _buildTextField(productNameController, 'Product Name'),
-              SizedBox(height: 16.0),
-              _buildTextField(productDescriptionController, 'Product Description'),
-              SizedBox(height: 16.0),
-              _buildTextField(productPriceController, 'Product Price', TextInputType.number),
-              SizedBox(height: 16.0),
+              SizedBox(height: 30.0),
               _buildCategoryDropdown(),
+              SizedBox(height: 30.0),
+              _buildSubCategoryDropdown(),
+              SizedBox(height: 30.0),
+              _buildTextField(productDescriptionController, 'Product Description'),
+              SizedBox(height: 30.0),
+              _buildTextField(productPriceController, 'Product Price', TextInputType.number),
               SizedBox(height: 30.0),
               _buildUploadButton(),
               if (uploadStatus != null)
@@ -193,7 +203,7 @@ class _AddProductsState extends State<AddProducts> {
               hint: Text(
                 'Select Category',
                 style: TextStyle(
-                  color: Colors.white, // Set text color to white
+                  color: Colors.white,
                 ),
               ),
               value: _selectedCategory,
@@ -215,6 +225,52 @@ class _AddProductsState extends State<AddProducts> {
                   child: Text(category),
                 );
               }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSubCategoryDropdown() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: DropdownButton<String>(
+              hint: Text(
+                'Select Subcategory',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              value: _selectedSubCategory,
+              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+              iconSize: 24,
+              elevation: 16,
+              style: TextStyle(color: Colors.blue, fontSize: 16),
+              underline: Container(
+                height: 0,
+              ),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedSubCategory = newValue;
+                });
+              },
+              items: _selectedCategory != null
+                  ? subCategories[_selectedCategory]!
+                  .map<DropdownMenuItem<String>>((String subCategory) {
+                return DropdownMenuItem<String>(
+                  value: subCategory,
+                  child: Text(subCategory),
+                );
+              }).toList()
+                  : [],
             ),
           ),
         ],
@@ -246,7 +302,6 @@ class _AddProductsState extends State<AddProducts> {
 
   @override
   void dispose() {
-    productNameController.dispose();
     productDescriptionController.dispose();
     productPriceController.dispose();
     super.dispose();

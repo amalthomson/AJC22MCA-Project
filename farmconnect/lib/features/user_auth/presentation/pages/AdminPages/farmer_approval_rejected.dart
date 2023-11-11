@@ -75,11 +75,16 @@ class _RejectedFarmerApprovalPageState extends State<RejectedFarmerApprovalPage>
                         ),
                       ),
                       SingleChildScrollView(
-                        child: _buildDetailItem(
-                          icon: Icons.location_on,
-                          label: "Address",
-                          value:
-                          "${farmer['street'] ?? 'N/A'}, ${farmer['town'] ?? 'N/A'}, ${farmer['district'] ?? 'N/A'}, ${farmer['state'] ?? 'N/A'}, ${farmer['pincode'] ?? 'N/A'}",
+                        scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                        child: Row(
+                          children: <Widget>[
+                            _buildDetailItem(
+                              icon: Icons.location_on,
+                              label: "Address",
+                              value: "${farmer['street'] ?? 'N/A'}, ${farmer['town'] ?? 'N/A'}, ${farmer['district'] ?? 'N/A'}, ${farmer['state'] ?? 'N/A'}, ${farmer['pincode'] ?? 'N/A'}",
+                            ),
+                            // Add more widgets as needed
+                          ],
                         ),
                       ),
                       SingleChildScrollView(

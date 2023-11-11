@@ -12,15 +12,17 @@ class FarmerPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text(
-          "Farmer Profile",
+          "Profile",
           style: TextStyle(
-            color: Colors.green,
-            fontSize: 20,
+            color: Colors.white,
+            fontSize: 24.0,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.blueGrey[900],
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
         body: Center(
         child: StreamBuilder(
