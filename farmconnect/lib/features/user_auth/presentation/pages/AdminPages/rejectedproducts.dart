@@ -24,15 +24,25 @@ class RejectedProductsPage extends StatelessWidget {
 
           if (products.isEmpty) {
             return Center(
-              child: Text("No rejected products found."),
+              child: Container(
+                margin: EdgeInsets.all(16.0), // Add margin
+                child: Text(
+                  "No rejected products found.",
+                  style: TextStyle(
+                    color: Colors.white, // Set text color to white
+                    fontSize: 18,
+                  ),
+                ),
+              ),
             );
           }
+
 
           return ListView.builder(
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              final productName = product['subCategory']; // Use subcategory instead of productName
+              final productName = product['productName']; // Use subcategory instead of productName
               final productPrice = product['productPrice'];
               final productDescription = product['productDescription'];
               final category = product['category'];

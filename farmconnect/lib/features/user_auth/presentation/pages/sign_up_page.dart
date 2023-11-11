@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
             "role": userrole,
             "ftl" : 'yes',
             "isActive": 'yes',
-            "isAdminApproved": "no"
+            "isAdminApproved": "pending"
           },
         );
         Navigator.pushNamed(context, '/email_verification_pending');

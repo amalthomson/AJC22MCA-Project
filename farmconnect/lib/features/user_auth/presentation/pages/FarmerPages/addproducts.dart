@@ -11,13 +11,15 @@ class AddProducts extends StatefulWidget {
 }
 
 class _AddProductsState extends State<AddProducts> {
+  final TextEditingController productNameController = TextEditingController();
   final TextEditingController productDescriptionController = TextEditingController();
   final TextEditingController productPriceController = TextEditingController();
+  final TextEditingController stockController = TextEditingController();
   String? _imageUrl;
   String? _selectedCategory;
-  String? _selectedSubCategory;
+  String? _selectedProductName;
   List<String> categories = ["Dairy", "Fruit", "Vegetable", "Poultry"];
-  Map<String, List<String>> subCategories = {
+  Map<String, List<String>> productNames = {
     "Dairy": ["Milk", "Cheese", "Curd"],
     "Fruit": ["Apple", "Orange", "Mango"],
     "Vegetable": ["Potato", "Onion", "Chilly"],
@@ -35,8 +37,7 @@ class _AddProductsState extends State<AddProducts> {
 
       try {
         await firebase_storage.FirebaseStorage.instance.ref(imageName).putFile(file);
-        final downloadURL =
-        await firebase_storage.FirebaseStorage.instance.ref(imageName).getDownloadURL();
+        final downloadURL = await firebase_storage.FirebaseStorage.instance.ref(imageName).getDownloadURL();
 
         setState(() {
           _imageUrl = downloadURL;
@@ -54,32 +55,56 @@ class _AddProductsState extends State<AddProducts> {
     }
   }
 
-  // Function to handle database update
   Future<void> _updateDatabase() async {
     final user = FirebaseAuth.instance.currentUser;
 
     if (_imageUrl != null && user != null) {
-      await FirebaseFirestore.instance.collection('products').add({
-        'productDescription': productDescriptionController.text,
-        'productPrice': productPriceController.text,
-        'productImage': _imageUrl,
-        'category': _selectedCategory,
-        'subCategory': _selectedSubCategory,
-        'userId': user.uid,
-        'isApproved': 'Pending',
-        'remark': 'Approval Pending',
-      });
+      final stock = int.tryParse(stockController.text) ?? 0;
 
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('products')
+          .where('category', isEqualTo: _selectedCategory)
+          .where('productName', isEqualTo: _selectedProductName)
+          .where('userId', isEqualTo: user.uid)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final existingProductId = querySnapshot.docs[0].id;
+        final existingStock = querySnapshot.docs[0]['stock'] ?? 0;
+        final updatedStock = existingStock + stock;
+
+        await FirebaseFirestore.instance.collection('products').doc(existingProductId).update({
+          'stock': updatedStock,
+        });
+      } else {
+        final productId = DateTime.now().millisecondsSinceEpoch.toString();
+
+        await FirebaseFirestore.instance.collection('products').add({
+          'productId': productId,
+          'productName': productNameController.text,
+          'productDescription': productDescriptionController.text,
+          'productPrice': productPriceController.text,
+          'stock': stock,
+          'productImage': _imageUrl,
+          'category': _selectedCategory,
+          'productName': _selectedProductName,
+          'userId': user.uid,
+          'isApproved': 'Pending',
+          'remark': 'Approval Pending',
+        });
+      }
+
+      productNameController.clear();
       productDescriptionController.clear();
       productPriceController.clear();
+      stockController.clear();
       _selectedCategory = null;
-      _selectedSubCategory = null;
+      _selectedProductName = null;
 
       setState(() {
         uploadStatus = 'Product uploaded successfully';
       });
 
-      // Show a Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Product added successfully'),
@@ -88,7 +113,6 @@ class _AddProductsState extends State<AddProducts> {
         ),
       );
 
-      // Navigate to the "added_product" page
       Navigator.pushNamed(context, "/added_product");
     }
   }
@@ -146,11 +170,13 @@ class _AddProductsState extends State<AddProducts> {
               SizedBox(height: 30.0),
               _buildCategoryDropdown(),
               SizedBox(height: 30.0),
-              _buildSubCategoryDropdown(),
-              SizedBox(height: 30.0),
-              _buildTextField(productDescriptionController, 'Product Description'),
+              _buildProductDropdown(),
               SizedBox(height: 30.0),
               _buildTextField(productPriceController, 'Product Price', TextInputType.number),
+              SizedBox(height: 30.0),
+              _buildTextField(stockController, 'Stock', TextInputType.number),
+              SizedBox(height: 30.0),
+              _buildTextField(productDescriptionController, 'Product Description'),
               SizedBox(height: 30.0),
               _buildUploadButton(),
               if (uploadStatus != null)
@@ -232,7 +258,7 @@ class _AddProductsState extends State<AddProducts> {
     );
   }
 
-  Widget _buildSubCategoryDropdown() {
+  Widget _buildProductDropdown() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
@@ -244,12 +270,12 @@ class _AddProductsState extends State<AddProducts> {
           Expanded(
             child: DropdownButton<String>(
               hint: Text(
-                'Select Subcategory',
+                'Select Product Name',
                 style: TextStyle(
                   color: Colors.white,
                 ),
               ),
-              value: _selectedSubCategory,
+              value: _selectedProductName,
               icon: Icon(Icons.arrow_drop_down, color: Colors.black),
               iconSize: 24,
               elevation: 16,
@@ -259,15 +285,15 @@ class _AddProductsState extends State<AddProducts> {
               ),
               onChanged: (String? newValue) {
                 setState(() {
-                  _selectedSubCategory = newValue;
+                  _selectedProductName = newValue;
                 });
               },
               items: _selectedCategory != null
-                  ? subCategories[_selectedCategory]!
-                  .map<DropdownMenuItem<String>>((String subCategory) {
+                  ? productNames[_selectedCategory]!
+                  .map<DropdownMenuItem<String>>((String product) {
                 return DropdownMenuItem<String>(
-                  value: subCategory,
-                  child: Text(subCategory),
+                  value: product,
+                  child: Text(product),
                 );
               }).toList()
                   : [],
@@ -302,8 +328,10 @@ class _AddProductsState extends State<AddProducts> {
 
   @override
   void dispose() {
+    productNameController.dispose();
     productDescriptionController.dispose();
     productPriceController.dispose();
+    stockController.dispose();
     super.dispose();
   }
 }

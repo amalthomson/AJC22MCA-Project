@@ -32,6 +32,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
     final farmerApprovedQuery = await usersCollection
         .where('role', isEqualTo: 'Farmer')
+
         .where('isAdminApproved', isEqualTo: 'approved')
         .get();
     numberOfFarmers = farmerApprovedQuery.docs.length;

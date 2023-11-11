@@ -49,7 +49,7 @@ class ProductDetailsPage extends StatelessWidget {
                       ),
                     ),
                     title: Text(
-                      product['subCategory'] ?? 'N/A',
+                      product['productName'] ?? 'N/A',
                       style: TextStyle(
                         color: Colors.green,
                         fontSize: 24,

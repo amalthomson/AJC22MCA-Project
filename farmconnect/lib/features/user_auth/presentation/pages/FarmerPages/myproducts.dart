@@ -6,7 +6,7 @@ class MyProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black, // Background color
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
@@ -24,7 +24,7 @@ class MyProductsPage extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection('products')
             .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-            .where('isApproved', whereIn: ['Approved', 'no', 'Rejected'])
+            .where('isApproved', whereIn: ['Approved', 'Pending', 'Rejected'])
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -35,7 +35,13 @@ class MyProductsPage extends StatelessWidget {
 
           if (products.isEmpty) {
             return Center(
-              child: Text("You have no products."),
+              child: Text(
+                "You have no products.",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+              ),
             );
           }
 
@@ -43,17 +49,17 @@ class MyProductsPage extends StatelessWidget {
 
           for (final product in products) {
             final category = product['category'];
-            final subCategory = product['subCategory'];
+            final productName = product['productName'];
 
             if (!productsByCategory.containsKey(category)) {
               productsByCategory[category] = {};
             }
 
-            if (!productsByCategory[category]!.containsKey(subCategory)) {
-              productsByCategory[category]![subCategory] = [];
+            if (!productsByCategory[category]!.containsKey(productName)) {
+              productsByCategory[category]![productName] = [];
             }
 
-            productsByCategory[category]![subCategory]!.add(product);
+            productsByCategory[category]![productName]!.add(product);
           }
 
           return ListView.builder(
@@ -68,85 +74,125 @@ class MyProductsPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: ExpansionTile(
-                  title: Text('Category: $category'),
-                  children: categoryMap.keys.map((subcategory) {
-                    final subcategoryProducts = categoryMap[subcategory]!;
+                  title: Text(
+                    'Category: $category',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue, // Updated category color
+                    ),
+                  ),
+                  children: categoryMap.keys.map((productName) {
+                    final productItems = categoryMap[productName]!;
 
-                    return Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                    return Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: ExpansionTile(
+                        title: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(productItems[0]['productImage'] ?? ''),
+                              radius: 30,
+                            ),
+                            SizedBox(width: 16),
+                            Text(
+                              'Product Name: $productName',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
                         ),
-                        child: ExpansionTile(
-                          title: Text('Subcategory: $subcategory'),
-                          tilePadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          children: subcategoryProducts.map((product) {
-                            final productDescription = product['productDescription'];
-                            final isApproved = product['isApproved'];
-                            final productImage = product['productImage'] ?? '';
-                            final remark = product['remark'];
+                        children: productItems.map((product) {
+                          final productDescription = product['productDescription'];
+                          final productPrice = product['productPrice'];
+                          final stock = product['stock'];
 
-                            String status = 'Pending Approval';
-                            if (isApproved == 'approved') {
-                              status = 'Approved';
-                            } else if (isApproved == 'rejected') {
-                              status = 'Rejected';
-                            }
+                          String status = 'Pending Approval';
+                          if (product['isApproved'] == 'Approved') {
+                            status = 'Approved';
+                          } else if (product['isApproved'] == 'Rejected') {
+                            status = 'Rejected';
+                          }
 
-                            return Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Card(
-                                elevation: 4,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: ExpansionTile(
-                                  title: Text(productDescription),
-                                  tilePadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(productImage),
-                                    radius: 30,
+                          return Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(16), // Increased padding
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Product Price: ₹$productPrice.00", // Include the Rupee sign (₹) before the price
+                                    style: TextStyle(
+                                      fontSize: 20, // Larger font size
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold, // You can also add fontWeight for emphasis
+                                    ),
                                   ),
-                                  children: [
-                                    ListTile(
-                                      title: GestureDetector(
-                                        child: Text("Status: $status",
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            decoration: TextDecoration.underline,
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text("Remark"),
-                                                content: Text(remark != null ? remark : "No remark available"),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    child: Text("Close"),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
+                                  Text(
+                                    "Product Description: $productDescription",
+                                    style: TextStyle(
+                                      fontSize: 20, // Larger font size
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Stock: $stock KG",
+                                    style: TextStyle(
+                                      fontSize: 20, // Larger font size
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    child: Text(
+                                      "Check Status",
+                                      style: TextStyle(
+                                        color: status == 'Approved' ? Colors.green : status == 'Rejected' ? Colors.red : Colors.blue,
+                                        fontSize: 20, // Larger font size
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text("Status Remark"),
+                                            content: Text(
+                                              "Status: $status",
+                                              style: TextStyle(
+                                                color: status == 'Approved' ? Colors.green : status == 'Rejected' ? Colors.red : Colors.blue,
+                                                fontSize: 18, // Larger font size
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text("Close"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            );
-                          }).toList(),
-                        ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     );
                   }).toList(),

@@ -32,7 +32,7 @@ class PendingApprovalPage extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              final subcategory = product['subCategory'];
+              final productName = product['productName'];
               final productPrice = product['productPrice'];
               final productDescription = product['productDescription'];
               final category = product['category'];
@@ -54,7 +54,7 @@ class PendingApprovalPage extends StatelessWidget {
                       radius: 30,
                     ),
                     title: Text(
-                      subcategory, // Use subcategory instead of productName
+                      productName, // Use subcategory instead of productName
                       style: TextStyle(
                         color: Colors.green,
                         fontSize: 30,

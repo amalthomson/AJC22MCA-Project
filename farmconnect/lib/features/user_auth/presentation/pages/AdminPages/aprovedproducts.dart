@@ -26,7 +26,16 @@ class ApprovedProductsPage extends StatelessWidget {
 
           if (products.isEmpty) {
             return Center(
-              child: Text("No approved products found."),
+              child: Container(
+                margin: EdgeInsets.all(16.0), // Add margin
+                child: Text(
+                  "No approved products found.",
+                  style: TextStyle(
+                    color: Colors.white, // Set text color to white
+                    fontSize: 18,
+                  ),
+                ),
+              ),
             );
           }
 
@@ -34,7 +43,7 @@ class ApprovedProductsPage extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              final subcategory = product['subCategory'];
+              final productName = product['productName'];
               final productPrice = product['productPrice'];
               final productDescription = product['productDescription'];
               final category = product['category'];
@@ -55,7 +64,7 @@ class ApprovedProductsPage extends StatelessWidget {
                       radius: 30,
                     ),
                     title: Text(
-                      subcategory, // Use subcategory instead of productName
+                      productName, // Use subcategory instead of productName
                       style: TextStyle(
                         color: Colors.green,
                         fontSize: 30,

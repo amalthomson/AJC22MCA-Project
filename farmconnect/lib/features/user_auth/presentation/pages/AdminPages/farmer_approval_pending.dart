@@ -174,7 +174,7 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
         title: Text("Pending Farmer Approvals", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'Farmer').where('isAdminApproved', isEqualTo: 'no').snapshots(),
+        stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'Farmer').where('isAdminApproved', isEqualTo: 'pending').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
