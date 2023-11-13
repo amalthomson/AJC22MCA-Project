@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/update_details.dart';
 
 class BuyerProfilePage extends StatelessWidget {
   const BuyerProfilePage({Key? key});
@@ -12,10 +11,17 @@ class BuyerProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
-        title: Text("Buyer Profile", style: TextStyle(color: Colors.green, fontSize: 26,
-            fontWeight: FontWeight.bold)),
-        automaticallyImplyLeading: true,
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.black,
+        title: Text(
+          "Profile",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: Center(
         child: StreamBuilder(

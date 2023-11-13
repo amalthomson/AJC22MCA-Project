@@ -211,14 +211,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/testing');
+                    Navigator.pushNamed(context, '/products_categoryWise');
                   },
                   child: AdminDashboardTile(
-                    title: "Testing",
-                    count: rejectedProducts,
+                    title: "    Products\nCategory Wise",
+                    count: 4,
                     tileColor: Colors.red,
-                    iconData: Icons.cancel,
-                    gradientColors: [Colors.grey, Colors.grey],
+                    iconData: Icons.shopping_cart,
+                    gradientColors: [Colors.blue, Colors.blue],
                   ),
                 ),
               ],

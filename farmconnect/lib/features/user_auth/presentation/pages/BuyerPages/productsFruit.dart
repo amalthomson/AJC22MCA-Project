@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DairyProductsPage extends StatelessWidget {
+class FruitsProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +9,7 @@ class DairyProductsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          "Dairy Products",
+          "Fruits",
           style: TextStyle(
             color: Colors.white,
             fontSize: 24.0,
@@ -22,7 +22,7 @@ class DairyProductsPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('category', isEqualTo: 'Dairy')
+            .where('category', isEqualTo: 'Fruit')
             .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
@@ -32,22 +32,23 @@ class DairyProductsPage extends StatelessWidget {
             );
           }
 
-          final dairyProducts = snapshot.data!.docs;
+          final fruitProducts = snapshot.data!.docs;
 
-          if (dairyProducts.isEmpty) {
+          if (fruitProducts.isEmpty) {
             return Center(
-              child: Text("No dairy products found."),
+              child: Text("No fruit products found."),
             );
           }
 
           return ListView.builder(
-            itemCount: dairyProducts.length,
+            itemCount: fruitProducts.length,
             itemBuilder: (context, index) {
-              final product = dairyProducts[index].data() as Map<String, dynamic>;
-              final productName = product['productDescription'];
+              final product = fruitProducts[index];
+              final productName = product['productName'];
               final productDescription = product['productDescription'];
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
               final productImage = product['productImage'];
+              final productId = product['productId'];
 
               return Card(
                 elevation: 5,
@@ -121,9 +122,6 @@ class DairyProductsPage extends StatelessWidget {
                             SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: () {
-                                // Implement the logic to add the product to the cart here.
-                                // You can use a state management solution like Provider or Riverpod to manage the cart.
-                                // For simplicity, you can show a SnackBar as a placeholder.
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text("Added $productName to the cart"),

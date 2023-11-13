@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/admin_dashboard.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyer_dashboard.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/home_google.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/adminDashboard.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
@@ -108,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => GoogleHomePage(),
+                builder: (context) => BuyerDashboard(),
               ),
             );
           } else if (userRole == 'Admin') {
