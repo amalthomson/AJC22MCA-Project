@@ -1,9 +1,12 @@
+import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class FruitsProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -122,6 +125,13 @@ class FruitsProductsPage extends StatelessWidget {
                             SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: () {
+                                cartProvider.addToCart({
+                                  'productName': productName,
+                                  'productDescription': productDescription,
+                                  'productPrice': productPrice,
+                                  'productImage': productImage,
+                                  'productId': productId,
+                                });
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text("Added $productName to the cart"),

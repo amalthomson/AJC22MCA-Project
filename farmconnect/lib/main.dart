@@ -16,6 +16,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/pro
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/productsVegetable.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updatePassword.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updateProfile.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/admin_approval_pending.dart';
@@ -26,12 +27,21 @@ import 'package:farmconnect/features/app/splash_screen/splash_screen.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/email_verification_pending_page.dart';
+import 'package:provider/provider.dart';
 
 
 Future<void> main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  // runApp(MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CartProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

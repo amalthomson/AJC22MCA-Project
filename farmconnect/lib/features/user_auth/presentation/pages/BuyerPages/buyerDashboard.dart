@@ -1,4 +1,5 @@
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerProfile.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -28,6 +29,12 @@ class BuyerDashboard extends StatelessWidget {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage()));
+          },
+          child: Icon(Icons.shopping_cart),
+        ),
         backgroundColor: Colors.black,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -41,12 +48,6 @@ class BuyerDashboard extends StatelessWidget {
           ),
           backgroundColor: Colors.lightBlue[900],
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add_shopping_cart),
-              color: Colors.green,
-              onPressed: () {
-              },
-            ),
             IconButton(
               icon: Icon(Icons.logout),
               color: Colors.red,
