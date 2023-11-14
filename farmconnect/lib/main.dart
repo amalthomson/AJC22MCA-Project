@@ -3,6 +3,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/dis
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayFarmersApproved.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayFarmersRejected.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayFramersPending.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayProductsCaterogyWise.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsApproved.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsPending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsRejected.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
         '/admin_approval_pending' : (context) => AdminApprovalPendingPage(),
         '/farmer_approval_pending' : (context) => PendingFarmerApprovalPage(),
         '/farmer_approval_rejected' : (context) => RejectedFarmerApprovalPage(),
+        '/products_categoryWise' : (context) => CategoryWiseProducts(),
       },
     );
   }
