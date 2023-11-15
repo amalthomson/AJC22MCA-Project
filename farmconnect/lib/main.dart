@@ -21,6 +21,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/fa
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/admin_approval_pending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/termsAndConditions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:farmconnect/features/app/splash_screen/splash_screen.dart';
@@ -29,24 +30,34 @@ import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.d
 import 'package:farmconnect/features/user_auth/presentation/pages/email_verification_pending_page.dart';
 import 'package:provider/provider.dart';
 
-
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  // runApp(MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  final cartProvider = CartProvider();
+
+  final user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    cartProvider.setUserId(user.uid);
+  }
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => CartProvider(),
+    ChangeNotifierProvider.value(
+      value: cartProvider,
       child: MyApp(),
     ),
   );
 }
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      cartProvider.setUserId(user.uid);
+    }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'FarmConnect',

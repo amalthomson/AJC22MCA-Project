@@ -48,10 +48,28 @@ class BuyerDashboard extends StatelessWidget {
           ),
           backgroundColor: Colors.lightBlue[900],
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.logout),
-              color: Colors.red,
+            ElevatedButton(
               onPressed: () => _signOut(context),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 8.0), // Adjust the spacing between icon and text
+                  Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
           bottom: TabBar(

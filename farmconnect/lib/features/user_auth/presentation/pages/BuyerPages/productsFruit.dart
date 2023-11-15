@@ -1,4 +1,5 @@
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,11 @@ class FruitsProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      cartProvider.setUserId(user.uid);
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
