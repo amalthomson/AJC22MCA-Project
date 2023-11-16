@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CartProvider extends ChangeNotifier {
   String? _userId;
-
   List<Map<String, dynamic>> _cartItems = [];
 
   List<Map<String, dynamic>> get cartItems => _cartItems;
@@ -11,12 +13,29 @@ class CartProvider extends ChangeNotifier {
     _userId = userId;
   }
 
-  void addToCart(Map<String, dynamic> item) {
+  Future<void> fetchCartFromFirestore() async {
+    try {
+      final userCartCollection = FirebaseFirestore.instance.collection('cart').doc(_userId);
+      final cartData = await userCartCollection.get();
+
+      if (cartData.exists) {
+        _cartItems = List.from(cartData['cartItems']);
+        notifyListeners();
+      }
+    } catch (error) {
+      print('Error fetching cart from Firestore: $error');
+    }
+  }
+
+  Future<void> addToCart(Map<String, dynamic> item) async {
+    final userCartCollection = FirebaseFirestore.instance.collection('cart').doc(_userId);
+
     item['quantity'] = item['quantity'] ?? 1;
     _cartItems.add(item);
     notifyListeners();
-  }
 
+    await userCartCollection.set({'cartItems': _cartItems});
+  }
 
   double? totalAmount() {
     double total = 0.0;
@@ -27,14 +46,23 @@ class CartProvider extends ChangeNotifier {
     return total;
   }
 
-  void removeFromCart(String productId) {
+  Future<void> removeFromCart(String productId) async {
     _cartItems.removeWhere((item) => item['productId'] == productId);
     notifyListeners();
+
+    await _updateFirestoreCart();
   }
 
-  void clearCart() {
+  Future<void> clearCart() async {
     _cartItems.clear();
     notifyListeners();
+
+    await _updateFirestoreCart();
+  }
+
+  Future<void> _updateFirestoreCart() async {
+    final userCartCollection = FirebaseFirestore.instance.collection('cart').doc(_userId);
+    await userCartCollection.set({'cartItems': _cartItems});
   }
 
   int productCount(String productId) {
@@ -69,6 +97,7 @@ class CartProvider extends ChangeNotifier {
       }
 
       notifyListeners();
+      _updateFirestoreCart();
     }
   }
 
@@ -79,6 +108,7 @@ class CartProvider extends ChangeNotifier {
       _cartItems[productIndex]['quantity'] = (_cartItems[productIndex]['quantity'] ?? 0) + 1;
 
       notifyListeners();
+      _updateFirestoreCart();
     } else {
       addToCart({
         'productId': productId,
@@ -88,5 +118,9 @@ class CartProvider extends ChangeNotifier {
 
       notifyListeners(); // Notify listeners after adding a new item
     }
+  }
+
+  Future<void> initializeCartFromFirestore() async {
+    await fetchCartFromFirestore();
   }
 }

@@ -35,10 +35,11 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   final cartProvider = CartProvider();
-
   final user = FirebaseAuth.instance.currentUser;
+
   if (user != null) {
     cartProvider.setUserId(user.uid);
+    await cartProvider.initializeCartFromFirestore();
   }
 
   runApp(
