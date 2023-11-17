@@ -16,7 +16,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/pro
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/productsVegetable.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updatePassword.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updateProfile.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/viewBillsandInvoice.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/Cart/viewBillsandInvoice.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
