@@ -41,8 +41,7 @@ class BuyerProfilePage extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.all(16),
                 children: [
-                  SizedBox(height: 20), // Added spacing
-                  // Profile Image
+                  SizedBox(height: 20),
                   Center(
                     child: CircleAvatar(
                       radius: 60,
@@ -56,15 +55,15 @@ class BuyerProfilePage extends StatelessWidget {
                             : Icon(
                           Icons.person,
                           size: 60,
-                          color: Colors.white, // Fallback icon color
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), // Added spacing
+                  SizedBox(height: 20),
                   Card(
                     elevation: 5,
-                    color: Colors.transparent, // Set background color to transparent
+                    color: Colors.transparent,
                     child: Padding(
                       padding: EdgeInsets.all(16),
                       child: Column(
@@ -146,7 +145,58 @@ class BuyerProfilePage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 30), // Added spacing
+                  SizedBox(height: 20), // Added spacing
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/my_orders");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 8.0,
+                          ),
+                          child: Text(
+                            "My Orders",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 30),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/bills_and_invoice");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.orange,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16,
+                            horizontal: 8.0,
+                          ),
+                          child: Text(
+                            "Bills & Invoice",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
                 ],
               ),
             );
@@ -156,6 +206,7 @@ class BuyerProfilePage extends StatelessWidget {
     );
   }
 }
+
 
 class DashboardCard extends StatelessWidget {
   final String title;

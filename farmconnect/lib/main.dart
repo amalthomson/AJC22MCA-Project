@@ -16,6 +16,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/pro
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/productsVegetable.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updatePassword.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updateProfile.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/viewBillsandInvoice.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
@@ -29,6 +30,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dar
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/email_verification_pending_page.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +43,7 @@ Future<void> main() async {
     cartProvider.setUserId(user.uid);
     await cartProvider.initializeCartFromFirestore();
   }
+
 
   runApp(
     ChangeNotifierProvider.value(
@@ -93,6 +96,7 @@ class MyApp extends StatelessWidget {
         '/farmer_approval_pending' : (context) => PendingFarmerApprovalPage(),
         '/farmer_approval_rejected' : (context) => RejectedFarmerApprovalPage(),
         '/products_categoryWise' : (context) => CategoryWiseProducts(),
+        "/bills_and_invoice" : (context) => BillsPage(),
       },
     );
   }
