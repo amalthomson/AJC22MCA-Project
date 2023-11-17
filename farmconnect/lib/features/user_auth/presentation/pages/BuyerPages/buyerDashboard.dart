@@ -218,12 +218,35 @@ class ProductSearch extends SearchDelegate<String> {
             itemBuilder: (context, index) {
               String productName = searchResults[index];
 
-              return ListTile(
-                title: GestureDetector(
-                  onTap: () {
-                    _showProductDetailsDialog(context, productName);
-                  },
-                  child: Text(productName),
+              return Card(
+                elevation: 4.0,
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(16.0),
+                  title: GestureDetector(
+                    onTap: () {
+                      _showProductDetailsDialog(context, productName);
+                    },
+                    child: Text(
+                      productName,
+                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black87),
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20.0,
+                    color: Colors.blue,
+                  ),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               );
             },
@@ -233,9 +256,10 @@ class ProductSearch extends SearchDelegate<String> {
     );
   }
 
+
+
   void _showProductDetailsDialog(BuildContext context, String productName) async {
     try {
-      // Fetch product details from Firestore based on the productName
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('products')
           .where('productName', isEqualTo: productName)
@@ -244,66 +268,91 @@ class ProductSearch extends SearchDelegate<String> {
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot productSnapshot = querySnapshot.docs.first;
 
-        // Ensure the required fields exist in the document before accessing them
         if (productSnapshot.exists &&
             (productSnapshot.data() as Map<String, dynamic>).containsKey('productName') &&
             (productSnapshot.data() as Map<String, dynamic>).containsKey('productPrice') &&
             (productSnapshot.data() as Map<String, dynamic>).containsKey('productImage')) {
-          // Product found, extract details
           String productName = productSnapshot['productName'];
-          // Convert productPrice to double
           double price = double.parse(productSnapshot['productPrice']);
           String imageUrl = productSnapshot['productImage'];
 
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(productName),
-                content: Column(
-                  children: [
-                    Text('Price: \$${price.toStringAsFixed(2)}'),
-                    Image.network(
-                      imageUrl,
-                      height: 100,
-                    ),
-                  ],
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      // Implement logic to add the product to the cart
-                      // For simplicity, you can print a message for now
-                      print('Added $productName to the cart');
-                      Navigator.pop(context); // Close the dialog
-                    },
-                    child: Text('Add to Cart'),
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                child: Container(
+                  padding: EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Close the dialog
-                    },
-                    child: Text('Close'),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        productName,
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Price: \₹${price.toStringAsFixed(2)}',
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                      SizedBox(height: 16.0),
+                      Image.network(
+                        imageUrl,
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(height: 16.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              // Implement logic to add the product to the cart
+                              // For simplicity, you can print a message for now
+                              print('Added $productName to the cart');
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.green,
+                            ),
+                            child: Text('Add to Cart', style: TextStyle(color: Colors.white)),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close the dialog
+                            },
+                            child: Text('Close', style: TextStyle(color: Colors.black)),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             },
           );
         } else {
-          // Handle missing fields in the document
           print('Missing fields in the product document');
         }
       } else {
-        // Product not found in Firestore
         print('Product not found');
-        // You can display an error message or handle this case as appropriate
       }
     } catch (error) {
       print('Error fetching product details: $error');
-      // Handle the error (e.g., display an error message to the user)
     }
   }
-
 
 
 

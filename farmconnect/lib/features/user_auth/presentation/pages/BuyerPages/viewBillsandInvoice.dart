@@ -16,7 +16,6 @@ class BillsPage extends StatelessWidget {
     final User? user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      // Handle the case when the user is not logged in
       return Scaffold(
         appBar: AppBar(
           title: Text('Error'),
@@ -75,7 +74,7 @@ class BillsPage extends StatelessWidget {
               return Card(
                 elevation: 5,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                color: Colors.grey[900], // Dark background color
+                color: Colors.grey[900],
                 child: ListTile(
                   leading: Icon(
                     Icons.receipt,
@@ -96,7 +95,6 @@ class BillsPage extends StatelessWidget {
                         'Date: ${_formatDate(paymentData['timestamp'])}',
                         style: TextStyle(fontSize: 16, color: Colors.white),
                       ),
-                      // Add other bill details here
                     ],
                   ),
                   onTap: () {
@@ -135,7 +133,6 @@ class BillsPage extends StatelessWidget {
               SizedBox(height: 16),
               Text('Products:', style: TextStyle(fontWeight: FontWeight.bold)),
               ..._buildProductList(paymentData['products']),
-              // Add other order details here
             ],
           ),
           actions: [
@@ -196,13 +193,22 @@ class BillsPage extends StatelessWidget {
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) => pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: [
             pw.Header(
               level: 0,
               child: pw.Text('Order Details', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
             ),
             pw.SizedBox(height: 16),
-            // ... add content to the PDF
+            _buildDetailText('Payment ID:', paymentData['paymentId']),
+            _buildDetailText('Amount:', '${paymentData['amount']?.toStringAsFixed(2) ?? 'N/A'}'),
+            _buildDetailText('Date:', _formatDate(paymentData['timestamp'])),
+            _buildDetailText('Name:', paymentData['customerName']),
+            _buildDetailText('Email:', paymentData['customerEmail']),
+            _buildDetailText('Phone:', paymentData['customerPhone']),
+            pw.SizedBox(height: 16),
+            pw.Text('Products:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            ..._buildProductListForPDF(paymentData['products']),
           ],
         ),
       ),
@@ -213,6 +219,30 @@ class BillsPage extends StatelessWidget {
       filename: 'bill_${paymentData['paymentId']}.pdf',
     );
   }
+
+  pw.Widget _buildDetailText(String label, String value) {
+    return pw.Padding(
+      padding: pw.EdgeInsets.symmetric(vertical: 4),
+      child: pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text(label, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+          pw.SizedBox(width: 8),
+          pw.Text(value),
+        ],
+      ),
+    );
+  }
+
+  List<pw.Widget> _buildProductListForPDF(List<dynamic>? products) {
+    if (products == null || products.isEmpty) {
+      return [pw.Text('No products in the order.')];
+    }
+
+    return products.map<pw.Widget>((product) {
+      return pw.Text(
+        '- ${product['productName']} x${product['quantity']} ${product['totalPrice']?.toStringAsFixed(2) ?? 'N/A'}',
+      );
+    }).toList();
+  }
 }
-
-
