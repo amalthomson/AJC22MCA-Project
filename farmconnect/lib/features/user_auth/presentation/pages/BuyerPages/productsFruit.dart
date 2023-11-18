@@ -58,6 +58,12 @@ class FruitsProductsPage extends StatelessWidget {
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
               final productImage = product['productImage'];
               final productId = product['productId'];
+              final productStock = product['stock'] ?? 0;
+
+              bool isProductInCart = cartProvider.cartItems
+                  .any((item) => item['productId'] == productId);
+
+              bool isOutOfStock = productStock == 0;
 
               return Card(
                 elevation: 5,
@@ -129,10 +135,13 @@ class FruitsProductsPage extends StatelessWidget {
                             SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: () {
-                                bool isProductInCart = cartProvider.cartItems
-                                    .any((item) => item['productId'] == productId);
-
-                                if (isProductInCart) {
+                                if (isOutOfStock) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Out of Stock"),
+                                    ),
+                                  );
+                                } else if (isProductInCart) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: Text("$productName is already in the cart"),
@@ -155,10 +164,12 @@ class FruitsProductsPage extends StatelessWidget {
                                 }
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.orange),
+                                backgroundColor: MaterialStateProperty.all(
+                                  isOutOfStock ? Colors.grey : Colors.orange,
+                                ),
                               ),
                               child: Text(
-                                "Add to Cart",
+                                isOutOfStock ? "Out of Stock" : "Add to Cart",
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,

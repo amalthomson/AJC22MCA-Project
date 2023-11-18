@@ -16,12 +16,23 @@ class _AdminDashboardState extends State<AdminDashboard> {
   int pendingProducts = 0;
   int approvedProducts = 0;
   int rejectedProducts = 0;
+  int numberOfPayments = 0;
 
   @override
   void initState() {
     super.initState();
     fetchUserCounts();
     fetchProductCounts();
+    fetchPaymentCounts();
+  }
+
+  Future<void> fetchPaymentCounts() async {
+    final paymentsCollection = FirebaseFirestore.instance.collection('payments');
+
+    final paymentQuery = await paymentsCollection.get();
+    numberOfPayments = paymentQuery.docs.length;
+
+    setState(() {});
   }
 
   Future<void> fetchUserCounts() async {
@@ -96,13 +107,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
               final GoogleSignIn googleSignIn = GoogleSignIn();
 
               try {
-                // Sign out of Firebase Authentication
                 await _auth.signOut();
-
-                // Sign out of Google Sign-In
                 await googleSignIn.signOut();
-
-                // Navigate to the login page
                 Navigator.pushNamed(context, "/login");
               } catch (error) {
                 print("Error signing out: $error");
@@ -221,6 +227,30 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     gradientColors: [Colors.blue, Colors.blue],
                   ),
                 ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/paymentSuccessful');
+                  },
+                  child: AdminDashboardTile(
+                    title: " Payments\nSuccessful",
+                    count: numberOfPayments,
+                    tileColor: Colors.red,
+                    iconData: Icons.payments,
+                    gradientColors: [Colors.blue, Colors.blue],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/testing');
+                  },
+                  child: AdminDashboardTile(
+                    title: "Testing",
+                    count: 0,
+                    tileColor: Colors.grey,
+                    iconData: Icons.sms_failed_rounded,
+                    gradientColors: [Colors.grey, Colors.grey],
+                  ),
+                ),
               ],
             ),
             //
@@ -294,7 +324,6 @@ class AdminDashboardTile extends StatelessWidget {
     );
   }
 }
-
 
 class DashboardCard extends StatelessWidget {
   final String title;

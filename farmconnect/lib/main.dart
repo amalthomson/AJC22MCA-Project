@@ -4,6 +4,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/dis
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayFarmersRejected.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayFramersPending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayProductsCaterogyWise.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/paymentSuccessful.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsApproved.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsPending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsRejected.dart';
@@ -99,6 +100,7 @@ class MyApp extends StatelessWidget {
         '/products_categoryWise' : (context) => CategoryWiseProducts(),
         "/bills_and_invoice" : (context) => BillsPage(),
         "/my_orders" : (context) => MyOrdersPage(),
+        '/paymentSuccessful' : (context) => PaymentSuccessfulPage(),
       },
     );
   }

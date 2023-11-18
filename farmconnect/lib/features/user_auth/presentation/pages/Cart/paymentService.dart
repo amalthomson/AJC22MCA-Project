@@ -1,3 +1,5 @@
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/orderConfirmationPage.dart';
@@ -9,6 +11,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 class PaymentService {
   static void handlePaymentSuccess(BuildContext context, PaymentSuccessResponse response) async {
     await _storePaymentDetails(context, response.paymentId!);
+    _sendPaymentNotificationEmail(context);
     _navigateToOrderConfirmation(context, response.paymentId!);
   }
 
@@ -67,6 +70,91 @@ class PaymentService {
         builder: (context) => OrderConfirmationPage(paymentId: paymentId),
       ),
     );
+  }
+
+  static void _sendPaymentNotificationEmail(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    User? user = FirebaseAuth.instance.currentUser;
+    String customerEmail = user?.email ?? 'guest@example.com';
+
+    try {
+      sendNotificationEmail(customerEmail, true);
+    } catch (e) {
+      print("Error sending payment notification email: $e");
+    }
+  }
+
+  static void sendNotificationEmail(String recipient, bool isActive) async {
+    final smtpServer = gmail('namalthomson2024b@mca.ajce.in', 'Amal664422');
+    final message = Message()
+      ..from = Address('admin@farmconnect.com', 'Admin FarmConnect')
+      ..recipients.add(recipient)
+      ..subject = 'Payment Successful and Order Placed'
+      ..html = '''
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: 'Helvetica Neue', Arial, sans-serif;
+              background-color: #f9f9f9;
+              color: #333;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              border-radius: 10px;
+              overflow: hidden;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+              color: #fff;
+              text-align: center;
+              padding: 20px;
+            }
+            h1 {
+              color: #fff;
+            }
+            .content {
+              padding: 30px;
+              background-color: #ffffff; /* White */
+            }
+            p {
+              line-height: 1.6;
+              color: #333; /* Dark gray for better visibility on white */
+            }
+            .footer {
+              background-color: #f9f9f9;
+              padding: 20px;
+              text-align: center;
+              color: #888;
+              font-style: italic;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Payment Successful and Order Placed</h1>
+            </div>
+            <div class="content">
+              <p>Dear Customer,</p>
+              <p>Your payment was successful, and your order has been placed.</p>
+              <p>Thank you for shopping with us!</p>
+            </div>
+            <div class="footer">Best regards, Admin FarmConnect</div>
+          </div>
+        </body>
+      </html>
+    ''';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ${sendReport}');
+    } on MailerException catch (e) {
+      print('Message not sent. ${e.message}');
+    }
   }
 
   static void startPayment(BuildContext context) {
