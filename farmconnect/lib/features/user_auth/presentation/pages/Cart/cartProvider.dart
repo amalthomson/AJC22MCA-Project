@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class CartProvider extends ChangeNotifier {
   String? _userId;
@@ -31,10 +29,23 @@ class CartProvider extends ChangeNotifier {
     final userCartCollection = FirebaseFirestore.instance.collection('cart').doc(_userId);
 
     item['quantity'] = item['quantity'] ?? 1;
-    _cartItems.add(item);
-    notifyListeners();
 
-    await userCartCollection.set({'cartItems': _cartItems});
+    if (!_cartItems.contains(item)) {
+      final productCollection = FirebaseFirestore.instance.collection('products');
+      final productData = await productCollection.doc(item['productId']).get();
+      int productStock = productData['stock'] ?? 0;
+
+      if (productStock >= item['quantity']) {
+        await _updateStock(item['productId'], item['quantity'], false);
+        _cartItems.add(item);
+        notifyListeners();
+        await userCartCollection.set({'cartItems': _cartItems});
+      } else {
+        print('Insufficient stock for ${item['productName']}');
+      }
+    } else {
+      print('${item['productName']} is already in the cart');
+    }
   }
 
   double? totalAmount() {
@@ -47,16 +58,22 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<void> removeFromCart(String productId) async {
-    _cartItems.removeWhere((item) => item['productId'] == productId);
-    notifyListeners();
+    var removedItem = _cartItems.firstWhere(
+          (item) => item['productId'] == productId,
+      orElse: () => {},
+    );
 
-    await _updateFirestoreCart();
+    if (removedItem.isNotEmpty) {
+      await _updateStock(productId, removedItem['quantity'], true);
+      _cartItems.remove(removedItem);
+      notifyListeners();
+      await _updateFirestoreCart();
+    }
   }
 
   Future<void> clearCart() async {
     _cartItems.clear();
     notifyListeners();
-
     await _updateFirestoreCart();
   }
 
@@ -86,41 +103,58 @@ class CartProvider extends ChangeNotifier {
     return uniqueProducts.length;
   }
 
-  void decreaseQuantity(String productId) {
+  void decreaseQuantity(String productId) async {
     var productIndex = _cartItems.indexWhere((item) => item['productId'] == productId);
 
     if (productIndex != -1) {
       _cartItems[productIndex]['quantity'] = (_cartItems[productIndex]['quantity'] ?? 1) - 1;
 
       if (_cartItems[productIndex]['quantity'] == 0) {
-        _cartItems.removeAt(productIndex);
+        await removeFromCart(productId);
+      } else {
+        await _updateStock(productId, 1, true);
+        notifyListeners();
+        await _updateFirestoreCart();
       }
-
-      notifyListeners();
-      _updateFirestoreCart();
     }
   }
 
-  void increaseQuantity(String productId) {
+  void increaseQuantity(String productId) async {
     var productIndex = _cartItems.indexWhere((item) => item['productId'] == productId);
 
     if (productIndex != -1) {
       _cartItems[productIndex]['quantity'] = (_cartItems[productIndex]['quantity'] ?? 0) + 1;
 
+      await _updateStock(productId, 1, false);
       notifyListeners();
-      _updateFirestoreCart();
+      await _updateFirestoreCart();
     } else {
       addToCart({
         'productId': productId,
         'quantity': 1,
-        // Add other product details as needed
       });
 
-      notifyListeners(); // Notify listeners after adding a new item
+      notifyListeners();
     }
   }
 
   Future<void> initializeCartFromFirestore() async {
     await fetchCartFromFirestore();
+  }
+
+  Future<void> _updateStock(String productId, int quantity, bool increase) async {
+    final productCollection = FirebaseFirestore.instance.collection('products');
+    final productData = await productCollection.doc(productId).get();
+    int productStock = productData['stock'] ?? 0;
+
+    if (increase) {
+      productCollection.doc(productId).update({
+        'stock': productStock + quantity,
+      });
+    } else {
+      productCollection.doc(productId).update({
+        'stock': productStock - quantity,
+      });
+    }
   }
 }

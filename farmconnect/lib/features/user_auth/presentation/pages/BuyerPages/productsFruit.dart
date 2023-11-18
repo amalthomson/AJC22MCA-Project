@@ -76,9 +76,7 @@ class FruitsProductsPage extends StatelessWidget {
                           bottomLeft: Radius.circular(10.0),
                         ),
                         child: GestureDetector(
-                          onTap: () {
-                            // Add logic to display a larger image or navigate to a detailed view.
-                          },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: [
@@ -131,18 +129,30 @@ class FruitsProductsPage extends StatelessWidget {
                             SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: () {
-                                cartProvider.addToCart({
-                                  'productName': productName,
-                                  'productDescription': productDescription,
-                                  'productPrice': productPrice,
-                                  'productImage': productImage,
-                                  'productId': productId,
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Added $productName to the cart"),
-                                  ),
-                                );
+                                bool isProductInCart = cartProvider.cartItems
+                                    .any((item) => item['productId'] == productId);
+
+                                if (isProductInCart) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("$productName is already in the cart"),
+                                    ),
+                                  );
+                                } else {
+                                  cartProvider.addToCart({
+                                    'productName': productName,
+                                    'productDescription': productDescription,
+                                    'productPrice': productPrice,
+                                    'productImage': productImage,
+                                    'productId': productId,
+                                  });
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Added $productName to the cart"),
+                                    ),
+                                  );
+                                }
                               },
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(Colors.orange),

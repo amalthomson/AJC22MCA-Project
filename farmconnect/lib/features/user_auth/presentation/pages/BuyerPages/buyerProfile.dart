@@ -94,162 +94,105 @@ class BuyerProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/update_password");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 8.0,
-                          ),
-                          child: Text(
-                            "Reset Password",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/update_password");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      SizedBox(width: 30),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/update_details");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 8.0,
-                          ),
-                          child: Text(
-                            "Edit Profile",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                      elevation: 8,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32.0,
                       ),
-                    ],
+                      child: Text(
+                        "Reset Password",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 20), // Added spacing
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/my_orders");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.green,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 8.0,
-                          ),
-                          child: Text(
-                            "My Orders",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/update_details");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      onPrimary: Colors.white,
+                      shape: StadiumBorder(),
+                      elevation: 8,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32.0,
                       ),
-                      SizedBox(width: 30),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/bills_and_invoice");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.orange,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 16,
-                            horizontal: 8.0,
-                          ),
-                          child: Text(
-                            "Bills & Invoice",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                      child: Text(
+                        "Edit Profile",
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/my_orders");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 8,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32.0,
+                      ),
+                      child: Text(
+                        "My Orders",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/bills_and_invoice");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.orange,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 8,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 32.0,
+                      ),
+                      child: Text(
+                        "Bills & Invoice",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 30),
                 ],
               ),
             );
           },
-        ),
-      ),
-    );
-  }
-}
-
-
-class DashboardCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  DashboardCard({
-    required this.title,
-    required this.icon,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      color: Colors.red, // Set the background color to red
-      child: InkWell(
-        onTap: onPressed,
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 36,
-                color: Colors.white, // Set the text color to white
-              ),
-              SizedBox(width: 16),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Set the text color to white
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

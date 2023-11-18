@@ -209,7 +209,7 @@ class BillsPage extends StatelessWidget {
           _buildHeader(),
           pw.Header(
             level: 0,
-            child: pw.Text('Order Details', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 18)),
+            child: pw.Text('Order Details', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 24)),
           ),
           pw.SizedBox(height: 16),
           _buildCustomerInfo(paymentData),
@@ -235,7 +235,7 @@ class BillsPage extends StatelessWidget {
         children: [
           pw.Text('FarmConnect', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 36)),
           pw.Text('Invoice', style: pw.TextStyle(fontSize: 24)),
-          pw.Divider(),
+          pw.Text('****************************', style: pw.TextStyle(fontSize: 24)),
         ],
       ),
     );
@@ -252,19 +252,12 @@ class BillsPage extends StatelessWidget {
               _buildDetailText('Name:', paymentData['customerName'], fontSize: 18, fontWeight: pw.FontWeight.bold),
               _buildDetailText('Email:', paymentData['customerEmail']),
               _buildDetailText('Phone:', paymentData['customerPhone']),
-            ],
-          ),
-        ),
-        pw.SizedBox(width: 16),
-        pw.Expanded(
-          child: pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
               _buildDetailText('Payment ID:', paymentData['paymentId']),
               _buildDetailText('Date:', _formatDate(paymentData['timestamp'])),
             ],
           ),
         ),
+        pw.SizedBox(width: 16),
       ],
     );
   }
@@ -274,13 +267,12 @@ class BillsPage extends StatelessWidget {
       return pw.Text('No products in the order.');
     }
 
-    const tableHeaders = ['Product', 'Quantity', 'Price', 'Total'];
+    const tableHeaders = ['Product', 'Quantity', 'Total'];
     final List<List<String>> tableData = products.map((product) {
       return [
         product['productName'].toString(),
         product['quantity'].toString(),
-        '₹${(product['price'] ?? 0.0).toStringAsFixed(2)}',
-        '₹${(product['totalPrice'] ?? 0.0).toStringAsFixed(2)}',
+        '${(product['totalPrice'] ?? 0.0).toStringAsFixed(2)}',
       ];
     }).toList();
 
@@ -307,7 +299,7 @@ class BillsPage extends StatelessWidget {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.end,
       children: [
-        _buildDetailText('Total Amount:', '₹${amount.toStringAsFixed(2)}', fontSize: 18, fontWeight: pw.FontWeight.bold),
+        _buildDetailText('Total Amount:', '${amount.toStringAsFixed(2)}', fontSize: 18, fontWeight: pw.FontWeight.bold),
       ],
     );
   }
@@ -318,8 +310,6 @@ class BillsPage extends StatelessWidget {
       children: [
         pw.SizedBox(height: 16),
         pw.Text('Additional Details:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-        _buildDetailText('Billing Address:', paymentData['billingAddress'] ?? 'N/A'),
-        _buildDetailText('Farm Name:', userData?['farmName'] ?? 'N/A'),
         _buildDetailText('Phone:', userData?['phone'] ?? 'N/A'),
         _buildDetailText('Street:', userData?['street'] ?? 'N/A'),
         _buildDetailText('Town:', userData?['town'] ?? 'N/A'),
@@ -330,7 +320,7 @@ class BillsPage extends StatelessWidget {
     );
   }
 
-  pw.Widget _buildDetailText(String label, String value, {double fontSize = 14, pw.FontWeight? fontWeight}) {
+  pw.Widget _buildDetailText(String label, String value, {double fontSize = 18, pw.FontWeight? fontWeight}) {
     return pw.Padding(
       padding: pw.EdgeInsets.symmetric(vertical: 4),
       child: pw.Row(

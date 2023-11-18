@@ -1,18 +1,21 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerProfile.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartPage.dart';
-import 'package:flutter/material.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'productsDairy.dart';
-import 'productsFruit.dart';
-import 'productsPoultry.dart';
-import 'productsVegetable.dart';
+import 'package:provider/provider.dart';
 
 class ProductSearch extends SearchDelegate<String> {
   final Future<List<String>> productList;
 
   ProductSearch(this.productList);
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return ThemeData(
+      primaryColor: Colors.black, // Change this to your desired color
+      brightness: Brightness.dark,
+    );
+  }
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -38,67 +41,78 @@ class ProductSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return FutureBuilder<List<String>>(
-      future: productList,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else {
-          List<String> products = snapshot.data!;
-          List<String> searchResults = products
-              .where((product) => product.toLowerCase().contains(query.toLowerCase()))
-              .toList();
+    final cartProvider = Provider.of<CartProvider>(context);
+    final user = FirebaseAuth.instance.currentUser;
 
-          if (searchResults.isEmpty) {
-            return Center(child: Text('No products matching the search.'));
+    if (user != null) {
+      cartProvider.setUserId(user.uid);
+    }
+
+    return Container(
+      color: Colors.black, // Set the background color of the page to black
+      child: FutureBuilder<List<String>>(
+        future: productList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            List<String> products = snapshot.data!;
+            List<String> searchResults = products
+                .where((product) => product.toLowerCase().contains(query.toLowerCase()))
+                .toList();
+
+            if (searchResults.isEmpty) {
+              return Center(child: Text('No products matching the search.'));
+            }
+
+            return ListView.builder(
+              itemCount: searchResults.length,
+              itemBuilder: (context, index) {
+                String productName = searchResults[index];
+
+                return Card(
+                  elevation: 4.0,
+                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  color: Colors.white, // Set the background color of the card
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(16.0),
+                    title: GestureDetector(
+                      onTap: () {
+                        _showProductDetailsDialog(context, productName, cartProvider);
+                      },
+                      child: Text(
+                        productName,
+                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black87),
+                      ),
+                    ),
+                    trailing: Icon(
+                      Icons.add_shopping_cart,
+                      size: 20.0,
+                      color: Colors.blue,
+                    ),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      child: Icon(
+                        Icons.arrow_circle_down,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
           }
-
-          return ListView.builder(
-            itemCount: searchResults.length,
-            itemBuilder: (context, index) {
-              String productName = searchResults[index];
-
-              return Card(
-                elevation: 4.0,
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: ListTile(
-                  contentPadding: EdgeInsets.all(16.0),
-                  title: GestureDetector(
-                    onTap: () {
-                      _showProductDetailsDialog(context, productName);
-                    },
-                    child: Text(
-                      productName,
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black87),
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20.0,
-                    color: Colors.blue,
-                  ),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Icon(
-                      Icons.shopping_cart,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        }
-      },
+        },
+      ),
     );
   }
 
-  void _showProductDetailsDialog(BuildContext context, String productName) async {
+  void _showProductDetailsDialog(BuildContext context, String productName, CartProvider cartProvider) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('products')
@@ -137,6 +151,7 @@ class ProductSearch extends SearchDelegate<String> {
                       Text(
                         productName,
                         style: TextStyle(
+                          color: Colors.black,
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -144,7 +159,7 @@ class ProductSearch extends SearchDelegate<String> {
                       SizedBox(height: 8.0),
                       Text(
                         'Price: \₹${price.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 20.0),
+                        style: TextStyle(color: Colors.black, fontSize: 20.0),
                       ),
                       SizedBox(height: 16.0),
                       Image.network(
@@ -159,9 +174,30 @@ class ProductSearch extends SearchDelegate<String> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              // Implement logic to add the product to the cart
-                              // For simplicity, you can print a message for now
-                              print('Added $productName to the cart');
+                              bool isProductInCart = cartProvider.cartItems
+                                  .any((item) => item['productId'] == productSnapshot.id);
+
+                              if (isProductInCart) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("$productName is already in the cart"),
+                                  ),
+                                );
+                              } else {
+                                cartProvider.addToCart({
+                                  'productName': productName,
+                                  'productPrice': price,
+                                  'productImage': imageUrl,
+                                  'productId': productSnapshot.id,
+                                });
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Added $productName to the cart"),
+                                  ),
+                                );
+                              }
+
                               Navigator.pop(context); // Close the dialog
                             },
                             style: ElevatedButton.styleFrom(
@@ -173,7 +209,10 @@ class ProductSearch extends SearchDelegate<String> {
                             onPressed: () {
                               Navigator.pop(context); // Close the dialog
                             },
-                            child: Text('Close', style: TextStyle(color: Colors.black)),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                            ),
+                            child: Text('Close', style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),

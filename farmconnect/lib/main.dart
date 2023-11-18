@@ -16,6 +16,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/pro
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/productsVegetable.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updatePassword.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/updateProfile.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/Cart/myOrders.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/viewBillsandInvoice.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
         '/farmer_approval_rejected' : (context) => RejectedFarmerApprovalPage(),
         '/products_categoryWise' : (context) => CategoryWiseProducts(),
         "/bills_and_invoice" : (context) => BillsPage(),
+        "/my_orders" : (context) => MyOrdersPage(),
       },
     );
   }
