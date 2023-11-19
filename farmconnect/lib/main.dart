@@ -32,7 +32,6 @@ import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dar
 import 'package:farmconnect/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/email_verification_pending_page.dart';
 import 'package:provider/provider.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

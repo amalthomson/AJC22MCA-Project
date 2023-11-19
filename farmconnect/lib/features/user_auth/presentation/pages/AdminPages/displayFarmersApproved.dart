@@ -39,16 +39,6 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
               final profilePictureUrl = farmer['profileImageUrl'] ?? '';
               var isActive = farmer['isActive'] ?? 'no';
 
-              final tileColors = [
-                Colors.purple,
-                Colors.lightBlue,
-                Colors.lightGreen,
-                Colors.amber,
-                Colors.pink,
-              ];
-
-              final tileColor = tileColors[index % tileColors.length];
-
               return Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Card(
@@ -139,7 +129,6 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                             ),
                           ),
                           onTap: () {
-                            // Navigate to the new page to display products
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -156,15 +145,12 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                       child: Switch(
                         value: isActive == 'yes',
                         onChanged: (value) {
-                          // Update the 'isActive' field in Firestore as a string
                           FirebaseFirestore.instance.collection('users').doc(userId).update({
                             'isActive': value ? 'yes' : 'no',
                           });
                           setState(() {
                             isActive = value ? 'yes' : 'no';
                           });
-
-                          // Show a Snackbar
                           final snackBarMessage = isActive == 'yes' ? 'User Enabled' : 'User Disabled';
                           final snackBarColor = isActive == 'yes' ? Colors.green : Colors.red; // Set color based on status
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -177,8 +163,6 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
                               duration: Duration(seconds: 2),
                             ),
                           );
-
-                          // Send a notification email
                           sendNotificationEmail(farmer['email'], isActive == 'yes');
                         },
                         activeColor: Colors.green,

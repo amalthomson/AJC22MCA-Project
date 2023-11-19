@@ -105,7 +105,6 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                       child: Switch(
                         value: isActive == 'yes',
                         onChanged: (value) async {
-                          // Update the 'isActive' field in Firestore as a string
                           await FirebaseFirestore.instance.collection('users').doc(userId).update({
                             'isActive': value ? 'yes' : 'no',
                           });
@@ -113,7 +112,6 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                             isActive = value ? 'yes' : 'no';
                           });
 
-                          // Show a Snackbar
                           final snackBarMessage = isActive == 'yes' ? 'User Enabled' : 'User Disabled';
                           final snackBarColor = isActive == 'yes' ? Colors.green : Colors.red;
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -123,8 +121,6 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
                               duration: Duration(seconds: 2),
                             ),
                           );
-
-                          // Send a notification email
                           sendNotificationEmail(buyer['email'], isActive == 'yes');
                         },
                         activeColor: Colors.green,

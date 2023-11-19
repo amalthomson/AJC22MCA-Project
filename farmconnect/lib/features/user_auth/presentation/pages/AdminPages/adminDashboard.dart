@@ -28,22 +28,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   Future<void> fetchPaymentCounts() async {
     final paymentsCollection = FirebaseFirestore.instance.collection('payments');
-
     final paymentQuery = await paymentsCollection.get();
     numberOfPayments = paymentQuery.docs.length;
-
     setState(() {});
   }
 
   Future<void> fetchUserCounts() async {
     final usersCollection = FirebaseFirestore.instance.collection('users');
-
     final buyerQuery = await usersCollection.where('role', isEqualTo: 'Buyer').get();
     numberOfBuyers = buyerQuery.docs.length;
 
     final farmerApprovedQuery = await usersCollection
         .where('role', isEqualTo: 'Farmer')
-
         .where('isAdminApproved', isEqualTo: 'approved')
         .get();
     numberOfFarmers = farmerApprovedQuery.docs.length;
@@ -65,16 +61,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   Future<void> fetchProductCounts() async {
     final productsCollection = FirebaseFirestore.instance.collection('products');
-
     final pendingQuery = await productsCollection.where('isApproved', isEqualTo: 'Pending').get();
     pendingProducts = pendingQuery.docs.length;
-
     final approvedQuery = await productsCollection.where('isApproved', isEqualTo: 'Approved').get();
     approvedProducts = approvedQuery.docs.length;
-
     final rejectedQuery = await productsCollection.where('isApproved', isEqualTo: 'Rejected').get();
     rejectedProducts = rejectedQuery.docs.length;
-
     setState(() {});
   }
 
@@ -105,7 +97,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
             onPressed: () async {
               final FirebaseAuth _auth = FirebaseAuth.instance;
               final GoogleSignIn googleSignIn = GoogleSignIn();
-
               try {
                 await _auth.signOut();
                 await googleSignIn.signOut();
@@ -253,7 +244,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
               ],
             ),
-            //
           ],
         ),
       ),
@@ -325,56 +315,4 @@ class AdminDashboardTile extends StatelessWidget {
   }
 }
 
-class DashboardCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final VoidCallback onPressed;
-  final Color backgroundColor;
-  final Color textColor;
-
-  DashboardCard({
-    required this.title,
-    required this.icon,
-    required this.onPressed,
-    required this.backgroundColor,
-    required this.textColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20), // Rounded edges
-      ),
-      clipBehavior: Clip.antiAlias, // Ensure anti-aliasing for border
-      color: backgroundColor,
-      child: InkWell(
-        onTap: onPressed,
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 36,
-                color: textColor,
-              ),
-              SizedBox(width: 16),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 

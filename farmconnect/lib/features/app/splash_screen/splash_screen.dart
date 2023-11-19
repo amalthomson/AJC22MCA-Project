@@ -26,10 +26,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image
           Image.asset(
             'assets/icons/home.png',
-            fit: BoxFit.cover, // Adjust the fit as needed
+            fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
@@ -42,15 +41,15 @@ class _SplashScreenState extends State<SplashScreen> {
                   height: 120,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                        60), // Adjust the radius as needed
+                        60),
                     border: Border.all(
-                      color: Colors.white, // Set the border color to white
-                      width: 4.0, // Adjust the border width as needed
+                      color: Colors.white,
+                      width: 4.0,
                     ),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(
-                        60), // Same radius as the container
+                        60),
                     child: Image.asset(
                       'assets/icons/appLogoLight.png',
                       width: 100,
@@ -60,7 +59,6 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 SizedBox(height: 16),
-                // Text with different styles for each line
                 Text(
                   "Welcome",
                   style: TextStyle(
