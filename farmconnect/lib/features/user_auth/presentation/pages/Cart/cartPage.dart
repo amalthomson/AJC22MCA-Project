@@ -42,35 +42,6 @@ class _CartPageState extends State<CartPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text("Cart"),
-        actions: [
-          if (cartItems.isNotEmpty)
-            ElevatedButton(
-              onPressed: () {
-                cartProvider.clearCart();
-                Navigator.pop(context);
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 1.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.clear,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 8.0),
-                    Text(
-                      'Clear Cart',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
       ),
       body: cartItems.isEmpty
           ? Center(

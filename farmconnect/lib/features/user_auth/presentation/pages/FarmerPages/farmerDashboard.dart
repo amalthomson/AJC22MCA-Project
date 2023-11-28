@@ -12,12 +12,6 @@ class FarmerDashboard extends StatefulWidget {
 }
 
 class _FarmerDashboardState extends State<FarmerDashboard> {
-  // final TextEditingController productNameController = TextEditingController();
-  // final TextEditingController productDescriptionController = TextEditingController();
-  // final TextEditingController productPriceController = TextEditingController();
-  // List<String> categories = ["Dairy", "Fruit", "Vegetable", "Poultry"];
-  // String? uploadStatus;
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -81,12 +75,4 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
       ),
     );
   }
-
-  // @override
-  // void dispose() {
-  //   productNameController.dispose();
-  //   productDescriptionController.dispose();
-  //   productPriceController.dispose();
-  //   super.dispose();
-  // }
 }

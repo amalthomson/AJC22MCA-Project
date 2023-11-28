@@ -36,15 +36,12 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   final cartProvider = CartProvider();
   final user = FirebaseAuth.instance.currentUser;
-
   if (user != null) {
     cartProvider.setUserId(user.uid);
     await cartProvider.initializeCartFromFirestore();
   }
-
 
   runApp(
     ChangeNotifierProvider.value(
@@ -53,7 +50,6 @@ Future<void> main() async {
     ),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   @override
