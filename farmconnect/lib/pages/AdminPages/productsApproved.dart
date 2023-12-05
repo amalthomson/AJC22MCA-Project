@@ -1,5 +1,5 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsPending.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsRejected.dart';
+import 'package:farmconnect/pages/AdminPages/productsPending.dart';
+import 'package:farmconnect/pages/AdminPages/productsRejected.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

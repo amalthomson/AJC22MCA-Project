@@ -1,6 +1,6 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerProfile.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/productSearch.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartPage.dart';
+import 'package:farmconnect/pages/BuyerPages/buyerProfile.dart';
+import 'package:farmconnect/pages/BuyerPages/productSearch.dart';
+import 'package:farmconnect/pages/Cart/cartPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';

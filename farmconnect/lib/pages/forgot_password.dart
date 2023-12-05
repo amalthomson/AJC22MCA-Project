@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 import 'login_page.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -38,7 +37,7 @@ class ForgotPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         title: Text("Forget Password", style: TextStyle(color: Colors.green, fontSize: 20,

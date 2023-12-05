@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 
 class BuyerProfilePage extends StatelessWidget {
   const BuyerProfilePage({Key? key});
@@ -9,7 +8,7 @@ class BuyerProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(

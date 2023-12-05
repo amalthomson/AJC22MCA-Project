@@ -1,8 +1,8 @@
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/Cart/orderConfirmationPage.dart';
+import 'package:farmconnect/pages/Cart/cartProvider.dart';
+import 'package:farmconnect/pages/Cart/orderConfirmationPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 
 class UpdatePasswordPage extends StatefulWidget {
   @override
@@ -21,7 +20,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         title: Text("Update Password", style: TextStyle(color: Colors.green, fontSize: 20,

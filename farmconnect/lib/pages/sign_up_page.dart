@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/login_page.dart';
+import 'package:farmconnect/features/user_auth/firebase_auth_services.dart';
+import 'package:farmconnect/pages/login_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);

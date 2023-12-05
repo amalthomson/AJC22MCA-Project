@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
+import 'package:farmconnect/pages/Cart/cartProvider.dart';
 
 class DairyProductsPage extends StatelessWidget {
   @override

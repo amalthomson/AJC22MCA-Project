@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/adminDashboard.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerDashboard.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/forgot_password.dart';
+import 'package:farmconnect/features/user_auth/firebase_auth_services.dart';
+import 'package:farmconnect/pages/AdminPages/adminDashboard.dart';
+import 'package:farmconnect/pages/BuyerPages/buyerDashboard.dart';
+import 'package:farmconnect/pages/FarmerPages/farmerDashboard.dart';
+import 'package:farmconnect/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import '../../firebase_auth_implementation/firebase_auth_services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'sign_up_page.dart';
 
@@ -176,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.blueGrey[900],

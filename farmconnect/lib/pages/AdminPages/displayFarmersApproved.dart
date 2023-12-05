@@ -1,5 +1,4 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayProductsFarmerWise.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayStock.dart';
+import 'package:farmconnect/pages/AdminPages/displayProductsFarmerWise.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mailer/mailer.dart';

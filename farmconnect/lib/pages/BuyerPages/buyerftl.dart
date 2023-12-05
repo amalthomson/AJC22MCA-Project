@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 
 class BuyerFTLPage extends StatefulWidget {
   @override
@@ -119,7 +118,7 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.blueGrey[900],

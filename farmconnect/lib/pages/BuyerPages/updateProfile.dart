@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:farmconnect/features/user_auth/presentation/pages/common/colors.dart';
 
 class UpdateDetailsPage extends StatefulWidget {
   @override
@@ -88,7 +87,7 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: blackColor,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         title: Text("Update User Details", style: TextStyle(color: Colors.green, fontSize: 20,

@@ -1,19 +1,24 @@
+import 'package:farmconnect/pages/Cart/cartProvider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 
-class VegetableProductsPage extends StatelessWidget {
+class FruitsProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      cartProvider.setUserId(user.uid);
+    }
 
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          "Vegetables",
+          "Fruits",
           style: TextStyle(
             color: Colors.white,
             fontSize: 24.0,
@@ -26,7 +31,7 @@ class VegetableProductsPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('category', isEqualTo: 'Vegetable')
+            .where('category', isEqualTo: 'Fruit')
             .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
@@ -36,9 +41,9 @@ class VegetableProductsPage extends StatelessWidget {
             );
           }
 
-          final vegetableProducts = snapshot.data!.docs;
+          final fruitProducts = snapshot.data!.docs;
 
-          if (vegetableProducts.isEmpty) {
+          if (fruitProducts.isEmpty) {
             return Center(
               child: Text(
                 "No products available at the moment.\n\nPlease check back later,\n as we are updating our stocks.",
@@ -51,10 +56,12 @@ class VegetableProductsPage extends StatelessWidget {
             );
           }
 
+
+
           return ListView.builder(
-            itemCount: vegetableProducts.length,
+            itemCount: fruitProducts.length,
             itemBuilder: (context, index) {
-              final product = vegetableProducts[index];
+              final product = fruitProducts[index];
               final productName = product['productName'];
               final productDescription = product['productDescription'];
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
@@ -167,7 +174,7 @@ class VegetableProductsPage extends StatelessWidget {
                               },
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                  isOutOfStock ? Colors.grey : Colors.orange,
+                                  isOutOfStock ? Colors.grey : Colors.green,
                                 ),
                               ),
                               child: Text(

@@ -1,4 +1,4 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
+import 'package:farmconnect/pages/Cart/cartProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

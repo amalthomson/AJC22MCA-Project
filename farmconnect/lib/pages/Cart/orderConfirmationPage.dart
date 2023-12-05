@@ -1,4 +1,4 @@
-import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerDashboard.dart';
+import 'package:farmconnect/pages/BuyerPages/buyerDashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
