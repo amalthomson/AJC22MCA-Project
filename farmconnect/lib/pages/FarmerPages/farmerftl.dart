@@ -81,7 +81,8 @@ class _FarmerFTLPageState extends State<FarmerFTLPage> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pushNamed(context, '/admin_approval_pending');
+        Navigator.pushReplacementNamed(context, "/admin_approval_pending");
+        //Navigator.pushNamed(context, '/admin_approval_pending');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

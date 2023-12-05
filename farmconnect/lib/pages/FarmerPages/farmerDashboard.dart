@@ -39,7 +39,8 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
                 try {
                   await _auth.signOut();
                   await googleSignIn.signOut();
-                  Navigator.pushNamed(context, "/login");
+                  Navigator.pushReplacementNamed(context, "/login");
+                  //Navigator.pushNamed(context, "/login");
                 } catch (error) {
                   print("Error signing out: $error");
                 }

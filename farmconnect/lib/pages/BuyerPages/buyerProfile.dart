@@ -96,6 +96,7 @@ class BuyerProfilePage extends StatelessWidget {
                   SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
+                      Navigator.pushReplacementNamed(context, "/buyer_home");
                       Navigator.pushNamed(context, "/update_password");
                     },
                     style: ElevatedButton.styleFrom(
@@ -142,7 +143,8 @@ class BuyerProfilePage extends StatelessWidget {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/my_orders");
+                      Navigator.pushReplacementNamed(context, "/my_orders");
+                      //Navigator.pushNamed(context, "/my_orders");
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
@@ -166,7 +168,8 @@ class BuyerProfilePage extends StatelessWidget {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/bills_and_invoice");
+                      Navigator.pushReplacementNamed(context, "/bills_and_invoice");
+                      //Navigator.pushNamed(context, "/bills_and_invoice");
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.orange,

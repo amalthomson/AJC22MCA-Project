@@ -305,7 +305,7 @@ class _LoginPageState extends State<LoginPage> {
                               alignment: Alignment.bottomRight,
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ForgotPassword(),
@@ -367,7 +367,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SignUpPage(),
@@ -447,21 +447,27 @@ class _LoginPageState extends State<LoginPage> {
 
                 if (ftl == 'no') {
                   if (role == 'Buyer') {
-                    Navigator.pushNamedAndRemoveUntil(context, "/buyer_home", (route) => false,);
+                    Navigator.pushReplacementNamed(context, "/buyer_home");
+                    //Navigator.pushNamedAndRemoveUntil(context, "/buyer_home", (route) => false,);
                   } else if (role == 'Admin') {
-                    Navigator.pushNamedAndRemoveUntil(context, "/admin_dashboard", (route) => false,);
+                    Navigator.pushReplacementNamed(context, "/admin_dashboard");
+                    //Navigator.pushNamedAndRemoveUntil(context, "/admin_dashboard", (route) => false,);
                   } else if (role == 'Farmer') {
                     if (isAdminApproved == 'approved') {
-                      Navigator.pushNamedAndRemoveUntil(context, "/farmer_dash", (route) => false,);
+                      Navigator.pushReplacementNamed(context, "/farmer_dash");
+                      //Navigator.pushNamedAndRemoveUntil(context, "/farmer_dash", (route) => false,);
                     } else {
-                      Navigator.pushNamedAndRemoveUntil(context, '/admin_approval_pending', (route) => false,);
+                      Navigator.pushReplacementNamed(context, "/admin_approval_pending");
+                      //Navigator.pushNamedAndRemoveUntil(context, '/admin_approval_pending', (route) => false,);
                     }
                   }
                 } else if (ftl == 'yes') {
                   if (role == 'Farmer') {
-                    Navigator.pushNamedAndRemoveUntil(context, "/farmer_ftl", (route) => false,);
+                    Navigator.pushReplacementNamed(context, "/farmer_ftl");
+                    //Navigator.pushNamedAndRemoveUntil(context, "/farmer_ftl", (route) => false,);
                   } else if (role == 'Buyer') {
-                    Navigator.pushNamedAndRemoveUntil(context, "/buyer_ftl", (route) => false,);
+                    Navigator.pushReplacementNamed(context, "/buyer_ftl");
+                    //Navigator.pushNamedAndRemoveUntil(context, "/buyer_ftl", (route) => false,);
                   }
                 } else {
                   loading = false;

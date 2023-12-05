@@ -226,8 +226,8 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
           // so now update the password
           await user.updatePassword(newPassword);
           await FirebaseAuth.instance.signOut();
-          Navigator.pushNamed(context, "/login");
-
+          //Navigator.pushNamed(context, "/login");
+          Navigator.pushReplacementNamed(context, "/login");
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Password updated successfully"),

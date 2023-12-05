@@ -100,7 +100,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
               try {
                 await _auth.signOut();
                 await googleSignIn.signOut();
-                Navigator.pushNamed(context, "/login");
+                Navigator.pushReplacementNamed(context, "/login");
+                //Navigator.pushNamed(context, "/login");
               } catch (error) {
                 print("Error signing out: $error");
               }
@@ -131,11 +132,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     gradientColors: [Colors.blue.shade300, Colors.blue.shade900],
                   ),
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/farmer_details");
                     Navigator.pushNamed(context, '/farmer_details');
                   },
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/buyer_details");
                     Navigator.pushNamed(context, '/buyer_details');
                   },
                   child: AdminDashboardTile(
@@ -148,6 +151,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/farmer_approval_pending");
                     Navigator.pushNamed(context, '/farmer_approval_pending');
                   },
                   child: AdminDashboardTile(
@@ -160,6 +164,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/pendingapproval");
                     Navigator.pushNamed(context, '/pendingapproval');
                   },
                   child: AdminDashboardTile(
@@ -172,6 +177,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/farmer_approval_rejected");
                     Navigator.pushNamed(context, '/farmer_approval_rejected');
                   },
                   child: AdminDashboardTile(
@@ -184,6 +190,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/rejectedproducts");
                     Navigator.pushNamed(context, '/rejectedproducts');
                   },
                   child: AdminDashboardTile(
@@ -196,6 +203,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/approvedproducts");
                     Navigator.pushNamed(context, '/approvedproducts');
                   },
                   child: AdminDashboardTile(
@@ -208,6 +216,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/stockDetails");
                     Navigator.pushNamed(context, '/stockDetails');
                   },
                   child: AdminDashboardTile(
@@ -220,6 +229,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/paymentSuccessful");
                     Navigator.pushNamed(context, '/paymentSuccessful');
                   },
                   child: AdminDashboardTile(
@@ -232,6 +242,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/products_categoryWise");
                     Navigator.pushNamed(context, '/products_categoryWise');
                   },
                   child: AdminDashboardTile(

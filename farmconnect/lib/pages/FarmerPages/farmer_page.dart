@@ -91,7 +91,8 @@ class FarmerPage extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/update_password");
+                          Navigator.pushReplacementNamed(context, "/update_password");
+                          //Navigator.pushNamed(context, "/update_password");
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.red,
@@ -112,7 +113,8 @@ class FarmerPage extends StatelessWidget {
                       SizedBox(width: 30),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/update_details");
+                          Navigator.pushReplacementNamed(context, "/update_details");
+                          //Navigator.pushNamed(context, "/update_details");
                         },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,

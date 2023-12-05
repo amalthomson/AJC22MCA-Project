@@ -20,10 +20,10 @@ class _AddProductsState extends State<AddProducts> {
   String? _selectedProductName;
   List<String> categories = ["Dairy", "Fruit", "Vegetable", "Poultry"];
   Map<String, List<String>> productNames = {
-    "Dairy": ["Milk", "Cheese", "Curd"],
-    "Fruit": ["Apple", "Orange", "Mango"],
-    "Vegetable": ["Potato", "Onion", "Chilly"],
-    "Poultry": ["Chicken", "Egg"],
+    "Dairy": ["Milk", "Cheese", "Curd", "Others"],
+    "Fruit": ["Apple", "Orange", "Mango", "Banana", "Strawberry", "Grapes", "Pineapple", "Kiwi", "others"],
+    "Vegetable": ["Potato", "Onion", "Chilly", "Beetroot", "Carrot", "Cauliflower", "Cabbages", "Others"],
+    "Poultry": ["Chicken", "Egg", "Others"],
   };
   String? uploadStatus;
 
@@ -113,8 +113,8 @@ class _AddProductsState extends State<AddProducts> {
           backgroundColor: Colors.green,
         ),
       );
-
-      Navigator.pushNamed(context, "/added_product");
+      Navigator.pushReplacementNamed(context, "/added_product");
+      //Navigator.pushNamed(context, "/added_product");
     }
   }
 

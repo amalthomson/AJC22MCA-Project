@@ -61,7 +61,8 @@ class _SignUpPageState extends State<SignUpPage> {
             "isAdminApproved": "pending"
           },
         );
-        Navigator.pushNamed(context, '/email_verification_pending');
+        Navigator.pushReplacementNamed(context, "/email_verification_pending");
+        //Navigator.pushNamed(context, '/email_verification_pending');
       }
     } catch (e) {
       print(e);
@@ -398,7 +399,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               ListTile(
                                 title: GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(context, '/terms');
+                                    Navigator.pushReplacementNamed(context, "/terms");
+                                    //Navigator.pushNamed(context, '/terms');
                                   },
                                   child: Text(
                                     'I agree to terms and conditions',

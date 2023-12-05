@@ -46,7 +46,8 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
     try {
       await _auth.signOut();
       await googleSignIn.signOut();
-      Navigator.popAndPushNamed(context, "/login");
+      Navigator.pushReplacementNamed(context, "/login");
+      //Navigator.popAndPushNamed(context, "/login");
     } catch (error) {
       print("Error signing out: $error");
     }

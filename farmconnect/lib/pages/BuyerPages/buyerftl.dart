@@ -77,7 +77,8 @@ class _BuyerFTLPageState extends State<BuyerFTLPage> {
           ),
         );
 
-        Navigator.pushNamed(context, "/buyer_home");
+        Navigator.pushReplacementNamed(context, "/buyer_home");
+        //Navigator.pushNamed(context, "/buyer_home");
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
