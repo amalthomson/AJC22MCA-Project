@@ -7,8 +7,12 @@ class PendingApprovalPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Pending Approval"),
         backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Pending Product Approvals',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

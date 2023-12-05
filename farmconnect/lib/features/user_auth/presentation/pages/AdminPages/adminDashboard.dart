@@ -84,7 +84,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         title: Text(
           "Admin Dashboard",
           style: TextStyle(
-            color: Colors.green,
+            color: Colors.white,
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
           ),
@@ -160,22 +160,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/farmer_approval_rejected');
-                  },
-                  child: AdminDashboardTile(
-                    title: "Farmer Approval\n       Rejected",
-                    count: farmerApprovalRejected,
-                    tileColor: Colors.red,
-                    iconData: Icons.cancel,
-                    gradientColors: [Colors.red.shade300, Colors.red.shade900],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
                     Navigator.pushNamed(context, '/pendingapproval');
                   },
                   child: AdminDashboardTile(
-                    title: " Pending\nApproval",
+                    title: "Pending Product\n       Approval ",
                     count: pendingProducts,
                     tileColor: Colors.orange,
                     iconData: Icons.timer,
@@ -184,14 +172,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/approvedproducts');
+                    Navigator.pushNamed(context, '/farmer_approval_rejected');
                   },
                   child: AdminDashboardTile(
-                    title: "Approved\nProducts",
-                    count: approvedProducts,
-                    tileColor: Colors.green,
-                    iconData: Icons.check_circle,
-                    gradientColors: [Colors.green.shade300, Colors.green.shade900],
+                    title: "Farmer Approval\n       Rejected",
+                    count: farmerApprovalRejected,
+                    tileColor: Colors.red,
+                    iconData: Icons.cancel,
+                    gradientColors: [Colors.red.shade300, Colors.red.shade900],
                   ),
                 ),
                 InkWell(
@@ -208,14 +196,26 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/products_categoryWise');
+                    Navigator.pushNamed(context, '/approvedproducts');
                   },
                   child: AdminDashboardTile(
-                    title: "    Products\nCategory Wise",
-                    count: 4,
-                    tileColor: Colors.red,
-                    iconData: Icons.shopping_cart,
-                    gradientColors: [Colors.blue, Colors.blue],
+                    title: "Approved\nProducts",
+                    count: approvedProducts,
+                    tileColor: Colors.green,
+                    iconData: Icons.check_circle,
+                    gradientColors: [Colors.green.shade300, Colors.green.shade900],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/stockDetails');
+                  },
+                  child: AdminDashboardTile(
+                    title: "Stock",
+                    count: approvedProducts,
+                    tileColor: Colors.green,
+                    iconData: Icons.account_balance,
+                    gradientColors: [Colors.green.shade300, Colors.green.shade900],
                   ),
                 ),
                 InkWell(
@@ -232,14 +232,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/testing');
+                    Navigator.pushNamed(context, '/products_categoryWise');
                   },
                   child: AdminDashboardTile(
-                    title: "Testing",
-                    count: 0,
-                    tileColor: Colors.grey,
-                    iconData: Icons.sms_failed_rounded,
-                    gradientColors: [Colors.grey, Colors.grey],
+                    title: "    Products\nCategory Wise",
+                    count: 4,
+                    tileColor: Colors.red,
+                    iconData: Icons.shopping_cart,
+                    gradientColors: [Colors.blue, Colors.blue],
                   ),
                 ),
               ],

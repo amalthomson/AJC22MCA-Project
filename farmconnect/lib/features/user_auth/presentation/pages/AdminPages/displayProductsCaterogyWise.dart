@@ -7,17 +7,12 @@ class CategoryWiseProducts extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black, // Background color
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey[900],
         title: Text(
-          "Approved Products",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
+          'Product Categories',
+          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

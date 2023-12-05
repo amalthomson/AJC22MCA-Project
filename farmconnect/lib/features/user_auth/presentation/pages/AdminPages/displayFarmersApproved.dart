@@ -1,4 +1,5 @@
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayProductsFarmerWise.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayStock.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mailer/mailer.dart';
@@ -15,9 +16,13 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
-        title: Text("Farmer Details", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
+    backgroundColor: Colors.blueGrey[900],
+      title: Text(
+        'Farmer Details',
+        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
+      iconTheme: IconThemeData(color: Colors.white),
+    ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users')
             .where('role', isEqualTo: 'Farmer')

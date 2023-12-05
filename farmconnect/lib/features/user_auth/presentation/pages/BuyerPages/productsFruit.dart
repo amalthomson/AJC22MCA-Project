@@ -45,9 +45,18 @@ class FruitsProductsPage extends StatelessWidget {
 
           if (fruitProducts.isEmpty) {
             return Center(
-              child: Text("No fruit products found."),
+              child: Text(
+                "No products available at the moment.\n\nPlease check back later,\n as we are updating our stocks.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
             );
           }
+
+
 
           return ListView.builder(
             itemCount: fruitProducts.length,
@@ -165,7 +174,7 @@ class FruitsProductsPage extends StatelessWidget {
                               },
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                  isOutOfStock ? Colors.grey : Colors.orange,
+                                  isOutOfStock ? Colors.grey : Colors.green,
                                 ),
                               ),
                               child: Text(

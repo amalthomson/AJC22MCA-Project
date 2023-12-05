@@ -7,8 +7,12 @@ class RejectedProductsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Rejected Products"),
         backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Rejected Products',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

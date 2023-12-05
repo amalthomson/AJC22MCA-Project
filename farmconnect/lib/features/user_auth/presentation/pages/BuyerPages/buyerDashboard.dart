@@ -68,7 +68,8 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => CartPage()));
           },
-          child: Icon(Icons.shopping_cart),
+          child: Icon(Icons.shopping_cart, color: Colors.white),
+          backgroundColor: Colors.green,
         ),
         backgroundColor: Colors.black,
         appBar: AppBar(
@@ -76,12 +77,12 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
           title: Text(
             "Buyer Dashboard",
             style: TextStyle(
-              color: Colors.green,
+              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          backgroundColor: Colors.lightBlue[900],
+          backgroundColor: Colors.grey[900],
           actions: <Widget>[
             Container(
               margin: EdgeInsets.only(right: 16.0), // Adjust margin as needed
@@ -106,21 +107,18 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
               onPressed: () => _signOut(context),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.red),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
               ),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     Icons.logout,
                     color: Colors.white,
-                  ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    'Sign Out',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
                   ),
                 ],
               ),
@@ -128,28 +126,33 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
           ],
           bottom: TabBar(
             isScrollable: true,
+            unselectedLabelColor: Colors.white,
+            labelColor: Colors.green,
+            indicatorColor: Colors.white,
+            indicatorWeight: 3.0,
             tabs: [
               Tab(
-                icon: Icon(Icons.shopping_basket),
-                text: 'Dairy',
-              ),
-              Tab(
-                icon: Icon(Icons.shopping_basket),
-                text: 'Poultry',
-              ),
-              Tab(
-                icon: Icon(Icons.shopping_basket),
+                icon: Icon(Icons.category_sharp),
                 text: 'Fruits',
               ),
               Tab(
-                icon: Icon(Icons.shopping_basket),
+                icon: Icon(Icons.category_sharp),
                 text: 'Vegetables',
+              ),
+              Tab(
+                icon: Icon(Icons.category_sharp),
+                text: 'Dairy',
+              ),
+              Tab(
+                icon: Icon(Icons.category_sharp),
+                text: 'Poultry',
               ),
               Tab(
                 icon: Icon(Icons.person),
                 text: 'Profile',
               ),
             ],
+            labelPadding: EdgeInsets.symmetric(horizontal: 12.0), // Adjust padding as needed
           ),
         ),
         body: FutureBuilder<List<String>>(
@@ -162,10 +165,10 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
             } else {
               return TabBarView(
                 children: [
-                  DairyProductsPage(),
-                  PoultryProductsPage(),
                   FruitsProductsPage(),
                   VegetableProductsPage(),
+                  DairyProductsPage(),
+                  PoultryProductsPage(),
                   BuyerProfilePage(),
                 ],
               );

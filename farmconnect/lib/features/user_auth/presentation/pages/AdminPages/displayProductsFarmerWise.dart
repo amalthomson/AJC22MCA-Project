@@ -11,8 +11,12 @@ class ProductDetailsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Product Details'),
         backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Product Details',
+          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

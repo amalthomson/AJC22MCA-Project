@@ -7,15 +7,12 @@ class TermsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: blackColor,
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[900],
         title: Text(
-          "Terms and Conditions",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.green,
-            fontWeight: FontWeight.bold,
-          ),
+          'Terms and Conditions',
+          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blueGrey[900], // Change the app bar color
+        iconTheme: IconThemeData(color: Colors.white), // Set the back button color to white
       ),
       body: Container(
         padding: EdgeInsets.all(20),

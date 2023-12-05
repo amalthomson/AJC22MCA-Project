@@ -93,12 +93,9 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Colors.blueGrey[900],
         title: Text(
           "Sign Up with FarmConnect",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.green,
-          ),
+          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
         ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Builder(
         builder: (BuildContext scaffoldContext) {
@@ -240,7 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       return 'Please enter a valid email';
                                     }
                                     final domainParts = parts[1].split('.');
-                                    if (domainParts.length < 2 || domainParts[0].length <= 3) {
+                                    if (domainParts.length < 2 || (domainParts[0].startsWith('@') && domainParts[0].substring(1).length <= 3) || domainParts[1].length <= 3) {
                                       return 'The first domain part is invalid';
                                     }
                                     if (!RegExp(

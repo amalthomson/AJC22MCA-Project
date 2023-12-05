@@ -15,7 +15,11 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Buyer Details", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
+        title: Text(
+          'Buyer Details',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'Buyer').snapshots(),
@@ -36,16 +40,6 @@ class _BuyerDetailsPageState extends State<BuyerDetailsPage> {
 
               final profilePictureUrl = buyer['profileImageUrl'] ?? '';
               var isActive = buyer['isActive'] ?? 'no';
-
-              final tileColors = [
-                Colors.purple,
-                Colors.lightBlue,
-                Colors.lightGreen,
-                Colors.amber,
-                Colors.pink,
-              ];
-
-              final tileColor = tileColors[index % tileColors.length];
 
               return Padding(
                 padding: const EdgeInsets.all(15.0),

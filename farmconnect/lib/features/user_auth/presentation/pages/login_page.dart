@@ -72,7 +72,6 @@ class _LoginPageState extends State<LoginPage> {
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
-        // The user canceled the sign-in process
         return;
       }
 
@@ -88,19 +87,15 @@ class _LoginPageState extends State<LoginPage> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        // Check if the user is signing in for the first time
         final DocumentSnapshot userSnapshot =
         await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
         final bool isFirstTimeSignIn = userSnapshot.data() == null;
 
         if (isFirstTimeSignIn) {
-          // Set "isActive" to "yes" for a new user
           await _updateUserInformation(user, googleUser, isActive: "yes");
         }
 
-        // Check if the user is active before allowing login
         if (userSnapshot.exists && userSnapshot['isActive'] == 'yes') {
-          // Get the user's role
           final String userRole = userSnapshot['role'];
 
           if (userRole == 'Buyer') {
@@ -134,7 +129,6 @@ class _LoginPageState extends State<LoginPage> {
             );
           }
         } else {
-          // User is not active, show an error message or block login
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Your account is not active. Please contact support."),
@@ -165,13 +159,10 @@ class _LoginPageState extends State<LoginPage> {
       {String isActive = "yes"}) async {
     final DocumentReference userDocRef =
     FirebaseFirestore.instance.collection('users').doc(user.uid);
-
-    // Retrieve additional user details from GoogleSignInAccount (if available)
     String displayName = user.displayName ?? '';
     String email = user.email ?? '';
     String photoUrl = user.photoURL ?? '';
 
-    // Update user information in Firestore
     await userDocRef.set({
       'uid': user.uid,
       'email': email,
@@ -179,7 +170,6 @@ class _LoginPageState extends State<LoginPage> {
       'profileImageUrl': photoUrl, // Save profile picture URL
       'role': "Buyer",
       'isActive': isActive, // Add the isActive field
-      // Add more user details as needed
     }, SetOptions(merge: true)); // Use merge to update only specific fields
   }
 
@@ -204,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
           return SingleChildScrollView(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 88.0), // Adjust the top padding as needed
+                padding: const EdgeInsets.only(top: 55.0),
                 child: Stack(
                   children: [
                     Padding(
@@ -458,21 +448,21 @@ class _LoginPageState extends State<LoginPage> {
 
                 if (ftl == 'no') {
                   if (role == 'Buyer') {
-                    Navigator.pushNamed(context, "/buyer_home");
+                    Navigator.pushNamedAndRemoveUntil(context, "/buyer_home", (route) => false,);
                   } else if (role == 'Admin') {
-                    Navigator.pushNamed(context, "/admin_dashboard");
+                    Navigator.pushNamedAndRemoveUntil(context, "/admin_dashboard", (route) => false,);
                   } else if (role == 'Farmer') {
                     if (isAdminApproved == 'approved') {
-                      Navigator.pushNamed(context, "/farmer_dash");
+                      Navigator.pushNamedAndRemoveUntil(context, "/farmer_dash", (route) => false,);
                     } else {
-                      Navigator.pushNamed(context, '/admin_approval_pending');
+                      Navigator.pushNamedAndRemoveUntil(context, '/admin_approval_pending', (route) => false,);
                     }
                   }
                 } else if (ftl == 'yes') {
                   if (role == 'Farmer') {
-                    Navigator.pushNamed(context, "/farmer_ftl");
+                    Navigator.pushNamedAndRemoveUntil(context, "/farmer_ftl", (route) => false,);
                   } else if (role == 'Buyer') {
-                    Navigator.pushNamed(context, "/buyer_ftl");
+                    Navigator.pushNamedAndRemoveUntil(context, "/buyer_ftl", (route) => false,);
                   }
                 } else {
                   loading = false;

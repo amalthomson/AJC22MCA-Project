@@ -171,7 +171,11 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Pending Farmer Approvals", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
+        title: Text(
+          'Pending Farmer Approvals',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'Farmer').where('isAdminApproved', isEqualTo: 'pending').snapshots(),

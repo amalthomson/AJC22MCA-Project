@@ -1,3 +1,4 @@
+import 'package:farmconnect/features/user_auth/presentation/pages/BuyerPages/buyerDashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -49,8 +50,10 @@ class OrderConfirmationPage extends StatelessWidget {
               SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: () {
-                  // Add logic to navigate to the home page or any other desired page
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => BuyerDashboard()),
+                  );
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.blue),

@@ -4,6 +4,7 @@ import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/dis
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayFarmersRejected.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayFramersPending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayProductsCaterogyWise.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/displayStock.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/paymentSuccessful.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsApproved.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/AdminPages/productsPending.dart';
@@ -22,7 +23,6 @@ import 'package:farmconnect/features/user_auth/presentation/pages/Cart/viewBills
 import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/FarmerPages/farmerftl.dart';
-import 'package:farmconnect/features/user_auth/presentation/pages/admin_approval_pending.dart';
 import 'package:farmconnect/features/user_auth/presentation/pages/common/termsAndConditions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -89,13 +89,13 @@ class MyApp extends StatelessWidget {
         '/fruits_page' : (context) => FruitsProductsPage(),
         '/vegetables_page' : (context) => VegetableProductsPage(),
         '/added_product' : (context) => FarmerDashboard(),
-        '/admin_approval_pending' : (context) => AdminApprovalPendingPage(),
         '/farmer_approval_pending' : (context) => PendingFarmerApprovalPage(),
         '/farmer_approval_rejected' : (context) => RejectedFarmerApprovalPage(),
         '/products_categoryWise' : (context) => CategoryWiseProducts(),
         "/bills_and_invoice" : (context) => BillsPage(),
         "/my_orders" : (context) => MyOrdersPage(),
         '/paymentSuccessful' : (context) => PaymentSuccessfulPage(),
+        '/stockDetails' : (context) => StockByProductNamePage(),
       },
     );
   }

@@ -26,8 +26,12 @@ class PaymentSuccessfulPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payments Received'),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Payments Received',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

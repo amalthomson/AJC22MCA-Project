@@ -29,8 +29,11 @@ class EmailVerificationPendingPage extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text('FarmConnect', style: TextStyle(color: Colors.green, fontSize: 26,
-            fontWeight: FontWeight.bold)),
+        title: Text(
+          'Email Verification Pending',
+          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white), // Set the back button color to white
       ),
       body: Center(
         child: Padding(

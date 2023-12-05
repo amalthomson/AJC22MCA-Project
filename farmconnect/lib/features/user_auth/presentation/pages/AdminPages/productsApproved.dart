@@ -9,8 +9,12 @@ class ApprovedProductsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Approved Products"),
         backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Approved Products',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

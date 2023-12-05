@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:farmconnect/features/user_auth/presentation/pages/Cart/cartProvider.dart';
 
 class VegetableProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -36,7 +40,14 @@ class VegetableProductsPage extends StatelessWidget {
 
           if (vegetableProducts.isEmpty) {
             return Center(
-              child: Text("No vegetable products found."),
+              child: Text(
+                "No products available at the moment.\n\nPlease check back later,\n as we are updating our stocks.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
             );
           }
 
@@ -49,6 +60,12 @@ class VegetableProductsPage extends StatelessWidget {
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
               final productImage = product['productImage'];
               final productId = product['productId'];
+              final productStock = product['stock'] ?? 0;
+
+              bool isProductInCart = cartProvider.cartItems
+                  .any((item) => item['productId'] == productId);
+
+              bool isOutOfStock = productStock == 0;
 
               return Card(
                 elevation: 5,
@@ -67,9 +84,7 @@ class VegetableProductsPage extends StatelessWidget {
                           bottomLeft: Radius.circular(10.0),
                         ),
                         child: GestureDetector(
-                          onTap: () {
-                            // Add logic to display a larger image or navigate to a detailed view.
-                          },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: [
@@ -122,17 +137,41 @@ class VegetableProductsPage extends StatelessWidget {
                             SizedBox(height: 16),
                             ElevatedButton(
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Added $productName to the cart"),
-                                  ),
-                                );
+                                if (isOutOfStock) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Out of Stock"),
+                                    ),
+                                  );
+                                } else if (isProductInCart) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("$productName is already in the cart"),
+                                    ),
+                                  );
+                                } else {
+                                  cartProvider.addToCart({
+                                    'productName': productName,
+                                    'productDescription': productDescription,
+                                    'productPrice': productPrice,
+                                    'productImage': productImage,
+                                    'productId': productId,
+                                  });
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Added $productName to the cart"),
+                                    ),
+                                  );
+                                }
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.orange),
+                                backgroundColor: MaterialStateProperty.all(
+                                  isOutOfStock ? Colors.grey : Colors.orange,
+                                ),
                               ),
                               child: Text(
-                                "Add to Cart",
+                                isOutOfStock ? "Out of Stock" : "Add to Cart",
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,

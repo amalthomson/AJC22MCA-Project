@@ -13,7 +13,11 @@ class _RejectedFarmerApprovalPageState extends State<RejectedFarmerApprovalPage>
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Rejected Farmers", style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold)),
+        title: Text(
+          'Rejected Farmer Details',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').where('role', isEqualTo: 'Farmer').where('isAdminApproved', isEqualTo: 'rejected').snapshots(),
