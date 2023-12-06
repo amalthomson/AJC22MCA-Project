@@ -4,6 +4,7 @@ import 'package:farmconnect/pages/FarmerPages/myproducts.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 class FarmerDashboard extends StatefulWidget {
   const FarmerDashboard({Key? key}) : super(key: key);
 
@@ -22,7 +23,7 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
           title: Text(
             "Farmer Dashboard",
             style: TextStyle(
-              color: Colors.green,
+              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
@@ -40,7 +41,6 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
                   await _auth.signOut();
                   await googleSignIn.signOut();
                   Navigator.pushReplacementNamed(context, "/login");
-                  //Navigator.pushNamed(context, "/login");
                 } catch (error) {
                   print("Error signing out: $error");
                 }
@@ -63,6 +63,8 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
               ),
             ],
             indicatorColor: Colors.green,
+            unselectedLabelColor: Colors.white, // Set the color of unselected tabs
+            labelColor: Colors.green, // Set the color of the selected tab
           ),
         ),
         backgroundColor: Colors.black,

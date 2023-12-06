@@ -40,7 +40,7 @@ class BuyerProfilePage extends StatelessWidget {
               child: ListView(
                 padding: EdgeInsets.all(16),
                 children: [
-                  SizedBox(height: 20),
+                  SizedBox(height: 1),
                   Center(
                     child: CircleAvatar(
                       radius: 60,
@@ -59,25 +59,19 @@ class BuyerProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Card(
                     elevation: 5,
-                    color: Colors.transparent,
+                    color: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.all(16),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            "Welcome",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(height: 12),
                           Container(
                             alignment: Alignment.center,
                             child: Text(
@@ -94,107 +88,97 @@ class BuyerProfilePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 30),
-                  ElevatedButton(
+                  DashboardCard(
+                    title: "Reset Password",
+                    icon: Icons.lock,
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, "/buyer_home");
                       Navigator.pushNamed(context, "/update_password");
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
-                      onPrimary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      elevation: 8,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 32.0,
-                      ),
-                      child: Text(
-                        "Reset Password",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+                    buttonColor: Colors.red,
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(
+                  DashboardCard(
+                    title: "Edit Profile",
+                    icon: Icons.edit,
                     onPressed: () {
                       Navigator.pushNamed(context, "/update_details");
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.white,
-                      shape: StadiumBorder(),
-                      elevation: 8,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 32.0,
-                      ),
-                      child: Text(
-                        "Edit Profile",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+                    buttonColor: Colors.blue,
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(
+                  DashboardCard(
+                    title: "My Orders",
+                    icon: Icons.shopping_cart,
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, "/my_orders");
-                      //Navigator.pushNamed(context, "/my_orders");
+                      Navigator.pushNamed(context, "/my_orders");
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      onPrimary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      elevation: 8,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 32.0,
-                      ),
-                      child: Text(
-                        "My Orders",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+                    buttonColor: Colors.green,
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(
+                  DashboardCard(
+                    title: "Bills & Invoice",
+                    icon: Icons.receipt,
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, "/bills_and_invoice");
-                      //Navigator.pushNamed(context, "/bills_and_invoice");
+                      Navigator.pushNamed(context, "/bills_and_invoice");
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.orange,
-                      onPrimary: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      elevation: 8,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 32.0,
-                      ),
-                      child: Text(
-                        "Bills & Invoice",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+                    buttonColor: Colors.orange,
                   ),
                   SizedBox(height: 30),
                 ],
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class DashboardCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final VoidCallback onPressed;
+  final Color buttonColor;
+
+  DashboardCard({
+    required this.title,
+    required this.icon,
+    required this.onPressed,
+    required this.buttonColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      color: buttonColor,
+      child: InkWell(
+        onTap: onPressed,
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 36,
+                color: Colors.white,
+              ),
+              SizedBox(width: 16),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

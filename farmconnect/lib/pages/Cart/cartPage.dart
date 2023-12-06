@@ -41,7 +41,12 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Cart"),
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Cart',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: cartItems.isEmpty
           ? Center(
@@ -119,7 +124,7 @@ class _CartPageState extends State<CartPage> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.remove_shopping_cart),
+                    icon: Icon(Icons.remove_shopping_cart, color: Colors.red,),
                     onPressed: () {
                       cartProvider.removeFromCart(product['productId']);
                     },
@@ -156,7 +161,7 @@ class _CartPageState extends State<CartPage> {
                 padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                 child: Text(
                   'Proceed to Payment',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

@@ -22,7 +22,7 @@ class FarmerPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
-        body: Center(
+      body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("users")
@@ -62,7 +62,10 @@ class FarmerPage extends StatelessWidget {
                   SizedBox(height: 20),
                   Card(
                     elevation: 5,
-                    color: Colors.transparent,
+                    color: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child: Padding(
                       padding: EdgeInsets.all(16),
                       child: Column(
@@ -86,52 +89,34 @@ class FarmerPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
                     children: [
-                      ElevatedButton(
+                      DashboardCard(
+                        title: "Reset Password",
+                        icon: Icons.lock,
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, "/update_password");
-                          //Navigator.pushNamed(context, "/update_password");
+                          Navigator.pushNamed(context, "/update_password");
                         },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 8.0),
-                          child: Text(
-                            "Reset Password",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                        buttonColor: Colors.red,
                       ),
-                      SizedBox(width: 30),
-                      ElevatedButton(
+                      SizedBox(height: 20),
+                      DashboardCard(
+                        title: "Edit Profile",
+                        icon: Icons.edit,
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, "/update_details");
-                          //Navigator.pushNamed(context, "/update_details");
+                          Navigator.pushNamed(context, "/update_details");
                         },
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 8.0),
-                          child: Text(
-                            "Edit Profile",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
+                        buttonColor: Colors.blue,
                       ),
+                      // SizedBox(height: 20),
+                      // DashboardCard(
+                      //   title: "Orders",
+                      //   icon: Icons.shopping_cart,
+                      //   onPressed: () {
+                      //     Navigator.pushNamed(context, "/orders");
+                      //   },
+                      //   buttonColor: Colors.green,
+                      // ),
                     ],
                   ),
                   SizedBox(height: 150),
@@ -149,11 +134,13 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
+  final Color buttonColor;
 
   DashboardCard({
     required this.title,
     required this.icon,
     required this.onPressed,
+    required this.buttonColor,
   });
 
   @override
@@ -161,9 +148,9 @@ class DashboardCard extends StatelessWidget {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(20),
       ),
-      color: Colors.red,
+      color: buttonColor,
       child: InkWell(
         onTap: onPressed,
         child: Padding(

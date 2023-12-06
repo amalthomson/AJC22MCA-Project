@@ -1,6 +1,5 @@
 import 'package:farmconnect/pages/BuyerPages/buyerDashboard.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderConfirmationPage extends StatelessWidget {
   final String paymentId;
@@ -11,7 +10,12 @@ class OrderConfirmationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Confirmation'),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Order Confirmation',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Padding(
@@ -28,23 +32,23 @@ class OrderConfirmationPage extends StatelessWidget {
               SizedBox(height: 16.0),
               Text(
                 'Thank You for Your Order!',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               SizedBox(height: 8.0),
               Text(
                 'Your order has been placed successfully.',
-                style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+                style: TextStyle(fontSize: 18, color: Colors.grey[700],),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 24.0),
               Text(
                 'Order Details:',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               SizedBox(height: 8.0),
               Text(
                 'Payment ID: $paymentId',
-                style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+                style: TextStyle(fontSize: 18, color: Colors.grey[700],),
               ),
               // Add more order details here, e.g., items, total amount, etc.
               SizedBox(height: 24.0),
@@ -70,6 +74,7 @@ class OrderConfirmationPage extends StatelessWidget {
           ),
         ),
       ),
+      backgroundColor: Colors.black,
     );
   }
 }

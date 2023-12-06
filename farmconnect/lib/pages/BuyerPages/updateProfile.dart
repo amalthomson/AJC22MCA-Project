@@ -90,8 +90,11 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Update User Details", style: TextStyle(color: Colors.green, fontSize: 20,
-            fontWeight: FontWeight.bold)),
+        title: Text(
+          'Update User Profile',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         padding: EdgeInsets.all(16),

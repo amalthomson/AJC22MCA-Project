@@ -29,8 +29,12 @@ class BillsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bills & Invoice'),
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey[900],
+        title: Text(
+          'Bills and Invoices',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

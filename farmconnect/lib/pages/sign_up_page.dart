@@ -94,7 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Colors.blueGrey[900],
         title: Text(
           "Sign Up with FarmConnect",
-          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),

@@ -23,8 +23,11 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Update Password", style: TextStyle(color: Colors.green, fontSize: 20,
-        fontWeight: FontWeight.bold)),
+        title: Text(
+          'Reset Password',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Container(

@@ -126,7 +126,7 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
             ),
           ],
           bottom: TabBar(
-            isScrollable: true,
+            //isScrollable: true,
             unselectedLabelColor: Colors.white,
             labelColor: Colors.green,
             indicatorColor: Colors.white,

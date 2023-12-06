@@ -40,7 +40,7 @@ class ForgotPassword extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
-        title: Text("Forget Password", style: TextStyle(color: Colors.green, fontSize: 20,
+        title: Text("Forget Password", style: TextStyle(color: Colors.white, fontSize: 20,
           fontWeight: FontWeight.bold)), // White text color
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white), // White icon color

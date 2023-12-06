@@ -96,6 +96,7 @@ class MyApp extends StatelessWidget {
         "/my_orders" : (context) => MyOrdersPage(),
         '/paymentSuccessful' : (context) => PaymentSuccessfulPage(),
         '/stockDetails' : (context) => StockByProductNamePage(),
+        //'/orders' : (context) => (),
       },
     );
   }

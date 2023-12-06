@@ -21,8 +21,8 @@ class _AddProductsState extends State<AddProducts> {
   List<String> categories = ["Dairy", "Fruit", "Vegetable", "Poultry"];
   Map<String, List<String>> productNames = {
     "Dairy": ["Milk", "Cheese", "Curd", "Others"],
-    "Fruit": ["Apple", "Orange", "Mango", "Banana", "Strawberry", "Grapes", "Pineapple", "Kiwi", "others"],
-    "Vegetable": ["Potato", "Onion", "Chilly", "Beetroot", "Carrot", "Cauliflower", "Cabbages", "Others"],
+    "Fruit": ["Apple", "Orange", "Mango", "Banana", "Strawberry", "Pomegranate", "Dragon Fruit", "Grapes", "Pineapple", "Kiwi", "Watermelon", "Guava", "Others"],
+    "Vegetable": ["Potato", "Onion", "Chilly", "Ginger", "Garlic", "Tomato", "Cucumber", "Beetroot", "Brinjal","Carrot", "Cauliflower", "Cabbages", "Others"],
     "Poultry": ["Chicken", "Egg", "Others"],
   };
   String? uploadStatus;
