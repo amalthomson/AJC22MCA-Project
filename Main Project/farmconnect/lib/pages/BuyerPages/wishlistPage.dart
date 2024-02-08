@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:farmconnect/pages/Cart/cartPage.dart'; // Import your CartPage
 
 class WishlistPage extends StatelessWidget {
   @override
@@ -8,11 +9,60 @@ class WishlistPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
     final userId = user?.uid ?? '';
 
+    Future<void> clearWishlist() async {
+      // Delete all products in the user's Wishlist
+      await FirebaseFirestore.instance
+          .collection('wishlist')
+          .doc(userId)
+          .collection('items')
+          .get()
+          .then((snapshot) {
+        for (DocumentSnapshot doc in snapshot.docs) {
+          doc.reference.delete();
+        }
+      });
+    }
+
+    Future<void> removeProductFromWishlist(String productId) async {
+      // Remove a specific product from the user's Wishlist
+      await FirebaseFirestore.instance
+          .collection('wishlist')
+          .doc(userId)
+          .collection('items')
+          .doc(productId)
+          .delete();
+
+      // Show snackbar message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Product removed from Wishlist"),
+        ),
+      );
+    }
+
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Wishlist'),
+        title: Text(
+          'Wishlist',
+          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.blueGrey[900],
         iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                clearWishlist();
+              },
+              child: Text('Clear Wishlist', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red, // Background color
+              ),
+            ),
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: FirebaseFirestore.instance
@@ -39,6 +89,7 @@ class WishlistPage extends StatelessWidget {
               final productName = wishlistItem?['productName'];
               final productPrice = wishlistItem?['productPrice'] ?? 'N/A';
               final productImage = wishlistItem?['productImage'];
+              final productId = wishlistItem?.id;
 
               return Card(
                 elevation: 5,
@@ -85,12 +136,26 @@ class WishlistPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              productName,
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  productName,
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.favorite,
+                                    color: Colors.red, // Adjust the color as needed
+                                  ),
+                                  onPressed: () {
+                                    removeProductFromWishlist(productId!);
+                                  },
+                                ),
+                              ],
                             ),
                             SizedBox(height: 16),
                             Text(
@@ -110,6 +175,16 @@ class WishlistPage extends StatelessWidget {
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CartPage()), // Navigate to CartPage
+          );
+        },
+        child: Icon(Icons.shopping_cart),
+        backgroundColor: Colors.green,
       ),
     );
   }
