@@ -1,12 +1,16 @@
-import 'package:farmconnect/pages/BuyerPages/buyerHome.dart';
 import 'package:farmconnect/pages/BuyerPages/buyerProfile.dart';
 import 'package:farmconnect/pages/BuyerPages/productSearch.dart';
+import 'package:farmconnect/pages/BuyerPages/productsOrganic.dart';
 import 'package:farmconnect/pages/BuyerPages/wishlistPage.dart';
 import 'package:farmconnect/pages/Cart/cartPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'productsDairy.dart';
+import 'productsFruit.dart';
+import 'productsPoultry.dart';
+import 'productsVegetable.dart';
 
 final TextEditingController _searchController = TextEditingController();
 
@@ -60,7 +64,7 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 6,
       child: Scaffold(
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -150,10 +154,38 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
             tabs: [
               Tab(
                 icon: Hero(
-                  tag: 'home_tab', // Unique tag for the fruits tab
-                  child: Icon(Icons.home),
+                  tag: 'fruits_tab', // Unique tag for the fruits tab
+                  child: Icon(Icons.category_sharp),
                 ),
-                text: 'Home',
+                text: 'Fruits',
+              ),
+              Tab(
+                icon: Hero(
+                  tag: 'vegetables_tab', // Unique tag for the vegetables tab
+                  child: Icon(Icons.category_sharp),
+                ),
+                text: 'Vegetables',
+              ),
+              Tab(
+                icon: Hero(
+                  tag: 'dairy_tab', // Unique tag for the dairy tab
+                  child: Icon(Icons.category_sharp),
+                ),
+                text: 'Dairy',
+              ),
+              Tab(
+                icon: Hero(
+                  tag: 'poultry_tab', // Unique tag for the poultry tab
+                  child: Icon(Icons.category_sharp),
+                ),
+                text: 'Poultry',
+              ),
+              Tab(
+                icon: Hero(
+                  tag: 'organic_tab', // Unique tag for the fruits tab
+                  child: Icon(Icons.category_sharp),
+                ),
+                text: 'Organic',
               ),
               Tab(
                 icon: Hero(
@@ -176,7 +208,11 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
             } else {
               return TabBarView(
                 children: [
-                  BuyerHome(),
+                  FruitsProductsPage(),
+                  VegetableProductsPage(),
+                  DairyProductsPage(),
+                  PoultryProductsPage(),
+                  OrganicProducts(),
                   BuyerProfilePage(),
                 ],
               );
