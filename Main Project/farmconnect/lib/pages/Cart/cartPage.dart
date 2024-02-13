@@ -33,6 +33,10 @@ class _CartPageState extends State<CartPage> {
     PaymentService.startPayment(context);
   }
 
+  void _clearCart() {
+    Provider.of<CartProvider>(context, listen: false).clearCart();
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -47,6 +51,19 @@ class _CartPageState extends State<CartPage> {
           style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
         iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: _clearCart,
+              child: Text('Clear Cart', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red, // Background color
+                //
+              ),
+            ),
+          ),
+        ],
       ),
       body: cartItems.isEmpty
           ? Center(
