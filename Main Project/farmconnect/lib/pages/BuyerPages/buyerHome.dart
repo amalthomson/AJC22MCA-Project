@@ -6,57 +6,96 @@ class BuyerHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Buyer Home"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OrganicProducts()),
-                );
-              },
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/org.jpeg', // Replace with the actual image asset for Organic Products
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
+      backgroundColor: Colors.black,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OrganicProducts()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
-                  SizedBox(height: 8),
-                  Text("Organic Products"),
-                ],
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: Image.asset(
+                        'assets/org.jpeg', // Replace with the actual image asset for Organic Products
+                        width: double.infinity,
+                        height: 280.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      "Organic Products",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NonOrganicProducts()),
-                );
-              },
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/norg.jpeg', // Replace with the actual image asset for Non-Organic Products
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
+          ),
+          SizedBox(height: 16),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NonOrganicProducts()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
-                  SizedBox(height: 8),
-                  Text("Non-Organic Products"),
-                ],
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: Image.asset(
+                        'assets/norg.jpeg', // Replace with the actual image asset for Non-Organic Products
+                        width: double.infinity,
+                        height: 280.0,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      "Non-Organic Products",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

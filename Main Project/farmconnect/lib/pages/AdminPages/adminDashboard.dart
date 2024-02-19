@@ -1,3 +1,4 @@
+import 'package:farmconnect/widgets/admin_dashboard_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -247,10 +248,50 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   },
                   child: AdminDashboardTile(
                     title: "    Products\nCategory Wise",
-                    count: 4,
+                    count: 5,
                     tileColor: Colors.red,
                     iconData: Icons.shopping_cart,
                     gradientColors: [Colors.blue, Colors.blue],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    // Navigator.pushReplacementNamed(context, "/products_categoryWise");
+                    Navigator.pushNamed(context, '/add_category');
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.pinkAccent, Colors.pink],
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add_task,
+                            color: Colors.white,
+                            size: 40.0,
+                          ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            "Add Category\nand Product",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -262,68 +303,5 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 }
 
-class AdminDashboardTile extends StatelessWidget {
-  final String title;
-  final int count;
-  final Color tileColor;
-  final IconData iconData; // Icon data for the tile
-  final List<Color> gradientColors; // List of colors for gradient
-
-  const AdminDashboardTile({
-    required this.title,
-    required this.count,
-    required this.tileColor,
-    required this.iconData,
-    required this.gradientColors,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0), // Rounded edges
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: gradientColors, // Use the provided gradient colors
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              iconData, // Use the provided icon data
-              color: Colors.white,
-              size: 40.0,
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Center(
-              child: Text(
-                count.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 36.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 

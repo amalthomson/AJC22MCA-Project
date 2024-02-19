@@ -1,3 +1,4 @@
+import 'package:farmconnect/pages/AdminPages/addCategories.dart';
 import 'package:farmconnect/pages/AdminPages/adminDashboard.dart';
 import 'package:farmconnect/pages/AdminPages/displayBuyers.dart';
 import 'package:farmconnect/pages/AdminPages/displayFarmersApproved.dart';
@@ -96,7 +97,7 @@ class MyApp extends StatelessWidget {
         "/my_orders" : (context) => MyOrdersPage(),
         '/paymentSuccessful' : (context) => PaymentSuccessfulPage(),
         '/stockDetails' : (context) => StockByProductNamePage(),
-        //'/orders' : (context) => (),
+        '/add_category' : (context) => AddCategoriesAndProducts(),
       },
     );
   }

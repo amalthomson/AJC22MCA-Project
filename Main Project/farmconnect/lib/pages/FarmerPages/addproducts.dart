@@ -18,14 +18,34 @@ class _AddProductsState extends State<AddProducts> {
   String? _imageUrl;
   String? _selectedCategory;
   String? _selectedProductName;
-  List<String> categories = ["Dairy", "Fruit", "Vegetable", "Poultry"];
-  Map<String, List<String>> productNames = {
-    "Dairy": ["Milk", "Cheese", "Curd", "Others"],
-    "Fruit": ["Apple", "Orange", "Mango", "Banana", "Strawberry", "Pomegranate", "Dragon Fruit", "Grapes", "Pineapple", "Kiwi", "Watermelon", "Guava", "Others"],
-    "Vegetable": ["Potato", "Onion", "Chilly", "Ginger", "Garlic", "Tomato", "Cucumber", "Beetroot", "Brinjal","Carrot", "Cauliflower", "Cabbages", "Others"],
-    "Poultry": ["Chicken", "Egg", "Others"],
-  };
+  List<String> categories = [];
+  Map<String, List<String>> productNames = {};
   String? uploadStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+  }
+
+  Future<void> _fetchCategories() async {
+    final categoriesSnapshot = await FirebaseFirestore.instance.collection('categories').get();
+    setState(() {
+      categories = categoriesSnapshot.docs.map((doc) => doc['categoryName'].toString()).toList();
+    });
+  }
+
+  Future<void> _fetchProductNames(String category) async {
+    final productNamesSnapshot = await FirebaseFirestore.instance
+        .collection('categories')
+        .doc(category)
+        .get();
+
+    final productsList = productNamesSnapshot['productNames'].cast<String>();
+    setState(() {
+      productNames[category] = productsList;
+    });
+  }
 
   Future<void> _uploadProduct() async {
     final imagePicker = ImagePicker();
@@ -58,10 +78,13 @@ class _AddProductsState extends State<AddProducts> {
   Future<void> _updateDatabase() async {
     final user = FirebaseAuth.instance.currentUser;
 
-    if (_imageUrl != null && user != null) {
+    // if (_imageUrl != null && user != null) {
+    //   final stock = int.tryParse(stockController.text) ?? 0;
+
+    if (_imageUrl != null && user != null && _selectedCategory != null && _selectedProductName != null) {
       final stock = int.tryParse(stockController.text) ?? 0;
 
-      final querySnapshot = await FirebaseFirestore.instance
+    final querySnapshot = await FirebaseFirestore.instance
           .collection('products')
           .where('category', isEqualTo: _selectedCategory)
           .where('productName', isEqualTo: _selectedProductName)
@@ -79,7 +102,6 @@ class _AddProductsState extends State<AddProducts> {
       } else {
         final productId = DateTime.now().millisecondsSinceEpoch.toString();
 
-        // Set the document ID explicitly to be the same as productId
         await FirebaseFirestore.instance.collection('products').doc(productId).set({
           'productId': productId,
           'productName': productNameController.text,
@@ -114,7 +136,6 @@ class _AddProductsState extends State<AddProducts> {
         ),
       );
       Navigator.pushReplacementNamed(context, "/added_product");
-      //Navigator.pushNamed(context, "/added_product");
     }
   }
 
@@ -173,9 +194,9 @@ class _AddProductsState extends State<AddProducts> {
               SizedBox(height: 30.0),
               _buildProductDropdown(),
               SizedBox(height: 30.0),
-              _buildTextField(productPriceController, 'Product Price', TextInputType.number),
+              _buildTextField(productPriceController, 'Product Price in Rupees of 1 KG', TextInputType.number),
               SizedBox(height: 30.0),
-              _buildTextField(stockController, 'Stock', TextInputType.number),
+              _buildTextField(stockController, 'Stock in Kilograms', TextInputType.number),
               SizedBox(height: 30.0),
               _buildTextField(productDescriptionController, 'Product Description'),
               SizedBox(height: 30.0),
@@ -244,6 +265,10 @@ class _AddProductsState extends State<AddProducts> {
               onChanged: (String? newValue) {
                 setState(() {
                   _selectedCategory = newValue;
+                  _selectedProductName = null;
+                  if (_selectedCategory != null) {
+                    _fetchProductNames(_selectedCategory!);
+                  }
                 });
               },
               items: categories.map<DropdownMenuItem<String>>((String category) {
@@ -271,7 +296,7 @@ class _AddProductsState extends State<AddProducts> {
           Expanded(
             child: DropdownButton<String>(
               hint: Text(
-                'Select Product Name',
+                'Select Product',
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -289,8 +314,8 @@ class _AddProductsState extends State<AddProducts> {
                   _selectedProductName = newValue;
                 });
               },
-              items: _selectedCategory != null
-                  ? productNames[_selectedCategory]!
+              items: _selectedCategory != null && productNames.containsKey(_selectedCategory!)
+                  ? productNames[_selectedCategory!]!
                   .map<DropdownMenuItem<String>>((String product) {
                 return DropdownMenuItem<String>(
                   value: product,
@@ -336,4 +361,3 @@ class _AddProductsState extends State<AddProducts> {
     super.dispose();
   }
 }
-

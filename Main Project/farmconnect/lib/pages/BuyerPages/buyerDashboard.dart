@@ -64,29 +64,29 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
       child: Scaffold(
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CartPage()),
-                );
-              },
-              child: Icon(Icons.shopping_cart, color: Colors.white),
-              backgroundColor: Colors.green,
-            ),
-            SizedBox(width: 16.0),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => WishlistPage()),
-                );
-              },
-              child: Icon(Icons.favorite, color: Colors.white),
-              backgroundColor: Colors.red,
-            ),
-          ],
+          // children: [
+          //   FloatingActionButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => CartPage()),
+          //       );
+          //     },
+          //     child: Icon(Icons.shopping_cart, color: Colors.white),
+          //     backgroundColor: Colors.green,
+          //   ),
+          //   SizedBox(width: 16.0),
+          //   FloatingActionButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => WishlistPage()),
+          //       );
+          //     },
+          //     child: Icon(Icons.favorite, color: Colors.white),
+          //     backgroundColor: Colors.red,
+          //   ),
+          // ],
         ),
         backgroundColor: Colors.black,
         appBar: AppBar(

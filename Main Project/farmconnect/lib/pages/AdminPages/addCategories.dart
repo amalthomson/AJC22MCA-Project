@@ -1,0 +1,189 @@
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class AddCategoriesAndProducts extends StatefulWidget {
+  @override
+  _AddCategoriesAndProductsState createState() => _AddCategoriesAndProductsState();
+}
+
+class _AddCategoriesAndProductsState extends State<AddCategoriesAndProducts> {
+  final TextEditingController categoryController = TextEditingController();
+  final TextEditingController productNameController = TextEditingController();
+
+  Future<void> _addCategory() async {
+    if (categoryController.text.isNotEmpty) {
+      await FirebaseFirestore.instance.collection('categories').doc(categoryController.text).set({
+        'categoryName': categoryController.text,
+        'productNames': [], // Initialize an empty array for product names
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Category added successfully'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      categoryController.clear();
+    }
+  }
+
+  Future<void> _addProduct() async {
+    if (_selectedCategory != null && productNameController.text.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection('categories')
+          .doc(_selectedCategory!)
+          .update({
+        'productNames': FieldValue.arrayUnion([productNameController.text]),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Product added successfully'),
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      productNameController.clear();
+    }
+  }
+
+  String? _selectedCategory;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: Text(
+          "Add Categories and Products",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.blueGrey[900],
+        elevation: 0, // Remove app bar shadow
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildCategoryTextField(),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: _addCategory,
+              child: Text('Add Category', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            SizedBox(height: 48),
+            _buildProductTextField(),
+            SizedBox(height: 24),
+            _buildCategoryDropdown(),
+            SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: _addProduct,
+              child: Text('Add Product', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryTextField() {
+    return TextField(
+      controller: categoryController,
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: 'Category Name',
+        hintText: 'Enter a category name',
+        labelStyle: TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color: Colors.grey),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductTextField() {
+    return TextField(
+      controller: productNameController,
+      style: TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: 'Product Name',
+        hintText: 'Enter a product name',
+        labelStyle: TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color: Colors.grey),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryDropdown() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('categories').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        }
+
+        List<String> categories = snapshot.data!.docs.map((doc) => doc['categoryName'].toString()).toList();
+
+        return DropdownButton<String>(
+          hint: Text('Select Category', style: TextStyle(color: Colors.white)),
+          value: _selectedCategory,
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedCategory = newValue;
+            });
+          },
+          items: categories.map<DropdownMenuItem<String>>((String category) {
+            return DropdownMenuItem<String>(
+              value: category,
+              child: Text(category, style: TextStyle(color: Colors.black)),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: AddCategoriesAndProducts(),
+    theme: ThemeData.dark(), // Set dark theme for the entire app
+  ));
+}
