@@ -32,7 +32,7 @@ class BuyerHome extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16.0),
                       child: Image.asset(
-                        'assets/org.jpeg', // Replace with the actual image asset for Organic Products
+                        'assets/org.png', // Replace with the actual image asset for Organic Products
                         width: double.infinity,
                         height: 280.0,
                         fit: BoxFit.cover,
@@ -75,7 +75,7 @@ class BuyerHome extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16.0),
                       child: Image.asset(
-                        'assets/norg.jpeg', // Replace with the actual image asset for Non-Organic Products
+                        'assets/norg.png', // Replace with the actual image asset for Non-Organic Products
                         width: double.infinity,
                         height: 280.0,
                         fit: BoxFit.cover,

@@ -1,4 +1,6 @@
 import 'package:farmconnect/pages/BuyerPages/product_detail_page.dart';
+import 'package:farmconnect/pages/BuyerPages/wishlistPage.dart';
+import 'package:farmconnect/pages/Cart/cartPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,8 +28,9 @@ class OrganicProducts extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
+        //automaticallyImplyLeading: false,
+        //centerTitle: true,
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -213,6 +216,34 @@ class OrganicProducts extends StatelessWidget {
             },
           );
         },
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              // Navigate to CartPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartPage()),
+              );
+            },
+            child: Icon(Icons.shopping_cart, color: Colors.white),
+            backgroundColor: Colors.green,
+          ),
+          SizedBox(width: 16.0),
+          FloatingActionButton(
+            onPressed: () {
+              // Navigate to WishlistPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WishlistPage()),
+              );
+            },
+            child: Icon(Icons.favorite, color: Colors.white),
+            backgroundColor: Colors.red,
+          ),
+        ],
       ),
     );
   }
