@@ -127,24 +127,17 @@ class BillsPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildDetailRow('Payment ID:', paymentData['paymentId']),
-              _buildDetailRow('Amount:', '₹${paymentData['amount']?.toStringAsFixed(2) ?? 'N/A'}'),
               _buildDetailRow('Date:', _formatDate(paymentData['timestamp'])),
               _buildDetailRow('Name:', paymentData['customerName']),
+              _buildDetailRow('Farm Name:', userData?['farmName'] ?? 'Homegrown Heaven'),
               _buildDetailRow('Email:', paymentData['customerEmail']),
-              _buildDetailRow('Phone:', paymentData['customerPhone']),
+              _buildDetailRow('Phone:', userData?['phone'] ?? 'N/A'),
+              _buildDetailRow('Amount:', '₹${paymentData['amount']?.toStringAsFixed(2) ?? 'N/A'}'),
+              _buildDetailRow('Payment Method:', paymentData['paymentMethod'] ?? 'RazorPay'),
               SizedBox(height: 16),
               Text('Products:', style: TextStyle(fontWeight: FontWeight.bold)),
               ..._buildProductList(paymentData['products']),
               SizedBox(height: 16),
-              Text('Additional Details:', style: TextStyle(fontWeight: FontWeight.bold)),
-              _buildDetailRow('Payment Method:', paymentData['paymentMethod'] ?? 'RazorPay'),
-              _buildDetailRow('Farm Name:', userData?['farmName'] ?? 'Homegrown Heaven'),
-              _buildDetailRow('Phone:', userData?['phone'] ?? 'N/A'),
-              _buildDetailRow('Street:', userData?['street'] ?? 'N/A'),
-              _buildDetailRow('Town:', userData?['town'] ?? 'N/A'),
-              _buildDetailRow('District:', userData?['district'] ?? 'N/A'),
-              _buildDetailRow('State:', userData?['state'] ?? 'N/A'),
-              _buildDetailRow('Pincode:', userData?['pincode'] ?? 'N/A'),
             ],
           ),
           actions: [
@@ -215,12 +208,12 @@ class BillsPage extends StatelessWidget {
             level: 0,
             child: pw.Text('Order Details', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 24)),
           ),
-          pw.SizedBox(height: 16),
+          pw.SizedBox(height: 20),
           _buildCustomerInfo(paymentData),
-          pw.SizedBox(height: 16),
+          pw.SizedBox(height: 20),
           _buildProductTable(paymentData['products']),
+          pw.SizedBox(height: 20),
           _buildTotalAmount(paymentData['amount']),
-          _buildAdditionalDetails(paymentData, userData),
         ],
       ),
     );
@@ -284,7 +277,7 @@ class BillsPage extends StatelessWidget {
       headers: tableHeaders,
       data: tableData,
       border: pw.TableBorder.all(color: PdfColor.fromHex("#000000")),
-      headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.blue),
+      headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.black, fontSize: 20),
       cellStyle: const pw.TextStyle(color: PdfColors.black),
       cellAlignments: {
         0: pw.Alignment.centerLeft,
@@ -303,23 +296,10 @@ class BillsPage extends StatelessWidget {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.end,
       children: [
-        _buildDetailText('Total Amount:', '${amount.toStringAsFixed(2)}', fontSize: 18, fontWeight: pw.FontWeight.bold),
-      ],
-    );
-  }
-
-  pw.Widget _buildAdditionalDetails(Map<String, dynamic> paymentData, Map<String, dynamic>? userData) {
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.SizedBox(height: 16),
-        pw.Text('Additional Details:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-        _buildDetailText('Phone:', userData?['phone'] ?? 'N/A'),
-        _buildDetailText('Street:', userData?['street'] ?? 'N/A'),
-        _buildDetailText('Town:', userData?['town'] ?? 'N/A'),
-        _buildDetailText('District:', userData?['district'] ?? 'N/A'),
-        _buildDetailText('State:', userData?['state'] ?? 'N/A'),
-        _buildDetailText('Pincode:', userData?['pincode'] ?? 'N/A'),
+        _buildDetailText('Total Amount:',
+            '${amount.toStringAsFixed(2)}',
+            fontSize: 18,
+            fontWeight: pw.FontWeight.bold),
       ],
     );
   }

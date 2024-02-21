@@ -106,7 +106,7 @@ class _CartPageState extends State<CartPage> {
                         ),
                         SizedBox(height: 10,),
                         Text(
-                          "Price: ₹${product['productPrice']?.toStringAsFixed(2) ?? 'N/A'}",
+                          "Price: ₹${product['productPrice']?.toStringAsFixed(2) ?? 'N/A'}/KG",
                           style: TextStyle(fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
                         ),
                         Row(

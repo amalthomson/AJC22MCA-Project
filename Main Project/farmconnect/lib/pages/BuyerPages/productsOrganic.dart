@@ -128,7 +128,7 @@ class OrganicProducts extends StatelessWidget {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            "Price: ₹${productPrice?.toStringAsFixed(2) ?? 'N/A'}",
+                            "Price: ₹${productPrice?.toStringAsFixed(2) ?? 'N/A'}/KG",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -222,7 +222,6 @@ class OrganicProducts extends StatelessWidget {
         children: [
           FloatingActionButton(
             onPressed: () {
-              // Navigate to CartPage
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => CartPage()),
@@ -269,16 +268,13 @@ class OrganicProducts extends StatelessWidget {
     final docSnapshot = await docRef.get();
 
     if (docSnapshot.exists) {
-      // Product exists in the wishlist, remove it
       await docRef.delete();
     } else {
-      // Product doesn't exist in the wishlist, add it
       await addToWishlist(userId, await getProductDetails(productId));
     }
   }
 
   Future<DocumentSnapshot> getProductDetails(String productId) async {
-    // Fetch product details from the products collection
     return await FirebaseFirestore.instance
         .collection('products')
         .doc(productId)

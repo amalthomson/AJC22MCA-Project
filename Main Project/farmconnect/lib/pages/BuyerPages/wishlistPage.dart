@@ -159,7 +159,7 @@ class WishlistPage extends StatelessWidget {
                             ),
                             SizedBox(height: 16),
                             Text(
-                              'Price: ₹$productPrice',
+                              'Price: ₹$productPrice/KG',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

@@ -119,7 +119,7 @@ class VegetableProductsPage extends StatelessWidget {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            "Price: ₹${productPrice?.toStringAsFixed(2) ?? 'N/A'}",
+                            "Price: ₹${productPrice?.toStringAsFixed(2) ?? 'N/A'}/KG",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
