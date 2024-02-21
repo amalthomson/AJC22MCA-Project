@@ -84,7 +84,7 @@ class _AddProductsState extends State<AddProducts> {
     if (_imageUrl != null && user != null && _selectedCategory != null && _selectedProductName != null) {
       final stock = int.tryParse(stockController.text) ?? 0;
 
-    final querySnapshot = await FirebaseFirestore.instance
+      final querySnapshot = await FirebaseFirestore.instance
           .collection('products')
           .where('category', isEqualTo: _selectedCategory)
           .where('productName', isEqualTo: _selectedProductName)
@@ -218,7 +218,7 @@ class _AddProductsState extends State<AddProducts> {
 
   Widget _buildTextField(TextEditingController controller, String labelText,
       [TextInputType inputType = TextInputType.text]) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -234,6 +234,35 @@ class _AddProductsState extends State<AddProducts> {
         ),
       ),
       keyboardType: inputType,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Field cannot be empty';
+        }
+        if (inputType == TextInputType.number) {
+          int? numericValue = int.tryParse(value);
+          if (numericValue == null) {
+            return 'Please enter a valid number';
+          }
+          if (labelText.contains('Price')) {
+            if (numericValue < 1 || numericValue > 999) {
+              return 'Price must be in the range of 1 to 999';
+            }
+          } else if (labelText.contains('Stock')) {
+            if (numericValue < 1 || numericValue > 99) {
+              return 'Stock must be in the range of 1 to 99';
+            }
+          }
+        } else if (inputType == TextInputType.text && labelText.contains('Description')) {
+          if (!RegExp(r'^[a-zA-Z ]+$').hasMatch(value)) {
+            return 'Description must contain only letters and spaces';
+          }
+          if (value.length < 3) {
+            return 'Description must contain at least 3 characters';
+          }
+        }
+        return null;
+      },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 

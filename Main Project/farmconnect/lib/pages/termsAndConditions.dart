@@ -11,7 +11,7 @@ class TermsPage extends StatelessWidget {
           'Terms and Conditions',
           style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        iconTheme: IconThemeData(color: Colors.white), // Set the back button color to white
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -25,7 +25,7 @@ class TermsPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green, // Change the title color
+                  color: Colors.green,
                 ),
               ),
               SizedBox(height: 30),
@@ -55,11 +55,10 @@ class TermsPage extends StatelessWidget {
                 "Any disputes arising from the use of FarmConnect will be resolved through arbitration.",
               ),
               StyledTerms(
-                number: "6", // Add the new point number
+                number: "6",
                 text:
                 "Only users who are Buyers can register with the 'Sign In with Google' option.",
               ),
-              // Add more styled terms and conditions as needed
             ],
           ),
         ),
@@ -86,7 +85,7 @@ class StyledTerms extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.green, // Change the number color
+              color: Colors.green,
             ),
           ),
           SizedBox(width: 10),

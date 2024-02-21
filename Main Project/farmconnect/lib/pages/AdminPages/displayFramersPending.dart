@@ -280,7 +280,12 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.green,
                               ),
-                              child: Text('Approve'),
+                              child: Text(
+                                'Approve',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                             SizedBox(width: 30),
                             ElevatedButton(
@@ -290,7 +295,12 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.red,
                               ),
-                              child: Text('Reject'),
+                              child: Text(
+                                'Reject',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ],
                         ),

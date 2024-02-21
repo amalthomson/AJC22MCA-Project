@@ -4,8 +4,8 @@ class AdminDashboardTile extends StatelessWidget {
   final String title;
   final int count;
   final Color tileColor;
-  final IconData iconData; // Icon data for the tile
-  final List<Color> gradientColors; // List of colors for gradient
+  final IconData iconData;
+  final List<Color> gradientColors;
 
   const AdminDashboardTile({
     required this.title,
@@ -19,21 +19,21 @@ class AdminDashboardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25.0), // Rounded edges
+        borderRadius: BorderRadius.circular(25.0),
       ),
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: gradientColors, // Use the provided gradient colors
+            colors: gradientColors,
           ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              iconData, // Use the provided icon data
+              iconData,
               color: Colors.white,
               size: 40.0,
             ),

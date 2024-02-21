@@ -10,7 +10,6 @@ class ForgotPassword extends StatelessWidget {
 
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      // Password reset email sent successfully
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -21,7 +20,6 @@ class ForgotPassword extends StatelessWidget {
         ),
       );
     } catch (e) {
-      // An error occurred while sending the password reset email
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -41,9 +39,9 @@ class ForgotPassword extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         title: Text("Forget Password", style: TextStyle(color: Colors.white, fontSize: 20,
-          fontWeight: FontWeight.bold)), // White text color
+          fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // White icon color
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
@@ -65,7 +63,7 @@ class ForgotPassword extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.white, // White text color
+                color: Colors.white,
               ),
             ),
             SizedBox(height: 20),
@@ -105,15 +103,15 @@ class ForgotPassword extends StatelessWidget {
                   ),
                 ),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50), // Round the edges by 50
-                  borderSide: BorderSide.none, // Remove the border
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50), // Round the edges by 50
+                  borderRadius: BorderRadius.circular(50),
                   borderSide: BorderSide(color: Colors.blue),
                 ),
                 errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50), // Round the edges by 50
+                  borderRadius: BorderRadius.circular(50),
                   borderSide: BorderSide(color: Colors.red),
                 ),
               ),
@@ -122,7 +120,7 @@ class ForgotPassword extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                sendPasswordResetEmail(context); // Call the function to send reset email
+                sendPasswordResetEmail(context); 
               },
               child: Text("Reset Password"),
               style: ElevatedButton.styleFrom(
