@@ -22,6 +22,7 @@ import 'package:farmconnect/pages/BuyerPages/updateProfile.dart';
 import 'package:farmconnect/pages/Cart/cartProvider.dart';
 import 'package:farmconnect/pages/Cart/myOrders.dart';
 import 'package:farmconnect/pages/Cart/viewBillsandInvoice.dart';
+import 'package:farmconnect/pages/FarmerPages/agriculturalNewsPage.dart';
 import 'package:farmconnect/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/pages/FarmerPages/farmerftl.dart';
 import 'package:farmconnect/pages/termsAndConditions.dart';
@@ -98,6 +99,7 @@ class MyApp extends StatelessWidget {
         '/paymentSuccessful' : (context) => PaymentSuccessfulPage(),
         '/stockDetails' : (context) => StockByProductNamePage(),
         '/add_category' : (context) => AddCategoriesAndProducts(),
+        //'/add_category' : (context) => AgriculturalNewsPage(),
       },
     );
   }

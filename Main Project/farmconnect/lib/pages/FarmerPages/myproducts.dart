@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/pages/FarmerPages/updatePrice.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmconnect/pages/FarmerPages/updateStockPage.dart';
 
 class MyProductsPage extends StatelessWidget {
   @override
@@ -62,28 +64,48 @@ class MyProductsPage extends StatelessWidget {
             productsByCategory[category]![productName]!.add(product);
           }
 
-          return ListView.builder(
-            itemCount: productsByCategory.length,
-            itemBuilder: (context, index) {
-              final category = productsByCategory.keys.elementAt(index);
-              final categoryMap = productsByCategory[category]!;
-
-              return Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: ExpansionTile(
-                  title: Text(
-                    'Category: $category',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue, // Updated category color
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UpdateStockPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.green,
+                        onPrimary: Colors.white,
+                      ),
+                      child: Text('Update Stock'),
                     ),
-                  ),
-                  children: categoryMap.keys.map((productName) {
-                    final productItems = categoryMap[productName]!;
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UpdatePricePage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        onPrimary: Colors.white,
+                      ),
+                      child: Text('Update Price'),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: productsByCategory.length,
+                  itemBuilder: (context, index) {
+                    final category = productsByCategory.keys.elementAt(index);
+                    final categoryMap = productsByCategory[category]!;
 
                     return Card(
                       elevation: 4,
@@ -91,114 +113,134 @@ class MyProductsPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: ExpansionTile(
-                        title: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(productItems[0]['productImage'] ?? ''),
-                              radius: 30,
-                            ),
-                            SizedBox(width: 16),
-                            Text(
-                              'Product Name: $productName',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
+                        title: Text(
+                          'Category: $category',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
                         ),
-                        children: productItems.map((product) {
-                          final productDescription = product['productDescription'];
-                          final productPrice = product['productPrice'];
-                          final stock = product['stock'];
-
-                          String status = 'Pending Approval';
-                          if (product['isApproved'] == 'Approved') {
-                            status = 'Approved';
-                          } else if (product['isApproved'] == 'Rejected') {
-                            status = 'Rejected';
-                          }
+                        children: categoryMap.keys.map((productName) {
+                          final productItems = categoryMap[productName]!;
 
                           return Card(
                             elevation: 4,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
                             ),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(16), // Increased padding
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            child: ExpansionTile(
+                              title: Row(
                                 children: [
-                                  Text(
-                                    "Product Price: ₹$productPrice.00", // Include the Rupee sign (₹) before the price
-                                    style: TextStyle(
-                                      fontSize: 20, // Larger font size
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold, // You can also add fontWeight for emphasis
-                                    ),
+                                  CircleAvatar(
+                                    backgroundImage: NetworkImage(productItems[0]['productImage'] ?? ''),
+                                    radius: 30,
                                   ),
+                                  SizedBox(width: 16),
                                   Text(
-                                    "Product Description: $productDescription",
+                                    'Product Name: $productName',
                                     style: TextStyle(
-                                      fontSize: 20, // Larger font size
-                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue,
                                     ),
-                                  ),
-                                  Text(
-                                    "Stock: $stock KG",
-                                    style: TextStyle(
-                                      fontSize: 20, // Larger font size
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    child: Text(
-                                      "Check Status",
-                                      style: TextStyle(
-                                        color: status == 'Approved' ? Colors.green : status == 'Rejected' ? Colors.red : Colors.blue,
-                                        fontSize: 20, // Larger font size
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text("Status Remark"),
-                                            content: Text(
-                                              "Status: $status",
-                                              style: TextStyle(
-                                                color: status == 'Approved' ? Colors.green : status == 'Rejected' ? Colors.red : Colors.blue,
-                                                fontSize: 18, // Larger font size
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Text("Close"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
                                   ),
                                 ],
                               ),
+                              children: productItems.map((product) {
+                                final productDescription = product['productDescription'];
+                                final productPrice = product['productPrice'];
+                                final stock = product['stock'];
+
+                                String status = 'Pending Approval';
+                                if (product['isApproved'] == 'Approved') {
+                                  status = 'Approved';
+                                } else if (product['isApproved'] == 'Rejected') {
+                                  status = 'Rejected';
+                                }
+
+                                return Card(
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.all(16),
+                                    subtitle: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Product Price: ₹$productPrice.00/KG",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Product Description: $productDescription",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Stock: $stock KG",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          child: Text(
+                                            "Check Status",
+                                            style: TextStyle(
+                                              color: status == 'Approved' ? Colors.green : status == 'Rejected' ? Colors.red : Colors.blue,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text("Status Remark"),
+                                                  content: Text(
+                                                    "Status: $status",
+                                                    style: TextStyle(
+                                                      color: status == 'Approved' ? Colors.green : status == 'Rejected' ? Colors.red : Colors.blue,
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                      child: Text("Close"),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           );
                         }).toList(),
                       ),
                     );
-                  }).toList(),
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           );
         },
       ),

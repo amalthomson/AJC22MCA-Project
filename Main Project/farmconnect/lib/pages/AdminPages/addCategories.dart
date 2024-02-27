@@ -9,9 +9,11 @@ class AddCategoriesAndProducts extends StatefulWidget {
 class _AddCategoriesAndProductsState extends State<AddCategoriesAndProducts> {
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController productNameController = TextEditingController();
+  final _categoryFormKey = GlobalKey<FormState>();
+  final _productFormKey = GlobalKey<FormState>();
 
   Future<void> _addCategory() async {
-    if (categoryController.text.isNotEmpty) {
+    if (_categoryFormKey.currentState!.validate()) {
       await FirebaseFirestore.instance.collection('categories').doc(categoryController.text).set({
         'categoryName': categoryController.text,
         'productNames': [], // Initialize an empty array for product names
@@ -30,7 +32,7 @@ class _AddCategoriesAndProductsState extends State<AddCategoriesAndProducts> {
   }
 
   Future<void> _addProduct() async {
-    if (_selectedCategory != null && productNameController.text.isNotEmpty) {
+    if (_productFormKey.currentState!.validate() && _selectedCategory != null) {
       await FirebaseFirestore.instance
           .collection('categories')
           .doc(_selectedCategory!)
@@ -110,43 +112,67 @@ class _AddCategoriesAndProductsState extends State<AddCategoriesAndProducts> {
   }
 
   Widget _buildCategoryTextField() {
-    return TextField(
-      controller: categoryController,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        labelText: 'Category Name',
-        hintText: 'Enter a category name',
-        labelStyle: TextStyle(color: Colors.white),
-        hintStyle: TextStyle(color: Colors.grey),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(10),
+    return Form(
+      key: _categoryFormKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: TextFormField(
+        controller: categoryController,
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: 'Category Name',
+          hintText: 'Enter a category name',
+          labelStyle: TextStyle(color: Colors.white),
+          hintStyle: TextStyle(color: Colors.grey),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(10),
-        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Category name cannot be empty';
+          } else if (value.startsWith(' ') || value.contains(RegExp(r'\d'))) {
+            return 'Invalid category name';
+          }
+          return null;
+        },
       ),
     );
   }
 
   Widget _buildProductTextField() {
-    return TextField(
-      controller: productNameController,
-      style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        labelText: 'Product Name',
-        hintText: 'Enter a product name',
-        labelStyle: TextStyle(color: Colors.white),
-        hintStyle: TextStyle(color: Colors.grey),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(10),
+    return Form(
+      key: _productFormKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: TextFormField(
+        controller: productNameController,
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: 'Product Name',
+          hintText: 'Enter a product name',
+          labelStyle: TextStyle(color: Colors.white),
+          hintStyle: TextStyle(color: Colors.grey),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(10),
-        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Product name cannot be empty';
+          } else if (value.startsWith(' ') || value.contains(RegExp(r'\d'))) {
+            return 'Invalid product name';
+          }
+          return null;
+        },
       ),
     );
   }
@@ -181,9 +207,3 @@ class _AddCategoriesAndProductsState extends State<AddCategoriesAndProducts> {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: AddCategoriesAndProducts(),
-    theme: ThemeData.dark(), // Set dark theme for the entire app
-  ));
-}

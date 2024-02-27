@@ -1,4 +1,6 @@
+import 'package:farmconnect/pages/FarmerPages/LowStockProductsPage.dart';
 import 'package:farmconnect/pages/FarmerPages/addproducts.dart';
+import 'package:farmconnect/pages/FarmerPages/agriculturalNewsPage.dart';
 import 'package:farmconnect/pages/FarmerPages/farmer_page.dart';
 import 'package:farmconnect/pages/FarmerPages/myproducts.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +18,7 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -50,11 +52,19 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
           bottom: TabBar(
             tabs: [
               Tab(
+                text: "Agri News",
+                icon: Icon(Icons.info),
+              ),
+              Tab(
                 text: "Add Products",
                 icon: Icon(Icons.add),
               ),
               Tab(
                 text: "My Products",
+                icon: Icon(Icons.store),
+              ),
+              Tab(
+                text: "Low Stock Products",
                 icon: Icon(Icons.store),
               ),
               Tab(
@@ -70,8 +80,10 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
         backgroundColor: Colors.black,
         body: TabBarView(
           children: <Widget>[
+            AgriculturalNewsPage(),
             AddProducts(),
             MyProductsPage(),
+            LowStockProductsPage(),
             FarmerPage(),
           ],
         ),
