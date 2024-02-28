@@ -20,16 +20,21 @@ class _AgriculturalNewsPageState extends State<AgriculturalNewsPage> {
   }
 
   Future<void> _fetchAgriculturalNews() async {
-    final apiKey = 'e2fda66c435c4a16980659ab65e80b7c';
-    final apiUrl = 'https://newsapi.org/v2/top-headlines?country=in&category=sports&apiKey=$apiKey';
+    final apiKey = 'cfd53a5e9emsh54221adbe4d7b8cp10fc0djsnfbff5ce2b662';
+    final apiUrl = 'https://newsapi90.p.rapidapi.com/search?query=farmer&language=en-IN&region=IN';
+
+    final headers = {
+      'X-RapidAPI-Key': apiKey,
+      'X-RapidAPI-Host': 'newsapi90.p.rapidapi.com',
+    };
 
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      final response = await http.get(Uri.parse(apiUrl), headers: headers);
       if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
+        final dynamic responseData = json.decode(response.body);
 
-        if (jsonData['status'] == 'ok') {
-          final articles = jsonData['articles'];
+        if (responseData is List<dynamic>) {
+          final articles = responseData;
 
           setState(() {
             _newsArticles = List<NewsArticle>.from(articles.map((article) => NewsArticle.fromJson(article)));
@@ -37,7 +42,7 @@ class _AgriculturalNewsPageState extends State<AgriculturalNewsPage> {
             _error = false;
           });
         } else {
-          print('Failed to load news. Status: ${jsonData['status']}, Message: ${jsonData['message']}');
+          print('Invalid response format. Expected a list.');
           setState(() {
             _loading = false;
             _error = true;

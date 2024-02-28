@@ -52,10 +52,6 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
           bottom: TabBar(
             tabs: [
               Tab(
-                text: "Agri News",
-                icon: Icon(Icons.info),
-              ),
-              Tab(
                 text: "Add Products",
                 icon: Icon(Icons.add),
               ),
@@ -66,6 +62,10 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
               Tab(
                 text: "Low Stock Products",
                 icon: Icon(Icons.store),
+              ),
+              Tab(
+                text: "Agri News",
+                icon: Icon(Icons.info),
               ),
               Tab(
                 text: "Profile",
@@ -80,10 +80,10 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
         backgroundColor: Colors.black,
         body: TabBarView(
           children: <Widget>[
-            AgriculturalNewsPage(),
             AddProducts(),
             MyProductsPage(),
             LowStockProductsPage(),
+            AgriculturalNewsPage(),
             FarmerPage(),
           ],
         ),
