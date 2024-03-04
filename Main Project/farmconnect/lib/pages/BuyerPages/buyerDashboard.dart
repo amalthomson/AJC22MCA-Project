@@ -1,12 +1,13 @@
 import 'package:farmconnect/pages/BuyerPages/buyerHome.dart';
 import 'package:farmconnect/pages/BuyerPages/buyerProfile.dart';
 import 'package:farmconnect/pages/BuyerPages/productSearch.dart';
-import 'package:farmconnect/pages/BuyerPages/wishlistPage.dart';
-import 'package:farmconnect/pages/Cart/cartPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../Review & Rating/addReviewPage.dart';
+import '../Review & Rating/viewReviewsPage.dart';
 
 final TextEditingController _searchController = TextEditingController();
 
@@ -45,7 +46,6 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
       await _auth.signOut();
       await googleSignIn.signOut();
       Navigator.pushReplacementNamed(context, "/login");
-      //Navigator.popAndPushNamed(context, "/login");
     } catch (error) {
       print("Error signing out: $error");
     }
@@ -64,29 +64,6 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
       child: Scaffold(
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          // children: [
-          //   FloatingActionButton(
-          //     onPressed: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => CartPage()),
-          //       );
-          //     },
-          //     child: Icon(Icons.shopping_cart, color: Colors.white),
-          //     backgroundColor: Colors.green,
-          //   ),
-          //   SizedBox(width: 16.0),
-          //   FloatingActionButton(
-          //     onPressed: () {
-          //       Navigator.push(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => WishlistPage()),
-          //       );
-          //     },
-          //     child: Icon(Icons.favorite, color: Colors.white),
-          //     backgroundColor: Colors.red,
-          //   ),
-          // ],
         ),
         backgroundColor: Colors.black,
         appBar: AppBar(
