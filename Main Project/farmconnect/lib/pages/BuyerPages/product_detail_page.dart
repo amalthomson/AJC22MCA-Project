@@ -1,5 +1,4 @@
-import 'package:farmconnect/pages/Review%20&%20Rating/addReview.dart';
-import 'package:farmconnect/pages/Review%20&%20Rating/viewReviewsPage.dart';
+import 'package:farmconnect/pages/BuyerPages/viewReviewsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -138,43 +137,7 @@ class ProductDetailPage extends StatelessWidget {
                     },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddReview(
-                            category: product['category'],
-                            productName: product['productName'],
-                          ),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.rate_review, color: Colors.white),
-                        SizedBox(width: 8),
-                        Text(
-                          'Add Review and Ratings',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
                 SizedBox(height: 16),
-
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: ElevatedButton(
@@ -309,6 +272,7 @@ Widget _buildRatingAndReviews(String category, String productName) {
               itemCount: 5,
               itemSize: 40,
               itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+              ignoreGestures: true,
               itemBuilder: (context, index) {
                 return Icon(
                   index < averageRating.floor()

@@ -95,15 +95,6 @@ class BuyerProfilePage extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   DashboardCard(
-                    title: "My Orders",
-                    icon: Icons.shopping_cart,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/my_orders");
-                    },
-                    buttonColor: Colors.green,
-                  ),
-                  SizedBox(height: 20),
-                  DashboardCard(
                     title: "Bills & Invoice",
                     icon: Icons.receipt,
                     onPressed: () {

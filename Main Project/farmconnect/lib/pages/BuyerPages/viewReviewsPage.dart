@@ -100,6 +100,7 @@ class ViewReviewsPage extends StatelessWidget {
                       itemSize: 48,
                       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                       unratedColor: Colors.grey[400],
+                      ignoreGestures: true,
                       itemBuilder: (context, _) => Icon(
                         Icons.star,
                         color: Colors.amber,
@@ -188,6 +189,7 @@ class ViewReviewsPage extends StatelessWidget {
                               itemSize: 32,
                               itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                               unratedColor: Colors.grey[400],
+                              ignoreGestures: true,
                               itemBuilder: (context, _) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
