@@ -35,10 +35,12 @@ class PaymentService {
           'quantity': item['quantity'],
           'unitPrice': productPrice,
           'totalPrice': totalPrice,
+          'productImage': item['productImage'], // Include productImage in the order details
         };
       }).toList();
 
-      await FirebaseFirestore.instance.collection('payments').add({
+      // Store payment details in "payments" collection
+      DocumentReference paymentReference = await FirebaseFirestore.instance.collection('payments').add({
         'paymentId': paymentId,
         'amount': totalAmount,
         'timestamp': FieldValue.serverTimestamp(),
@@ -49,11 +51,27 @@ class PaymentService {
         'products': productsList,
       });
 
+      // Store order details in "orders" collection
+      await FirebaseFirestore.instance.collection('orders').doc(paymentReference.id).set({
+        'orderId': paymentReference.id,
+        'paymentId': paymentId,
+        'amount': totalAmount,
+        'timestamp': FieldValue.serverTimestamp(),
+        'userUid': userUid,
+        'customerName': customerName,
+        'customerEmail': customerEmail,
+        'customerPhone': customerPhone,
+        'products': productsList,
+        // You can include additional order details if needed
+      });
+
       cartProvider.clearCart();
     } catch (e) {
-      print("Error storing payment details: $e");
+      print("Error storing payment and order details: $e");
     }
   }
+
+
 
   static void handlePaymentError(PaymentFailureResponse response) {
     print("Payment error: ${response.message}");

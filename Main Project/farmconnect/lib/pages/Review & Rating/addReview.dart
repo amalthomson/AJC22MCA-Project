@@ -3,17 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class AddReviewPage extends StatefulWidget {
+class AddReview extends StatefulWidget {
   final String category;
   final String productName;
 
-  AddReviewPage({required this.category, required this.productName});
+  AddReview({required this.category, required this.productName});
 
   @override
   _AddReviewPageState createState() => _AddReviewPageState();
 }
 
-class _AddReviewPageState extends State<AddReviewPage> {
+class _AddReviewPageState extends State<AddReview> {
   double _rating = 0;
   String _reviewText = '';
   final _formKey = GlobalKey<FormState>();

@@ -1,13 +1,11 @@
 import 'package:farmconnect/pages/BuyerPages/buyerHome.dart';
 import 'package:farmconnect/pages/BuyerPages/buyerProfile.dart';
+import 'package:farmconnect/pages/BuyerPages/OrderHistory.dart';
 import 'package:farmconnect/pages/BuyerPages/productSearch.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../Review & Rating/addReviewPage.dart';
-import '../Review & Rating/viewReviewsPage.dart';
 
 final TextEditingController _searchController = TextEditingController();
 
@@ -60,7 +58,7 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -134,6 +132,13 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
               ),
               Tab(
                 icon: Hero(
+                  tag: 'orders_tab', // Unique tag for the fruits tab
+                  child: Icon(Icons.home),
+                ),
+                text: 'Orders',
+              ),
+              Tab(
+                icon: Hero(
                   tag: 'profile_tab', // Unique tag for the profile tab
                   child: Icon(Icons.person),
                 ),
@@ -154,6 +159,7 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
               return TabBarView(
                 children: [
                   BuyerHome(),
+                  OrdersHistory(),
                   BuyerProfilePage(),
                 ],
               );

@@ -1,4 +1,4 @@
-import 'package:farmconnect/pages/Review%20&%20Rating/addReviewPage.dart';
+import 'package:farmconnect/pages/Review%20&%20Rating/addReview.dart';
 import 'package:farmconnect/pages/Review%20&%20Rating/viewReviewsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -145,7 +145,7 @@ class ProductDetailPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddReviewPage(
+                          builder: (context) => AddReview(
                             category: product['category'],
                             productName: product['productName'],
                           ),
