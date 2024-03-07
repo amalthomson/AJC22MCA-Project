@@ -1,0 +1,63 @@
+/* src/components/AdminDashboard.css */
+
+.dashboard-title {
+    color: white;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  
+  .dashboard-tile {
+    padding: 16px;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+  }
+  
+  .farmers-tile {
+    background: linear-gradient(to bottom right, #2196F3, #0D47A1);
+  }
+  
+  .buyers-tile {
+    background: linear-gradient(to bottom right, #2196F3, #0D47A1);
+  }
+  
+  .farmer-approval-pending-tile {
+    background: linear-gradient(to bottom right, #FFA726, #E65100);
+  }
+  
+  .pending-products-tile {
+    background: linear-gradient(to bottom right, #FFA726, #E65100);
+  }
+  
+  .farmer-approval-rejected-tile {
+    background: linear-gradient(to bottom right, #EF5350, #B71C1C);
+  }
+  
+  .rejected-products-tile {
+    background: linear-gradient(to bottom right, #EF5350, #B71C1C);
+  }
+  
+  .approved-products-tile {
+    background: linear-gradient(to bottom right, #66BB6A, #1B5E20);
+  }
+  
+  .stock-tile {
+    background: linear-gradient(to bottom right, #66BB6A, #1B5E20);
+  }
+  
+  .payments-successful-tile {
+    background: linear-gradient(to bottom right, #2196F3, #0D47A1);
+  }
+  
+  .products-category-wise-tile {
+    background: linear-gradient(to bottom right, #2196F3, #0D47A1);
+  }
+  
+  .add-category-product-tile {
+    background: linear-gradient(to bottom right, #FF4081, #880E4F);
+  }
+  

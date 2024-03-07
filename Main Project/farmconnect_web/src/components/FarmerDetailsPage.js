@@ -1,4 +1,5 @@
 // src/components/FarmerDetailsPage.js
+
 import React from 'react';
 
 const FarmerDetailsPage = () => {
