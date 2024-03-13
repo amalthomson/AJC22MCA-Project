@@ -1,0 +1,80 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Set height to 100% of the viewport height */
+  background-color: #000000; /* Set black background */
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 100px; /* Increase logo size */
+  height: 100px; /* Increase logo size */
+  margin-bottom: 20px; /* Increase margin bottom */
+}
+
+h1 {
+  color: #ffffff; /* Set white color for heading */
+  font-size: 32px; /* Increase font size */
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px; /* Set width for the form */
+}
+
+label {
+  margin-top: 20px; /* Increase margin top */
+  color: #77c7ff; /* Set light blue color for label */
+  font-weight: bold;
+  font-size: 18px; /* Increase font size */
+}
+
+input {
+  margin-bottom: 20px; /* Increase margin bottom */
+  padding: 15px; /* Increase padding */
+  border: none;
+  border-radius: 10px;
+  background-color: #28597a; /* Set dark blue background */
+  color: #ffffff; /* Set white color for text */
+  font-size: 16px; /* Increase font size */
+}
+
+input:focus {
+  outline: none;
+}
+
+button {
+  margin-top: 20px; /* Increase margin top */
+  padding: 15px; /* Increase padding */
+  border: none;
+  border-radius: 10px;
+  background-color: #3498db; /* Set button color */
+  color: #ffffff; /* Set white color for text */
+  font-size: 18px; /* Increase font size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9; /* Change button color on hover */
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 80%;
+  }
+}
