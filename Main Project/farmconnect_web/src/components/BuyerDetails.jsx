@@ -1,5 +1,3 @@
-// BuyerDetailsReactPage.js
-
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import firestore from '../firebase';
@@ -7,7 +5,6 @@ import './BuyerDetails.css';
 import Sidebar from './SideBar';
 
 const BuyerDetailsReactPage = () => {
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -55,30 +52,30 @@ const BuyerDetailsReactPage = () => {
       </nav>
       <Sidebar/>
       <div className="content">
-    <div className="container">
-      {buyers.length === 0 ? (
-        <p>No approved buyers found.</p>
-      ) : (
-        buyers.map(buyer => (
-          <div key={buyer.id} className="buyer-card">
-            <img
-              src={buyer.data.profileImageUrl || '/path/to/default/profile/image.jpg'}
-              alt="Profile Image"
-            />
-            <h2>{buyer.data.name || 'N/A'}</h2>
-            <div className="buyer-details">
-              <p>Email: {buyer.data.email || 'N/A'}</p>
-              <p>Phone: {buyer.data.phone || 'N/A'}</p>
-              <p>Gender: {buyer.data.gender || 'N/A'}</p>
-              <p>
-                Address: {`${buyer.data.street || 'N/A'}, ${buyer.data.town || 'N/A'}, ${buyer.data.district || 'N/A'}, ${buyer.data.state || 'N/A'}, ${buyer.data.pincode || 'N/A'}`}
-              </p>
-            </div>
-          </div>
-        ))
-      )}
-    </div>
-    </div>
+        <div className="container">
+          {buyers.length === 0 ? (
+            <p>No approved buyers found.</p>
+          ) : (
+            buyers.map(buyer => (
+              <div key={buyer.id} className="buyer-card">
+                <img
+                  src={buyer.data.profileImageUrl || '/path/to/default/profile/image.jpg'}
+                  alt="Profile Image"
+                />
+                <h2>{buyer.data.name || 'N/A'}</h2>
+                <div className="buyer-details">
+                  <p>Email: {buyer.data.email || 'N/A'}</p>
+                  <p>Phone: {buyer.data.phone || 'N/A'}</p>
+                  <p>Gender: {buyer.data.gender || 'N/A'}</p>
+                  <p>
+                    Address: {`${buyer.data.street || 'N/A'}, ${buyer.data.town || 'N/A'}, ${buyer.data.district || 'N/A'}, ${buyer.data.state || 'N/A'}, ${buyer.data.pincode || 'N/A'}`}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 };

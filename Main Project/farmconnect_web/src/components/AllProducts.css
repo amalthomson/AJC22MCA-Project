@@ -1,0 +1,63 @@
+/* AllProducts.css */
+
+/* Styles for the wrapper */
+.wrapper {
+    display: flex;
+  }
+  
+  /* Styles for the sidebar */
+  .sidebar {
+    width: 250px; /* Adjust this value as needed */
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  /* Styles for the content */
+  .content {
+    flex: 1; /* Allow the content to grow to fill available space */
+    padding: 90px;
+  }
+  
+  /* Styles for category cards */
+  .category-card {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    margin-left: 290px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  
+  /* Styles for product table */
+  .product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  /* Styles for table headers */
+  .product-table th {
+    background-color: #444;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Styles for table cells */
+  .product-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Styles for product images */
+  .product-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  /* Hover effect for product rows */
+  .product-row:hover {
+    background-color: #555;
+  }
+  

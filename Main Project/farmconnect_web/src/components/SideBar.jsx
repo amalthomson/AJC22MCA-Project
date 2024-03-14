@@ -15,7 +15,7 @@ export default function Sidebar() {
             <div className="profile-desc">
               <div className="profile-pic">
                 <div className="count-indicator">
-                  <img className="img-xs rounded-circle " src="assets/images/faces/face15.jpg" alt />
+                  <img className="img-xs rounded-circle " src="assets/appLogoDark.png" />
                   <span className="count bg-success" />
                 </div>
                 <div className="profile-name">
@@ -48,6 +48,28 @@ export default function Sidebar() {
         </li>
       </Link>
 
+      <Link to="/farmer-pending" style={{ textDecoration: 'none' }}>
+        <li className="nav-item menu-items">
+          <a className="nav-link" href="pages/charts/chartjs.html">
+            <span className="menu-icon">
+              <i className="mdi mdi-chart-bar" />
+            </span>
+            <span className="menu-title">Farmer Pending</span>
+          </a>
+        </li>
+      </Link>
+
+      <Link to="/farmer-rejected" style={{ textDecoration: 'none' }}>
+        <li className="nav-item menu-items">
+          <a className="nav-link" href="pages/icons/mdi.html">
+            <span className="menu-icon">
+              <i className="mdi mdi-contacts" />
+            </span>
+            <span className="menu-title">Farmers Rejected</span>
+          </a>
+        </li>
+      </Link>
+
       <Link to="/buyer-details" style={{ textDecoration: 'none' }}>
         <li className="nav-item menu-items">
           <a className="nav-link" href="pages/tables/basic-table.html">
@@ -59,62 +81,18 @@ export default function Sidebar() {
         </li>
       </Link>
 
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
-        <li className="nav-item menu-items">
-          <a className="nav-link" href="pages/charts/chartjs.html">
-            <span className="menu-icon">
-              <i className="mdi mdi-chart-bar" />
-            </span>
-            <span className="menu-title">Farmer Pending</span>
-          </a>
-        </li>
-      </Link>
-
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+      <Link to="/all-products" style={{ textDecoration: 'none' }}>
         <li className="nav-item menu-items">
           <a className="nav-link" href="pages/icons/mdi.html">
             <span className="menu-icon">
               <i className="mdi mdi-contacts" />
             </span>
-            <span className="menu-title">Products Pending</span>
+            <span className="menu-title">All Products</span>
           </a>
         </li>
       </Link>
 
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
-        <li className="nav-item menu-items">
-          <a className="nav-link" href="pages/icons/mdi.html">
-            <span className="menu-icon">
-              <i className="mdi mdi-contacts" />
-            </span>
-            <span className="menu-title">Farmers Rejected</span>
-          </a>
-        </li>
-      </Link>
-
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
-        <li className="nav-item menu-items">
-          <a className="nav-link" href="pages/icons/mdi.html">
-            <span className="menu-icon">
-              <i className="mdi mdi-contacts" />
-            </span>
-            <span className="menu-title">Products Rejected</span>
-          </a>
-        </li>
-      </Link>
-
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
-        <li className="nav-item menu-items">
-          <a className="nav-link" href="pages/icons/mdi.html">
-            <span className="menu-icon">
-              <i className="mdi mdi-contacts" />
-            </span>
-            <span className="menu-title">Products Approved</span>
-          </a>
-        </li>
-      </Link>
-
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+      <Link to="/stock-details" style={{ textDecoration: 'none' }}>
         <li className="nav-item menu-items">
           <a className="nav-link" href="pages/icons/mdi.html">
             <span className="menu-icon">
@@ -125,7 +103,40 @@ export default function Sidebar() {
         </li>
       </Link>
 
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+      <Link to="/products-pending" style={{ textDecoration: 'none' }}>
+        <li className="nav-item menu-items">
+          <a className="nav-link" href="pages/icons/mdi.html">
+            <span className="menu-icon">
+              <i className="mdi mdi-contacts" />
+            </span>
+            <span className="menu-title">Products Pending</span>
+          </a>
+        </li>
+      </Link>
+
+      <Link to="/products-approved" style={{ textDecoration: 'none' }}>
+        <li className="nav-item menu-items">
+          <a className="nav-link" href="pages/icons/mdi.html">
+            <span className="menu-icon">
+              <i className="mdi mdi-contacts" />
+            </span>
+            <span className="menu-title">Products Approved</span>
+          </a>
+        </li>
+      </Link>
+
+      <Link to="/products-rejected" style={{ textDecoration: 'none' }}>
+        <li className="nav-item menu-items">
+          <a className="nav-link" href="pages/icons/mdi.html">
+            <span className="menu-icon">
+              <i className="mdi mdi-contacts" />
+            </span>
+            <span className="menu-title">Products Rejected</span>
+          </a>
+        </li>
+      </Link>
+
+      <Link to="/payment-details" style={{ textDecoration: 'none' }}>
         <li className="nav-item menu-items">
           <a className="nav-link" href="pages/icons/mdi.html">
             <span className="menu-icon">
@@ -136,7 +147,7 @@ export default function Sidebar() {
         </li>
       </Link>
 
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+      <Link to="/order-details" style={{ textDecoration: 'none' }}>
         <li className="nav-item menu-items">
           <a className="nav-link" href="pages/icons/mdi.html">
             <span className="menu-icon">
@@ -147,7 +158,18 @@ export default function Sidebar() {
         </li>
       </Link>
 
-      <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+      <Link to="/review-details" style={{ textDecoration: 'none' }}>
+        <li className="nav-item menu-items">
+          <a className="nav-link" href="pages/icons/mdi.html">
+            <span className="menu-icon">
+              <i className="mdi mdi-contacts" />
+            </span>
+            <span className="menu-title">Product Review</span>
+          </a>
+        </li>
+      </Link>
+
+      <Link to="/category-details" style={{ textDecoration: 'none' }}>
         <li className="nav-item menu-items">
           <a className="nav-link" href="pages/icons/mdi.html">
             <span className="menu-icon">

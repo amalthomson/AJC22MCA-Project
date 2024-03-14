@@ -33,10 +33,12 @@ body {
 .container {
   max-width: 1800px; /* Increase the size of the container */
   margin: 20px auto;
-  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+  margin-top: 90px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent black background */
   padding: 40px; /* Increase padding for better spacing */
   border-radius: 20px; /* Increase border radius for rounded corners */
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); /* Add shadow for depth */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  border: 2px solid #fff; /* Add white border */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 40px;
@@ -44,12 +46,13 @@ body {
 
 .farmer-card {
   padding: 20px;
-  background-color: #333; /* Darker background color for farmer cards */
+  background-color: #333; /* Darker background color for buyer cards */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 2px solid #fff; /* Add white border */
 }
 
 .farmer-card img {
@@ -60,7 +63,7 @@ body {
 }
 
 .farmer-details {
-  margin-top: 20px; /* Increase top margin for spacing */
+  margin-top: 30px; /* Increase top margin for spacing */
   text-align: left;
 }
 

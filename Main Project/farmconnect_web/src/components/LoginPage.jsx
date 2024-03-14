@@ -20,7 +20,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-header">
-        <img className="logo" src="public/assets/appLogoDark.png" alt="FarmConnect Logo" />
+        <img className="logo" src="assets/appLogoDark.png"/>
         <h1>FarmConnect</h1>
       </div>
       <form>

@@ -9,7 +9,7 @@ import Sidebar from './SideBar';
 
 Modal.setAppElement('#root');
 
-const FarmerDetailsReactPage = () => {
+const FarmerRejectedReactPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,7 +31,7 @@ const FarmerDetailsReactPage = () => {
         const approvedFarmersQuery = query(
           farmersRef,
           where('role', '==', 'Farmer'),
-          where('isAdminApproved', '==', 'approved')
+          where('isAdminApproved', '==', 'rejected')
         );
 
         const approvedFarmersSnapshot = await getDocs(approvedFarmersQuery);
@@ -126,4 +126,4 @@ const FarmerDetailsReactPage = () => {
   );
 };
 
-export default FarmerDetailsReactPage;
+export default FarmerRejectedReactPage;

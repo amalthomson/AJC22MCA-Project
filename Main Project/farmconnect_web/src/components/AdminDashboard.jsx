@@ -49,11 +49,8 @@ function AdminDashboard() {
                   <div className="row">
                     <div className="col-8 col-sm-12 col-xl-8 my-auto">
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Farmers</h2>
+                        <h2 className="mb-4 mt-4">Farmers</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -62,17 +59,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/farmer-pending" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Buyers</h2>
+                        <h2 className="mb-4 mt-4">Farmer Pending</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -81,17 +75,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/farmer-rejected" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Farmer Pending</h2>
+                        <h2 className="mb-4 mt-4">Farmers Rejected</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -100,17 +91,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/buyer-details" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Products Pending</h2>
+                        <h2 className="mb-4 mt-4">Buyers</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -119,17 +107,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/all-products" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Farmers Rejected</h2>
+                        <h2 className="mb-4 mt-4">All Products</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -138,17 +123,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/stock-details" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Products Rejected</h2>
+                        <h2 className="mb-4 mt-4">Stock</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -157,17 +139,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/category-products" style={{ textDecoration: 'none' }}>
+            <Link to="/products-pending" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Products Approved</h2>
+                        <h2 className="mb-4 mt-4">Products Pending</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -176,17 +155,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/products-approved" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Stock</h2>
+                        <h2 className="mb-4 mt-4">Products Approved</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -195,17 +171,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/products-rejected" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Payments</h2>
+                        <h2 className="mb-4 mt-4">Products Rejected</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -214,17 +187,14 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/payment-details" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Orders</h2>
+                        <h2 className="mb-4 mt-4">Payments</h2>
                       </div>
-                    </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
                     </div>
                   </div>
                 </div>
@@ -233,17 +203,46 @@ function AdminDashboard() {
             </div>
 
             <div className="col-sm-4 grid-margin">
-            <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
+            <Link to="/order-details" style={{ textDecoration: 'none' }}>
               <div className="card">
                 <div className="card-body">
-                  <div className="row">
-                    <div className="col-8 col-sm-12 col-xl-8 my-auto">
+                  <div>
+                    <div>
                       <div className="d-flex d-sm-block d-md-flex align-items-center">
-                        <h2 className="mb-0">Category & Products</h2>
+                        <h2 className="mb-4 mt-4">Orders</h2>
                       </div>
                     </div>
-                    <div className="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                      <i className="icon-lg mdi mdi-monitor text-success ml-auto" />
+                  </div>
+                </div>
+              </div>
+              </Link>
+            </div>
+
+            <div className="col-sm-4 grid-margin">
+            <Link to="/review-details" style={{ textDecoration: 'none' }}>
+              <div className="card">
+                <div className="card-body">
+                  <div>
+                    <div>
+                      <div className="d-flex d-sm-block d-md-flex align-items-center">
+                        <h2 className="mb-4 mt-4">Product Review</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </Link>
+            </div>
+
+            <div className="col-sm-4 grid-margin">
+            <Link to="/category-details" style={{ textDecoration: 'none' }}>
+              <div className="card">
+                <div className="card-body">
+                 <div>
+                    <div>
+                      <div className="d-flex d-sm-block d-md-flex align-items-center">
+                        <h2 className="mb-4 mt-4">Category & Products</h2>
+                      </div>
                     </div>
                   </div>
                 </div>
