@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import firestore from '../firebase';
-import './AllProducts.css'; // Import the CSS file
 import Sidebar from './SideBar';
+import './AllProducts.css';
 
 const AllProducts = () => {
   const [categoryProducts, setCategoryProducts] = useState({});
+  const [expandedCategory, setExpandedCategory] = useState(null);
 
   useEffect(() => {
     const fetchProductsByCategory = async () => {
@@ -32,53 +33,52 @@ const AllProducts = () => {
 
     fetchProductsByCategory();
 
-    // Cleanup function
     return () => {
-      // Clean up any ongoing operations, such as closing listeners, if necessary
     };
-  }, []); // Empty dependency array ensures this effect runs only once on component mount
+  }, []);
+
+  const handleCategoryExpand = (category) => {
+    setExpandedCategory(expandedCategory === category ? null : category);
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/'; 
+    }
+  }, []);
 
   return (
     <div className="wrapper">
-      <nav className="navbar p-0 fixed-top d-flex flex-row">
-        <div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-          <div className="w-100 d-flex justify-content-center align-items-center">
-            <h3 className="text-center mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold'}}>
+      <Sidebar />
+      <div className="w-100 d-flex justify-content-center align-items-center">
+            <h3 className="text-center mt-5 mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold'}}>
               All Products
             </h3>
           </div>
-        </div>
-      </nav>
-      <Sidebar className="sidebar"/> {/* Add className prop */}
-      <div className="content"> {/* Add className prop */}
-        <div className="all-products-container">
+      <div className="content">
+        <div className="category-container">
           {Object.keys(categoryProducts).map(category => (
             <div key={category} className="category-card">
-              <h2>{category}</h2>
-              <table className="product-table">
-                <thead>
-                  <tr>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Description</th>
-                    <th>Image</th>
-                    <th>Stock</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <div className="category-header" onClick={() => handleCategoryExpand(category)}>
+                <h2 className="category-title">{category}</h2>
+                <span className="expand-icon">{expandedCategory === category ? '-' : '+'}</span>
+              </div>
+              {expandedCategory === category && (
+                <div className="product-container">
                   {categoryProducts[category].map(product => (
-                    <tr key={product.id} className="product-row">
-                      <td>{product.productName}</td>
-                      <td>{product.productPrice}.00</td>
-                      <td>{product.productDescription}</td>
-                      <td>
-                        <img src={product.productImage} alt={product.productName} className="product-image" />
-                      </td>
-                      <td>{product.stock}/KG</td>
-                    </tr>
+                    <div key={product.id} className="card">
+                      <img src={product.productImage} alt={product.productName} className="card-image" />
+                      <div className="card-content">
+                        <h4 className="card-title">{product.productName}</h4>
+                        <p className="card-price">Price: ₹ {product.productPrice}.00</p>
+                        <p className="card-description">{product.productDescription}</p>
+                        <p className="card-stock">Stock: {product.stock}/KG</p>
+                      </div>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              )}
             </div>
           ))}
         </div>

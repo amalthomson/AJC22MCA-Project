@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { collection, query, getDocs } from 'firebase/firestore';
 import firestore from '../firebase';
+import './PaymentDetails.css'; // Import the CSS file
+import Sidebar from './SideBar';
 
 const PaymentDetails = () => {
   const [paymentDetails, setPaymentDetails] = useState([]);
@@ -30,45 +32,52 @@ const PaymentDetails = () => {
     };
   }, []); // Empty dependency array ensures this effect runs only once on component mount
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/'; 
+    }
+  }, []);
+
+
   return (
-    <div>
-      <h1>Payment Details</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Payment ID</th>
-            <th>Amount</th>
-            <th>Timestamp</th>
-            <th>Customer Name</th>
-            <th>Customer Email</th>
-            <th>Products</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="wrapper">
+      <Sidebar />
+      <div className="content">
+      <div className="w-100 d-flex justify-content-center align-items-center">
+            <h3 className="text-center mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold'}}>
+              Payments
+            </h3>
+          </div>
+        <div className="payment-details-container">
           {paymentDetails.map(payment => (
-            <tr key={payment.id}>
-              <td>{payment.paymentId}</td>
-              <td>{payment.amount}</td>
-              <td>{payment.timestamp.toDate().toLocaleString()}</td>
-              <td>{payment.customerName}</td>
-              <td>{payment.customerEmail}</td>
-              <td>
-                <ul>
-                  {payment.products.map((product, index) => (
-                    <li key={index}>
-                      Product ID: {product.productId}, 
-                      Name: {product.productName}, 
-                      Quantity: {product.quantity}, 
-                      Unit Price: {product.unitPrice}, 
-                      Total Price: {product.totalPrice}
-                    </li>
-                  ))}
-                </ul>
-              </td>
-            </tr>
+            <div className="payment-card" key={payment.id}>
+              <div className="card-header">
+                <h4>Payment ID: {payment.paymentId}</h4>
+              </div>
+              <div className="card-body">
+                <p><strong>Amount:</strong> ₹ {payment.amount}.00</p>
+                <p><strong>Timestamp:</strong> {new Date(payment.timestamp?.toDate()).toLocaleString()}</p>
+                <p><strong>Customer Name:</strong> {payment.customerName}</p>
+                <p><strong>Customer Email:</strong> {payment.customerEmail}</p>
+                <div className="products-list">
+                  <h5>Products:</h5>
+                  <div className="products-container">
+                    {payment.products.map((product, index) => (
+                      <div className="product" key={index}>
+                        <p><strong>Name:</strong> {product.productName}</p>
+                        <p><strong>Quantity:</strong> {product.quantity} KG</p>
+                        <p><strong>Unit Price:</strong> ₹ {product.unitPrice.toFixed(2)}.00</p>
+                        <p><strong>Total Price:</strong> ₹ {product.totalPrice.toFixed(2)}.00</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

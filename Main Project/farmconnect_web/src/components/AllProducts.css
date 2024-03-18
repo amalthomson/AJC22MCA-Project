@@ -1,63 +1,98 @@
 /* AllProducts.css */
 
-/* Styles for the wrapper */
+.page-header {
+  margin-bottom: 20px;
+}
+
+.page-title {
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  color: #fff; /* Change color to white */
+}
+
 .wrapper {
-    display: flex;
-  }
-  
-  /* Styles for the sidebar */
-  .sidebar {
-    width: 250px; /* Adjust this value as needed */
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-  }
-  
-  /* Styles for the content */
-  .content {
-    flex: 1; /* Allow the content to grow to fill available space */
-    padding: 90px;
-  }
-  
-  /* Styles for category cards */
-  .category-card {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    margin-left: 290px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-  }
-  
-  /* Styles for product table */
-  .product-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  /* Styles for table headers */
-  .product-table th {
-    background-color: #444;
-    color: #fff;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  /* Styles for table cells */
-  .product-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  /* Styles for product images */
-  .product-image {
-    width: 100px;
-    height: 100px;
-  }
-  
-  /* Hover effect for product rows */
-  .product-row:hover {
-    background-color: #555;
-  }
-  
+  display: flex;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.category-container {
+  margin-left: 280px;
+}
+
+.category-card {
+  margin-bottom: 20px;
+  background-color: #222; /* Change background color to a darker shade */
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.category-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff; /* Change color to white */
+  margin-right: 10px;
+}
+
+.expand-icon {
+  font-size: 24px;
+  color: #fff; /* Change color to white */
+}
+
+.product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff; /* Change color to white */
+}
+
+.card-price {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #fff; /* Change color to white */
+}
+
+.card-description {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #fff; /* Change color to white */
+}
+
+.card-stock {
+  margin: 5px 0;
+  font-size: 14px;
+  color: green;
+  font-weight: bold;
+}

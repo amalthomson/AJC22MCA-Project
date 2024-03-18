@@ -17,6 +17,8 @@ import ProductPending from './components/ProductsPending';
 import CategoryDetails from './components/CategoryDetails';
 import ReviewDetails from './components/ReviewDetails';
 import AllProducts from './components/AllProducts';
+import Farmers from './components/Farmers';
+import Products from './components/Products';
 
 const App = () => {
   return (
@@ -37,6 +39,8 @@ const App = () => {
       <Route path="/products-pending" element={<ProductPending/>} />
       <Route path="/category-details" element={<CategoryDetails/>} />
       <Route path="/review-details" element={<ReviewDetails/>} />
+      <Route path="/farmers" element={<Farmers/>} />
+      <Route path="/products" element={<Products/>} />
       </Routes>
     </Router>
   );

@@ -1,0 +1,65 @@
+/* ProductPending.css */
+
+.page-header {
+    margin-bottom: 20px;
+  }
+  
+  .page-title {
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .wrapper {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .content {
+    flex: 1;
+    padding-top: 20px;
+    padding-left: 20px;
+  }
+  
+  .product-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(300px, 1fr));
+    gap: 40px;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .card-price {
+    margin: 5px 0;
+    font-size: 18px;
+  }
+  
+  .card-description {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  
+  .card-category {
+    margin: 5px 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  

@@ -62,17 +62,13 @@ const FarmerPendingReactPage = () => {
 
   return (
     <div className="wrapper">
-      <nav className="navbar p-0 fixed-top d-flex flex-row">
-        <div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-          <div className="w-100 d-flex justify-content-center align-items-center">
-            <h3 className="text-center mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold'}}>
-              Farmer Details
-            </h3>
-          </div>
-        </div>
-      </nav>
       <Sidebar/>
       <div className="content">
+      <div className="w-100 d-flex justify-content-center align-items-center">
+            <h3 className="text-center mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold'}}>
+            Farmers - Pending
+            </h3>
+          </div>
         <div className="container">
           {farmers.length === 0 ? (
             <p>No approved farmers found.</p>

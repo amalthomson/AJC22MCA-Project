@@ -1,0 +1,66 @@
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .navbar {
+    background-color: #333;
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .navbar h3 {
+    margin: 0;
+  }
+  
+  .content {
+    flex: 1;
+    padding-top: 20px;
+    padding-left: 20px;
+  }
+  
+  .container {
+    margin: auto;
+    width: 90%; /* Adjust as needed */
+  }
+  
+  .stock-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(300px, 1fr)); /* Display 3 cards in each row with minimum width of 300px */
+    gap: 40px;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%; /* Ensure the card occupies the full width of the grid column */
+  }
+  
+  .card-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 32px; /* Increased font size for product name */
+    font-weight: bold;
+  }
+  
+  .card-price {
+    margin: 5px 0;
+    font-size: 22px; /* Increased font size for product price */
+  }
+  
+  .card-stock {
+    margin: 5px 0;
+    font-size: 24px;
+    color: green;
+    font-weight: bold; /* Increased font size for stock */
+  }
+  

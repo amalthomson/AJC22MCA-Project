@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import firestore from '../firebase';
+import Sidebar from './SideBar';
+import './ReviewDetails.css';
 
 const ReviewDetails = () => {
   const [reviewDetails, setReviewDetails] = useState([]);
@@ -28,40 +30,45 @@ const ReviewDetails = () => {
     };
 
     fetchReviewDetails();
-
-    // Cleanup function
+    
     return () => {
-      // Clean up any ongoing operations, such as closing listeners, if necessary
+      // Clean up any ongoing operations, if necessary
     };
-  }, []); // Empty dependency array ensures this effect runs only once on component mount
+  }, []); 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/'; 
+    }
+  }, []);
 
   return (
-    <div>
-      <h1>Review Details</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Product ID</th>
-            <th>Product Name</th>
-            <th>Rating</th>
-            <th>Review Text</th>
-            <th>Timestamp</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reviewDetails.map(review => (
-            <tr key={review.id}>
-              <td>{review.category}</td>
-              <td>{review.productId}</td>
-              <td>{review.productName}</td>
-              <td>{review.rating}</td>
-              <td>{review.reviewText}</td>
-              <td>{review.timestamp}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="wrapper">
+      <Sidebar />
+      <div className="content">
+      <div className="w-100 d-flex justify-content-center align-items-center">
+            <h3 className="text-center mt-4 mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold'}}>
+              Product Review
+            </h3>
+          </div>
+        <div className="container">
+          <div className="review-cards">
+            {reviewDetails.map(review => (
+              <div key={review.id} className="card">
+                <div className="card-content">
+                  <h3 className="category">{review.category}</h3>
+                  <p><strong>Product ID:</strong> {review.productId}</p>
+                  <p><strong>Product Name:</strong> {review.productName}</p>
+                  <p><strong>Rating:</strong> {review.rating}/5.0</p>
+                  <p><strong>Review Text:</strong> {review.reviewText}</p>
+                  <p><strong>Timestamp:</strong> {review.timestamp}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

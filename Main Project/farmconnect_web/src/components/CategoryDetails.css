@@ -1,0 +1,47 @@
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .content {
+    flex: 1;
+    overflow: hidden; /* Prevent scrolling */
+  }
+  
+  
+  .container {
+    margin: auto;
+    width: 100%; /* Adjust as needed */
+  }
+  
+  .category-cards {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .product-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .product-list li {
+    margin-bottom: 5px;
+  }
+  

@@ -8,8 +8,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (email === 'admin' && password === '123') {
-      const token = 'j22sxx338wzcvollrxz';
+    if (email === 'admin' && password === 'admin') {
+      const token = 'admintokensession';
       localStorage.setItem('token', token);
       navigate('/admin-dashboard');
     } else {

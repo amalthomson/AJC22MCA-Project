@@ -4,17 +4,6 @@ BuyerDetails.css
   display: flex;
 }
 
-.sidebar {
-  /* Add your sidebar styles here */
-  width: 260px; /* Adjust sidebar width as needed */
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
-}
 
 .content {
   flex: 1;
