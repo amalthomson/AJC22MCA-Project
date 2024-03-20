@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import React, { useEffect } from 'react';
+// import { collection, getDocs } from 'firebase/firestore';
 import { Link } from 'react-router-dom'; 
-import firestore from '../firebase';
+// import firestore from '../firebase';
 import './Sidebar.css';
 
 export default function Sidebar() {
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/'; 
+    }
+  }, []);
+
   return (
     <div style={{overflowY: 'auto'}}>
       <nav className="sidebar sidebar-offcanvas" id="sidebar" style={{ paddingTop:"1px",backgroundColor: 'black' }}>
@@ -16,7 +24,7 @@ export default function Sidebar() {
             <div className="profile-desc">
               <div className="profile-pic">
                 <div className="count-indicator">
-                  <img className="img-xs rounded-circle " src="assets/appLogoDark.png" />
+                  <img className="img-xs rounded-circle " src="assets/appLogoDark.png" alt=""/>
                   <span className="count bg-success" />
                 </div>
                 <div className="profile-name">
@@ -33,7 +41,7 @@ export default function Sidebar() {
             <span className="menu-icon">
               <i className="mdi mdi-speedometer" />
             </span>
-            <span className="menu-title">Dashboard</span>
+            <span className="menu-title" style={{ color: 'white' }}>Dashboard</span>
           </a>
         </li>
       </Link>
@@ -44,27 +52,27 @@ export default function Sidebar() {
                 <span className="menu-icon">
                   <i className="mdi mdi-playlist-play" />
                 </span>
-                <span className="menu-title">Farmers</span>
+                <span className="menu-title" style={{ color: 'white' }}>Farmers</span>
               </a>
             </Link>
             <ul className="submenu">
               <li className="nav-item">
                 <Link to="/farmer-details" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Farmers Approved
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/farmer-pending" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Farmers Pending
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/farmer-rejected" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Farmers Rejected
                   </a>
                 </Link>
@@ -78,7 +86,7 @@ export default function Sidebar() {
             <span className="menu-icon">
               <i className="mdi mdi-table-large" />
             </span>
-            <span className="menu-title">Buyers</span>
+            <span className="menu-title" style={{ color: 'white' }}>Buyers</span>
           </a>
         </li>
       </Link>
@@ -89,55 +97,55 @@ export default function Sidebar() {
                 <span className="menu-icon">
                   <i className="mdi mdi-playlist-play" />
                 </span>
-                <span className="menu-title">Products</span>
+                <span className="menu-title" style={{ color: 'white' }}>Products</span>
               </a>
             </Link>
             <ul className="submenu">
               <li className="nav-item">
                 <Link to="/all-products" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     All Products
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/products-approved" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Products Approved
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/products-pending" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Products Pending
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/products-rejected" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Products Rejected
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/stock-details" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Stock
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/review-details" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Product Reviews
                   </a>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/category-details" style={{ textDecoration: 'none' }}>
-                  <a className="nav-link" href="#">
+                  <a className="nav-link" href="#" style={{ color: 'white' }}>
                     Products & Category
                   </a>
                 </Link>
@@ -151,7 +159,7 @@ export default function Sidebar() {
             <span className="menu-icon">
               <i className="mdi mdi-contacts" />
             </span>
-            <span className="menu-title">Payments</span>
+            <span className="menu-title" style={{ color: 'white' }}>Payments</span>
           </a>
         </li>
       </Link>
@@ -162,7 +170,7 @@ export default function Sidebar() {
             <span className="menu-icon">
               <i className="mdi mdi-contacts" />
             </span>
-            <span className="menu-title">Orders</span>
+            <span className="menu-title" style={{ color: 'white' }}>Orders</span>
           </a>
         </li>
       </Link>

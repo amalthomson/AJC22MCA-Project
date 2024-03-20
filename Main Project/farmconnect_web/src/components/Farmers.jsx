@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
 import { Link } from 'react-router-dom';  
-import firestore from '../firebase';
 import Sidebar from './SideBar';
 
 
