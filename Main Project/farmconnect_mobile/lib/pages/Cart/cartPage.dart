@@ -1,5 +1,6 @@
 import 'package:farmconnect/pages/Cart/paymentService.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'cartProvider.dart';
@@ -78,77 +79,98 @@ class _CartPageState extends State<CartPage> {
           final product = cartProvider.uniqueProducts[index];
           final productCount = cartProvider.productCount(product['productId']);
 
-          return Card(
-            margin: EdgeInsets.all(8.0),
-            elevation: 4.0,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(product['productImage'] ?? ''),
-                        fit: BoxFit.cover,
+          return FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection('products').doc(product['productId']).get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              final productData = snapshot.data?.data() as Map<String, dynamic>;
+
+              final productPriceString = productData['productPrice'] as String?;
+              final productPrice = productPriceString != null ? double.tryParse(productPriceString) : null;
+
+              return Card(
+                margin: EdgeInsets.all(8.0),
+                elevation: 4.0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(productData['productImage'] ?? ''),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(width: 16.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product['productName'],
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 10,),
-                        Text(
-                          "Price: ₹${product['productPrice']?.toStringAsFixed(2) ?? 'N/A'}/KG",
-                          style: TextStyle(fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
-                        ),
-                        Row(
+                      SizedBox(width: 16.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.remove,
-                                color: Colors.red,
-                              ),
-                              onPressed: () {
-                                cartProvider.decreaseQuantity(product['productId']);
-                              },
-                            ),
-                            SizedBox(width: 10,),
                             Text(
-                              "${product['quantity']}",
-                              style: TextStyle(fontSize: 22),
+                              '${productData['productName']}',
+                              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(width: 10,),
-                            IconButton(
-                              icon: Icon(
-                                Icons.add,
-                                color: Colors.green,
-                              ),
-                              onPressed: () {
-                                cartProvider.increaseQuantity(product['productId']);
-                              },
+                            SizedBox(height: 10,),
+                            Text(
+                              '${productData['farmName']}',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            SizedBox(height: 10,),
+                            Text(
+                              productPrice != null ? "Price: ₹${productPrice.toStringAsFixed(2)}/KG" : 'Price: N/A',
+                              style: TextStyle(fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.remove,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    cartProvider.decreaseQuantity(product['productId']);
+                                  },
+                                ),
+                                SizedBox(width: 10,),
+                                Text(
+                                  "${product['quantity']} KG",
+                                  style: TextStyle(fontSize: 22),
+                                ),
+                                SizedBox(width: 10,),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Colors.green,
+                                  ),
+                                  onPressed: () {
+                                    cartProvider.increaseQuantity(product['productId']);
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.remove_shopping_cart, color: Colors.red,),
+                        onPressed: () {
+                          cartProvider.removeFromCart(product['productId']);
+                        },
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: Icon(Icons.remove_shopping_cart, color: Colors.red,),
-                    onPressed: () {
-                      cartProvider.removeFromCart(product['productId']);
-                    },
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),

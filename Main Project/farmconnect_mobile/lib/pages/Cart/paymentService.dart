@@ -26,6 +26,16 @@ class PaymentService {
       String customerEmail = user?.email ?? 'guest@example.com';
       String customerPhone = user?.phoneNumber ?? 'N/A';
 
+      // Fetch user's address details from Firestore
+      DocumentSnapshot userAddressSnapshot = await FirebaseFirestore.instance.collection('users').doc(userUid).get();
+      Map<String, dynamic> userAddressData = userAddressSnapshot.data() as Map<String, dynamic>;
+      String street = userAddressData['street'];
+      String town = userAddressData['town'];
+      String district = userAddressData['district'];
+      String state = userAddressData['state'];
+      String pincode = userAddressData['pincode'];
+      String phone = userAddressData['phone'];
+
       List<Map<String, dynamic>> productsList = cartProvider.cartItems.map((item) {
         double productPrice = item['productPrice'] ?? 0.0;
         double totalPrice = productPrice * item['quantity'];
@@ -48,6 +58,12 @@ class PaymentService {
         'customerName': customerName,
         'customerEmail': customerEmail,
         'customerPhone': customerPhone,
+        'street': street, // Include user's address details
+        'town': town,
+        'district': district,
+        'state': state,
+        'pincode': pincode,
+        'phone': phone,
         'products': productsList,
       });
 
@@ -61,8 +77,14 @@ class PaymentService {
         'customerName': customerName,
         'customerEmail': customerEmail,
         'customerPhone': customerPhone,
+        'street': street, // Include user's address details
+        'town': town,
+        'district': district,
+        'state': state,
+        'pincode': pincode,
+        'phone': phone,
         'products': productsList,
-        // You can include additional order details if needed
+        'orderStatus': 'Placed',
       });
 
       cartProvider.clearCart();
@@ -70,8 +92,6 @@ class PaymentService {
       print("Error storing payment and order details: $e");
     }
   }
-
-
 
   static void handlePaymentError(PaymentFailureResponse response) {
     print("Payment error: ${response.message}");

@@ -15,6 +15,7 @@ class _AddProductsState extends State<AddProducts> {
   final TextEditingController productDescriptionController = TextEditingController();
   final TextEditingController productPriceController = TextEditingController();
   final TextEditingController stockController = TextEditingController();
+  DateTime? _selectedDate;
   String? _imageUrl;
   String? _selectedCategory;
   String? _selectedProductName;
@@ -78,11 +79,15 @@ class _AddProductsState extends State<AddProducts> {
   Future<void> _updateDatabase() async {
     final user = FirebaseAuth.instance.currentUser;
 
-    // if (_imageUrl != null && user != null) {
-    //   final stock = int.tryParse(stockController.text) ?? 0;
-
-    if (_imageUrl != null && user != null && _selectedCategory != null && _selectedProductName != null) {
+    if (_imageUrl != null &&
+        user != null &&
+        _selectedCategory != null &&
+        _selectedProductName != null) {
       final stock = int.tryParse(stockController.text) ?? 0;
+
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final farmName = userDoc['farmName'];
+      final uid = user.uid;
 
       final querySnapshot = await FirebaseFirestore.instance
           .collection('products')
@@ -100,7 +105,7 @@ class _AddProductsState extends State<AddProducts> {
           'stock': updatedStock,
         });
       } else {
-        final productId = DateTime.now().millisecondsSinceEpoch.toString();
+        final productId = '${DateTime.now().millisecondsSinceEpoch}_${user.uid}'; // Concatenate userId with productId
 
         await FirebaseFirestore.instance.collection('products').doc(productId).set({
           'productId': productId,
@@ -111,9 +116,11 @@ class _AddProductsState extends State<AddProducts> {
           'productImage': _imageUrl,
           'category': _selectedCategory,
           'productName': _selectedProductName,
-          'userId': user.uid,
+          'userId': uid,
+          'farmName': farmName,
           'isApproved': 'Pending',
           'remark': 'Approval Pending',
+          'expiryDate': _selectedDate.toString().substring(0, 10),
         });
       }
 
@@ -121,6 +128,7 @@ class _AddProductsState extends State<AddProducts> {
       productDescriptionController.clear();
       productPriceController.clear();
       stockController.clear();
+      _selectedDate = null;
       _selectedCategory = null;
       _selectedProductName = null;
 
@@ -138,6 +146,7 @@ class _AddProductsState extends State<AddProducts> {
       Navigator.pushReplacementNamed(context, "/added_product");
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -200,6 +209,8 @@ class _AddProductsState extends State<AddProducts> {
               SizedBox(height: 30.0),
               _buildTextField(productDescriptionController, 'Product Description'),
               SizedBox(height: 30.0),
+              _buildDatePicker(),
+              SizedBox(height: 30.0),
               _buildUploadButton(),
               if (uploadStatus != null)
                 Padding(
@@ -224,11 +235,7 @@ class _AddProductsState extends State<AddProducts> {
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(color: Colors.white),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.green),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        enabledBorder: OutlineInputBorder(
+        border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey),
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -356,6 +363,39 @@ class _AddProductsState extends State<AddProducts> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDatePicker() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Select Expiry Date',
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: () async {
+            final DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime(2100),
+            );
+            if (pickedDate != null && pickedDate != _selectedDate) {
+              setState(() {
+                _selectedDate = pickedDate;
+              });
+            }
+          },
+          child: Text(
+            _selectedDate == null
+                ? 'Choose Date'
+                : 'Selected Date: ${_selectedDate!.toString().substring(0, 10)}',
+          ),
+        ),
+      ],
     );
   }
 

@@ -62,7 +62,7 @@ class DairyProductsPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final product = dairyProducts[index];
               final productName = product['productName'];
-              final productDescription = product['productDescription'];
+              final farmName = product['farmName'];
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
               final productImage = product['productImage'];
               final productId = product['productId'];
@@ -116,14 +116,14 @@ class DairyProductsPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 10),
                           Text(
-                            productDescription,
+                            farmName,
                             style: TextStyle(
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 10),
                           Text(
                             "Price: ₹${productPrice?.toStringAsFixed(2) ?? 'N/A'}/KG",
                             style: TextStyle(
@@ -131,7 +131,12 @@ class DairyProductsPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 10),
+                          Text(
+                            'Expiry Date: ${product['expiryDate']}',
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
+                          ),
+                          SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -152,7 +157,7 @@ class DairyProductsPage extends StatelessWidget {
                                   } else {
                                     cartProvider.addToCart({
                                       'productName': productName,
-                                      'productDescription': productDescription,
+                                      'farmName': farmName,
                                       'productPrice': productPrice,
                                       'productImage': productImage,
                                       'productId': productId,
@@ -264,6 +269,7 @@ class DairyProductsPage extends StatelessWidget {
         .set({
       'productName': product['productName'],
       'productDescription': product['productDescription'],
+      'farmName': product['farmName'],
       'productPrice': product['productPrice'],
       'productImage': product['productImage'],
       'productId': productId,

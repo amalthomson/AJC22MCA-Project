@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/firebase_auth_services.dart';
 import 'package:farmconnect/pages/AdminPages/adminDashboard.dart';
 import 'package:farmconnect/pages/BuyerPages/buyerDashboard.dart';
+import 'package:farmconnect/pages/Delivery/deliveryDashboard.dart';
 import 'package:farmconnect/pages/FarmerPages/farmerDashboard.dart';
 import 'package:farmconnect/pages/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -116,6 +117,13 @@ class _LoginPageState extends State<LoginPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => FarmerDashboard(),
+              ),
+            );
+          } else if (userRole == 'Delivery') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DeliveryDashboard(),
               ),
             );
           } else {

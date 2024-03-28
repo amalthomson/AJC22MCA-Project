@@ -151,6 +151,7 @@ class MyProductsPage extends StatelessWidget {
                                 final productDescription = product['productDescription'];
                                 final productPrice = product['productPrice'];
                                 final stock = product['stock'];
+                                final expiryDate = product['expiryDate'];
 
                                 String status = 'Pending Approval';
                                 if (product['isApproved'] == 'Approved') {
@@ -189,6 +190,13 @@ class MyProductsPage extends StatelessWidget {
                                           style: TextStyle(
                                             fontSize: 20,
                                             color: Colors.red,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Expiry Date: $expiryDate",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.orange,
                                           ),
                                         ),
                                         GestureDetector(

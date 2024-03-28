@@ -87,6 +87,7 @@ class WishlistPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final wishlistItem = wishlistItems?[index];
               final productName = wishlistItem?['productName'];
+              final farmName = wishlistItem?['farmName'];
               final productPrice = wishlistItem?['productPrice'] ?? 'N/A';
               final productImage = wishlistItem?['productImage'];
               final productId = wishlistItem?.id;
@@ -156,6 +157,14 @@ class WishlistPage extends StatelessWidget {
                                   },
                                 ),
                               ],
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              '$farmName',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             SizedBox(height: 16),
                             Text(

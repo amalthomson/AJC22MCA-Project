@@ -95,6 +95,7 @@ class LowStockProductsPage extends StatelessWidget {
                     final productPrice = product['productPrice'];
                     final productImage = product['productImage'];
                     final category = product['category'];
+                    final expiryDate = product['expiryDate'];
 
                     return Card(
                       elevation: 4,
@@ -139,6 +140,13 @@ class LowStockProductsPage extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.green,
+                                  ),
+                                ),
+                                Text(
+                                  'Expiry Date: $expiryDate',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ],

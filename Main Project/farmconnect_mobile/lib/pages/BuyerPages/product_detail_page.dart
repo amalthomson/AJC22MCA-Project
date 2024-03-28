@@ -79,6 +79,10 @@ class ProductDetailPage extends StatelessWidget {
                       SizedBox(height: 8),
                       Text(
                         '₹${price ?? 'N/A'}',
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
+                      ),
+                      Text(
+                        'Expiry Date: ${product['expiryDate']}',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
                       ),
                     ],
