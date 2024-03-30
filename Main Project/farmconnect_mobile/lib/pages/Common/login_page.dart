@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/firebase_auth_services.dart';
-import 'package:farmconnect/pages/AdminPages/adminDashboard.dart';
-import 'package:farmconnect/pages/BuyerPages/buyerDashboard.dart';
+import 'package:farmconnect/pages/Admin/adminDashboard.dart';
+import 'package:farmconnect/pages/Buyer/buyerDashboard.dart';
+import 'package:farmconnect/pages/Common/sign_up_page.dart';
 import 'package:farmconnect/pages/Delivery/deliveryDashboard.dart';
-import 'package:farmconnect/pages/FarmerPages/farmerDashboard.dart';
-import 'package:farmconnect/pages/forgot_password.dart';
+import 'package:farmconnect/pages/Farmer/farmerDashboard.dart';
+import 'package:farmconnect/pages/Common/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'sign_up_page.dart';
 
 class EmailFieldValidator {
   static String? validate(String value) {

@@ -1,6 +1,6 @@
-import 'package:farmconnect/pages/Delivery/ordersDelivered.dart';
-import 'package:farmconnect/pages/Delivery/ordersPlaced.dart';
-import 'package:farmconnect/pages/Delivery/ordersShipped.dart';
+import 'package:farmconnect/pages/Delivery/orderDelivered.dart';
+import 'package:farmconnect/pages/Delivery/orderPlaced.dart';
+import 'package:farmconnect/pages/Delivery/orderShipped.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';

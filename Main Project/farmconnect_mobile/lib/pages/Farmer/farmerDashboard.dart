@@ -1,8 +1,8 @@
-import 'package:farmconnect/pages/FarmerPages/LowStockProductsPage.dart';
-import 'package:farmconnect/pages/FarmerPages/addproducts.dart';
-import 'package:farmconnect/pages/FarmerPages/agriculturalNewsPage.dart';
-import 'package:farmconnect/pages/FarmerPages/farmer_page.dart';
-import 'package:farmconnect/pages/FarmerPages/myproducts.dart';
+import 'package:farmconnect/pages/Farmer/LowStockProductsPage.dart';
+import 'package:farmconnect/pages/Farmer/addproducts.dart';
+import 'package:farmconnect/pages/Farmer/agriculturalNewsPage.dart';
+import 'package:farmconnect/pages/Farmer/farmer_page.dart';
+import 'package:farmconnect/pages/Farmer/myproducts.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';

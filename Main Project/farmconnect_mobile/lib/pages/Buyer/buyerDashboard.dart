@@ -1,7 +1,7 @@
-import 'package:farmconnect/pages/BuyerPages/buyerHome.dart';
-import 'package:farmconnect/pages/BuyerPages/buyerProfile.dart';
-import 'package:farmconnect/pages/BuyerPages/OrderHistory.dart';
-import 'package:farmconnect/pages/BuyerPages/productSearch.dart';
+import 'package:farmconnect/pages/Buyer/buyerHome.dart';
+import 'package:farmconnect/pages/Buyer/buyerProfile.dart';
+import 'package:farmconnect/pages/Buyer/orderHistory.dart';
+import 'package:farmconnect/pages/Buyer/productSearch.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';

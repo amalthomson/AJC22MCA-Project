@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/pages/FarmerPages/updatePrice.dart';
+import 'package:farmconnect/pages/Farmer/updatePrice.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/pages/FarmerPages/updateStockPage.dart';
+import 'package:farmconnect/pages/Farmer/updateStockPage.dart';
 
 class MyProductsPage extends StatelessWidget {
   @override

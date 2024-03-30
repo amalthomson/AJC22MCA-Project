@@ -1,6 +1,6 @@
+import 'package:farmconnect/pages/Common/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login_page.dart';
 
 class ForgotPassword extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();

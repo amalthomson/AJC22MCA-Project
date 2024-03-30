@@ -1,5 +1,5 @@
-import 'package:farmconnect/pages/BuyerPages/productsNonOrganic.dart';
-import 'package:farmconnect/pages/BuyerPages/productsOrganic.dart';
+import 'package:farmconnect/pages/Buyer/productsNonOrganic.dart';
+import 'package:farmconnect/pages/Buyer/productsOrganic.dart';
 import 'package:flutter/material.dart';
 
 class BuyerHome extends StatelessWidget {

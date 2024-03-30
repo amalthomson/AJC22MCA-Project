@@ -1,4 +1,4 @@
-import 'package:farmconnect/pages/BuyerPages/OrderDetailsPage.dart';
+import 'package:farmconnect/pages/Buyer/orderDetailsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';

@@ -1,11 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:farmconnect/pages/Cart/cartProvider.dart';
-import 'package:farmconnect/pages/BuyerPages/product_detail_page.dart';
+import 'package:farmconnect/pages/Buyer/productDetailPage.dart';
 
-class VegetableProductsPage extends StatelessWidget {
+class DairyProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -19,7 +19,7 @@ class VegetableProductsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          "Vegetables",
+          "Dairy Products",
           style: TextStyle(
             color: Colors.white,
             fontSize: 24.0,
@@ -32,7 +32,7 @@ class VegetableProductsPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('category', isEqualTo: 'Vegetable')
+            .where('category', isEqualTo: 'Dairy')
             .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
@@ -42,12 +42,12 @@ class VegetableProductsPage extends StatelessWidget {
             );
           }
 
-          final vegetableProducts = snapshot.data!.docs;
+          final dairyProducts = snapshot.data!.docs;
 
-          if (vegetableProducts.isEmpty) {
+          if (dairyProducts.isEmpty) {
             return Center(
               child: Text(
-                "No products available at the moment.\n\nPlease check back later,\n as we are updating our stocks.",
+                "No dairy products available at the moment.\n\nPlease check back later,\n as we are updating our stocks.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -58,9 +58,9 @@ class VegetableProductsPage extends StatelessWidget {
           }
 
           return ListView.builder(
-            itemCount: vegetableProducts.length,
+            itemCount: dairyProducts.length,
             itemBuilder: (context, index) {
-              final product = vegetableProducts[index];
+              final product = dairyProducts[index];
               final productName = product['productName'];
               final farmName = product['farmName'];
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
@@ -82,20 +82,26 @@ class VegetableProductsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductDetailPage(productId: productId),
-                          ),
-                        );
-                      },
-                      child: Image.network(
-                        productImage,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailPage(productId: productId),
+                            ),
+                          );
+                        },
+                        child: Image.network(
+                          productImage,
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     Padding(
@@ -216,7 +222,6 @@ class VegetableProductsPage extends StatelessWidget {
     );
   }
 
-
   Future<bool> isProductInWishlist(String userId, String productId) async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('wishlist')
@@ -263,13 +268,11 @@ class VegetableProductsPage extends StatelessWidget {
         .doc(productId)
         .set({
       'productName': product['productName'],
-      'farmName': product['farmName'],
       'productDescription': product['productDescription'],
+      'farmName': product['farmName'],
       'productPrice': product['productPrice'],
       'productImage': product['productImage'],
       'productId': productId,
     });
   }
 }
-
-

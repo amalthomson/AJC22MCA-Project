@@ -1,14 +1,14 @@
-import 'package:farmconnect/pages/Cart/orderPlacedDetails.dart';
+import 'package:farmconnect/pages/Delivery/orderShippedDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OrderPlaced extends StatelessWidget {
+class OrderShipped extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('orders').where('orderStatus', isEqualTo: 'Placed').snapshots(),
+        stream: FirebaseFirestore.instance.collection('orders').where('orderStatus', isEqualTo: 'Shipped').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -43,7 +43,7 @@ class OrderPlaced extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'Date: ${timestamp.toDate()}',
+                        'Order Date: ${timestamp.toDate()}',
                         style: TextStyle(color: Colors.white),
                       ), // Convert timestamp to DateTime
                       Text(
@@ -55,7 +55,7 @@ class OrderPlaced extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => OrderPlacedDetails(orderDetails: order)), // Pass order details to OrderPlacedDetails page
+                      MaterialPageRoute(builder: (context) => OrderShippedDetails(orderDetails: order)), // Pass order details to OrderPlacedDetails page
                     );
                   },
                 ),

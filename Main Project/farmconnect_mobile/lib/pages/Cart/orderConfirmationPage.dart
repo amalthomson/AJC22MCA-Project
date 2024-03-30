@@ -1,4 +1,4 @@
-import 'package:farmconnect/pages/BuyerPages/buyerDashboard.dart';
+import 'package:farmconnect/pages/Buyer/buyerDashboard.dart';
 import 'package:flutter/material.dart';
 
 class OrderConfirmationPage extends StatelessWidget {

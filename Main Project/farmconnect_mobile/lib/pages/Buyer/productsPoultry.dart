@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:farmconnect/pages/Cart/cartProvider.dart';
-import 'package:farmconnect/pages/BuyerPages/product_detail_page.dart';
+import 'package:farmconnect/pages/Buyer/productDetailPage.dart';
 
-class DairyProductsPage extends StatelessWidget {
+class PoultryProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -19,7 +19,7 @@ class DairyProductsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          "Dairy Products",
+          "Poultry Products",
           style: TextStyle(
             color: Colors.white,
             fontSize: 24.0,
@@ -32,7 +32,7 @@ class DairyProductsPage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('category', isEqualTo: 'Dairy')
+            .where('category', isEqualTo: 'Poultry')
             .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
@@ -42,12 +42,12 @@ class DairyProductsPage extends StatelessWidget {
             );
           }
 
-          final dairyProducts = snapshot.data!.docs;
+          final poultryProducts = snapshot.data!.docs;
 
-          if (dairyProducts.isEmpty) {
+          if (poultryProducts.isEmpty) {
             return Center(
               child: Text(
-                "No dairy products available at the moment.\n\nPlease check back later,\n as we are updating our stocks.",
+                "No poultry products available at the moment.\n\nPlease check back later,\n as we are updating our stocks.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -58,9 +58,9 @@ class DairyProductsPage extends StatelessWidget {
           }
 
           return ListView.builder(
-            itemCount: dairyProducts.length,
+            itemCount: poultryProducts.length,
             itemBuilder: (context, index) {
-              final product = dairyProducts[index];
+              final product = poultryProducts[index];
               final productName = product['productName'];
               final farmName = product['farmName'];
               final productPrice = double.tryParse(product['productPrice'] ?? '0.0');
@@ -268,8 +268,8 @@ class DairyProductsPage extends StatelessWidget {
         .doc(productId)
         .set({
       'productName': product['productName'],
-      'productDescription': product['productDescription'],
       'farmName': product['farmName'],
+      'productDescription': product['productDescription'],
       'productPrice': product['productPrice'],
       'productImage': product['productImage'],
       'productId': productId,
