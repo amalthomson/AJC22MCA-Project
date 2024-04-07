@@ -1,3 +1,11 @@
+import 'package:farmconnect/blockchain/add_user_screen.dart';
+import 'package:farmconnect/blockchain/user_list_screen.dart';
+import 'package:farmconnect/blockchain/web3client.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:farmconnect/features/splashScreen/splash_screen.dart';
 import 'package:farmconnect/pages/Admin/addCategories.dart';
 import 'package:farmconnect/pages/Admin/adminDashboard.dart';
 import 'package:farmconnect/pages/Admin/displayBuyers.dart';
@@ -27,11 +35,6 @@ import 'package:farmconnect/pages/Common/termsAndConditions.dart';
 import 'package:farmconnect/pages/Common/email_verification_pending_page.dart';
 import 'package:farmconnect/pages/Common/login_page.dart';
 import 'package:farmconnect/pages/Common/sign_up_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:farmconnect/features/splashScreen/splash_screen.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,8 +47,15 @@ Future<void> main() async {
   }
 
   runApp(
-    ChangeNotifierProvider.value(
-      value: cartProvider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: cartProvider,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserServices(),
+        ),
+      ],
       child: MyApp(),
     ),
   );
@@ -60,8 +70,11 @@ class MyApp extends StatelessWidget {
       cartProvider.setUserId(user.uid);
     }
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'FarmConnect',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
         '/': (context) => SplashScreen(
@@ -70,32 +83,34 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),
         '/buyer_profile': (context) => BuyerProfilePage(),
-        '/buyer_home' : (context) => BuyerDashboard(),
+        '/buyer_home': (context) => BuyerDashboard(),
         '/update_details': (context) => UpdateDetailsPage(),
         '/update_password': (context) => UpdatePasswordPage(),
         '/farmer_dash': (context) => FarmerDashboard(),
-        '/buyer_ftl' : (context) => BuyerFTLPage(),
-        '/farmer_ftl' : (context) => FarmerFTLPage(),
-        '/admin_dashboard' : (context) => AdminDashboard(),
-        '/buyer_details' : (context) => BuyerDetailsPage(),
-        '/farmer_details' : (context) => FarmerDetailsPage(),
+        '/buyer_ftl': (context) => BuyerFTLPage(),
+        '/farmer_ftl': (context) => FarmerFTLPage(),
+        '/admin_dashboard': (context) => AdminDashboard(),
+        '/buyer_details': (context) => BuyerDetailsPage(),
+        '/farmer_details': (context) => FarmerDetailsPage(),
         '/email_verification_pending': (context) => EmailVerificationPendingPage(),
-        '/terms' : (context) => TermsPage(),
-        '/pendingapproval' : (context) => PendingApprovalPage(),
-        '/approvedproducts' : (context) => ApprovedProductsPage(),
-        '/rejectedproducts' : (context) => RejectedProductsPage(),
-        '/poultry_page' : (context) => PoultryProductsPage(),
-        '/dairy_page' : (context) => DairyProductsPage(),
-        '/fruits_page' : (context) => FruitsProductsPage(),
-        '/vegetables_page' : (context) => VegetableProductsPage(),
-        '/added_product' : (context) => FarmerDashboard(),
-        '/farmer_approval_pending' : (context) => PendingFarmerApprovalPage(),
-        '/farmer_approval_rejected' : (context) => RejectedFarmerApprovalPage(),
-        '/products_categoryWise' : (context) => CategoryWiseProducts(),
-        "/bills_and_invoice" : (context) => BillsPage(),
-        '/paymentSuccessful' : (context) => PaymentSuccessfulPage(),
-        '/stockDetails' : (context) => StockByProductNamePage(),
-        '/add_category' : (context) => AddCategoriesAndProducts(),
+        '/terms': (context) => TermsPage(),
+        '/pendingapproval': (context) => PendingApprovalPage(),
+        '/approvedproducts': (context) => ApprovedProductsPage(),
+        '/rejectedproducts': (context) => RejectedProductsPage(),
+        '/poultry_page': (context) => PoultryProductsPage(),
+        '/dairy_page': (context) => DairyProductsPage(),
+        '/fruits_page': (context) => FruitsProductsPage(),
+        '/vegetables_page': (context) => VegetableProductsPage(),
+        '/added_product': (context) => FarmerDashboard(),
+        '/farmer_approval_pending': (context) => PendingFarmerApprovalPage(),
+        '/farmer_approval_rejected': (context) => RejectedFarmerApprovalPage(),
+        '/products_categoryWise': (context) => CategoryWiseProducts(),
+        "/bills_and_invoice": (context) => BillsPage(),
+        '/paymentSuccessful': (context) => PaymentSuccessfulPage(),
+        '/stockDetails': (context) => StockByProductNamePage(),
+        '/add_category': (context) => AddCategoriesAndProducts(),
+        '/display_user': (context) => UserListScreen(),
+        '/add_user': (context) => AddUserScreen(),
       },
     );
   }

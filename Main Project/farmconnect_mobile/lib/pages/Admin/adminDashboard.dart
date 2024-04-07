@@ -256,6 +256,19 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 InkWell(
                   onTap: () {
+                    //Navigator.pushReplacementNamed(context, "/products_categoryWise");
+                    Navigator.pushNamed(context, '/display_user');
+                  },
+                  child: AdminDashboardTile(
+                    title: "Blockchain",
+                    count: 5,
+                    tileColor: Colors.blueGrey,
+                    iconData: Icons.data_array,
+                    gradientColors: [Colors.blue, Colors.purple],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
                     // Navigator.pushReplacementNamed(context, "/products_categoryWise");
                     Navigator.pushNamed(context, '/add_category');
                   },
