@@ -17,7 +17,7 @@ class UserServices extends ChangeNotifier {
   bool isLoading = true;
 
   final String _privatekey =
-      '0xfe334229357c660ed4f8823e88572fa9ea7ad894f44398e43aface2e3718e793';
+      '0xde14515d8bcd6ab109bad5a0bde01f9146d7f1a722dbae60ddcc1057608e4291';
   late Web3Client _web3Client;
 
   UserServices() {
@@ -82,13 +82,13 @@ class UserServices extends ChangeNotifier {
       users.add(
         User(
           id: (user[0] as BigInt).toInt(),
-          name: user[1],
-          email: user[2],
-          phone: user[3],
-          aadhar: user[4],
-          address: user[5],
-          dob: user[6],
-          gender: user[7],
+          fuid: user[1],
+          name: user[2],
+          farmname: user[3],
+          email: user[4],
+          phone: user[5],
+          aadhar: user[6],
+          address: user[7],
         ),
       );
     }
@@ -98,13 +98,13 @@ class UserServices extends ChangeNotifier {
   }
 
   Future<void> addUser({
+    required String fuid,
     required String name,
+    required String farmname,
     required String email,
     required String phone,
     required String aadhar,
     required String address,
-    required String dob,
-    required String gender,
   }) async {
     await _web3Client.sendTransaction(
       _credentials,
@@ -112,13 +112,13 @@ class UserServices extends ChangeNotifier {
         contract: _deployedContract,
         function: _createUserDetails,
         parameters: [
+          fuid,
           name,
+          farmname,
           email,
           phone,
           aadhar,
           address,
-          dob,
-          gender,
         ],
       ),
       chainId: 1337,

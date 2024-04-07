@@ -29,6 +29,18 @@ class UserDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTile(
+                  leading: Icon(Icons.lock, color: Colors.white),
+                  title: Text(
+                    'FarmConnect ID',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  subtitle: Text(
+                    '${user.fuid}',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                Divider(color: Colors.grey),
+                ListTile(
                   leading: Icon(Icons.person, color: Colors.white),
                   title: Text(
                     'Name',
@@ -36,6 +48,18 @@ class UserDetailsScreen extends StatelessWidget {
                   ),
                   subtitle: Text(
                     '${user.name}',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                Divider(color: Colors.grey),
+                ListTile(
+                  leading: Icon(Icons.home, color: Colors.white),
+                  title: Text(
+                    'Farm Name',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  subtitle: Text(
+                    '${user.farmname}',
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
@@ -88,29 +112,6 @@ class UserDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 Divider(color: Colors.grey),
-                ListTile(
-                  leading: Icon(Icons.calendar_today, color: Colors.white),
-                  title: Text(
-                    'Date of Birth',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    '${user.dob}',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-                Divider(color: Colors.grey),
-                ListTile(
-                  leading: Icon(Icons.person, color: Colors.white),
-                  title: Text(
-                    'Gender',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    '${user.gender}',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
               ],
             ),
           ),

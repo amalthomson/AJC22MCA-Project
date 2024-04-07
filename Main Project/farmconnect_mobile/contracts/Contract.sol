@@ -6,58 +6,58 @@ contract UserDetailsContract {
 
     struct UserDetails {
         uint256 id;
+        string fuid;
         string name;
+        string farmname;
         string email;
         string phone;
         string aadhar;
         string addres;
-        string dob;
-        string gender;
     }
 
     mapping(uint256 => UserDetails) public userDetails;
 
     event UserDetailsCreated(
         uint256 id,
+        string fuid,
         string name,
+        string farmname,
         string email,
         string phone,
         string aadhar,
-        string addres,
-        string dob,
-        string gender
+        string addres
     );
 
     event UserDetailsDeleted(uint256 id);
 
     function createUserDetails(
+        string memory _fuid,
         string memory _name,
+        string memory _farmname,
         string memory _email,
         string memory _phone,
         string memory _aadhar,
-        string memory _addres,
-        string memory _dob,
-        string memory _gender
+        string memory _addres
     ) public {
         userDetails[userCount] = UserDetails(
             userCount,
+            _fuid,
             _name,
+            _farmname,
             _email,
             _phone,
             _aadhar,
-            _addres,
-            _dob,
-            _gender
+            _addres
         );
         emit UserDetailsCreated(
             userCount,
+            _fuid,
             _name,
+            _farmname,
             _email,
             _phone,
             _aadhar,
-            _addres,
-            _dob,
-            _gender
+            _addres
         );
         userCount++;
     }

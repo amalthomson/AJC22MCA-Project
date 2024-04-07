@@ -60,17 +60,17 @@ class UserListScreen extends StatelessWidget {
                           },
                           child: Card(
                             elevation: 4,
-                            color: Colors.grey,
+                            color: Colors.blueGrey,
                             child: ListTile(
                               title: Text(
                                 userServices.users[index].name,
-                                style: TextStyle(color: Colors.black, fontSize: 32, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
-                                userServices.users[index].email,
-                                style: TextStyle(color: Colors.white, fontSize: 24),
+                                userServices.users[index].fuid,
+                                style: TextStyle(color: Colors.white, fontSize: 18),
                               ),
-                              trailing: Icon(Icons.arrow_downward_sharp, color: Colors.white),
+                              trailing: Icon(Icons.open_in_full, color: Colors.white),
                             ),
                           ),
                         ),
@@ -95,7 +95,7 @@ class UserListScreen extends StatelessWidget {
               backgroundColor: Colors.green,
               icon: Icon(Icons.add),
               label: Text(
-                'Add User to Blockchain',
+                'Add User Data to Blockchain',
                 style: TextStyle(color: Colors.black),
               ),
             ),
