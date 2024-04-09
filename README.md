@@ -27,10 +27,3 @@ FarmConnect is a digital platform that seamlessly connects farmers and buyers, e
   - Ganache
 - **Version Control:** Git
 
-## Installation
-
-To run FarmConnect locally, follow these steps:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/farm-connect.git
