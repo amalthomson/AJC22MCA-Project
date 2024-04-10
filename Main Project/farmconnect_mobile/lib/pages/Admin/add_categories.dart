@@ -57,19 +57,48 @@ class _AddCategoriesAndProductsState extends State<AddCategoriesAndProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        title: Text(
-          "Add Categories and Products",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
+        backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 1.0),
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 8,),
+            Text(
+              "Add Category & Products",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true, // Center the title horizontally
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueGrey[900],
-        elevation: 0, // Remove app bar shadow
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),

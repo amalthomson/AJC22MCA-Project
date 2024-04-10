@@ -74,7 +74,7 @@ class _AgriculturalNewsPageState extends State<AgriculturalNewsPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
-          "Farmer Dashboard",
+          "Agricultural News Updates",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,

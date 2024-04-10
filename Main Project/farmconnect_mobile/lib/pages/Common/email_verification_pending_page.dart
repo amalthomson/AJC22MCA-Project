@@ -26,14 +26,57 @@ class EmailVerificationPendingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
-        title: Text(
-          'Email Verification Pending',
-          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
+        backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+            );
+          },
         ),
-        iconTheme: IconThemeData(color: Colors.white), // Set the back button color to white
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 25.0), // Adjust the padding as needed
+              child: Icon(
+                Icons.rule,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 8),
+            Text(
+              "Verification Pending",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
+          ),
+        ),
       ),
       body: Center(
         child: Padding(
@@ -47,11 +90,6 @@ class EmailVerificationPendingPage extends StatelessWidget {
                 color: Colors.blue,
               ),
               SizedBox(height: 30),
-              Text(
-                'Welcome',
-                style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 15),
               Text(
                 'Verify Email to Continue',
                 style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),

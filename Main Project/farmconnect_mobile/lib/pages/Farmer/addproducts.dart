@@ -147,24 +147,19 @@ class _AddProductsState extends State<AddProducts> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(
-          "Add New Products",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
+          centerTitle: true,
+          title: Text(
+                "Add Products",
+                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold,),
           ),
         ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(16.0),
@@ -198,19 +193,19 @@ class _AddProductsState extends State<AddProducts> {
                   ),
                 ),
               ),
-              SizedBox(height: 30.0),
+              SizedBox(height: 15.0),
               _buildCategoryDropdown(),
-              SizedBox(height: 30.0),
+              SizedBox(height: 15.0),
               _buildProductDropdown(),
-              SizedBox(height: 30.0),
+              SizedBox(height: 15.0),
               _buildTextField(productPriceController, 'Product Price in Rupees of 1 KG', TextInputType.number),
-              SizedBox(height: 30.0),
+              SizedBox(height: 15.0),
               _buildTextField(stockController, 'Stock in Kilograms', TextInputType.number),
-              SizedBox(height: 30.0),
+              SizedBox(height: 15.0),
               _buildTextField(productDescriptionController, 'Product Description'),
-              SizedBox(height: 30.0),
+              SizedBox(height: 15.0),
               _buildDatePicker(),
-              SizedBox(height: 30.0),
+              SizedBox(height: 15.0),
               _buildUploadButton(),
               if (uploadStatus != null)
                 Padding(

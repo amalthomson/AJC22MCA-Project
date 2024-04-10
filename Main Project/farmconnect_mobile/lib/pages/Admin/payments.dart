@@ -25,13 +25,48 @@ class PaymentSuccessfulPage extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
-        title: Text(
-          'Payments Received',
-          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 70.0),
+              child: Icon(
+                Icons.currency_rupee,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 8,),
+            Text(
+              "Payments",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
+          ),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -110,7 +145,6 @@ class PaymentSuccessfulPage extends StatelessWidget {
           );
         },
       ),
-      backgroundColor: Colors.black,
     );
   }
 

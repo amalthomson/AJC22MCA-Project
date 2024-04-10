@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class FarmerPage extends StatelessWidget {
-  const FarmerPage({Key? key});
+class Profile extends StatelessWidget {
+  const Profile({Key? key});
 
   Future<void> _signOut(BuildContext context) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,20 +23,7 @@ class FarmerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(
-          "Profile",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-      ),
+      backgroundColor: Colors.blueGrey[900],
       body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
@@ -71,10 +58,9 @@ class FarmerPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
                 Card(
-                  elevation: 5,
-                  color: Colors.black,
+                  elevation: 0, // Set elevation to 0
+                  color: Colors.transparent, // Set color to transparent
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -119,32 +105,6 @@ class FarmerPage extends StatelessWidget {
                       icon: Icons.edit,
                       onPressed: () {
                         Navigator.pushNamed(context, "/update_details");
-                      },
-                      buttonColor: Colors.blue,
-                    ),
-                    DashboardCard(
-                      title: "Update Stock",
-                      icon: Icons.add,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UpdateStockPage(),
-                          ),
-                        );
-                      },
-                      buttonColor: Colors.green,
-                    ),
-                    DashboardCard(
-                      title: "Update Price",
-                      icon: Icons.currency_rupee,
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UpdatePricePage(),
-                          ),
-                        );
                       },
                       buttonColor: Colors.blue,
                     ),

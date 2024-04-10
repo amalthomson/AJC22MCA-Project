@@ -10,19 +10,53 @@ class UserDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Display User Data',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 65.0),
+              child: Icon(
+                Icons.security,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 8,),
+            Text(
+              "User Details",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true, // Center the title horizontally
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
+          ),
+        ),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
           elevation: 4,
-          color: Colors.grey[900],
+          color: Colors.blueGrey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -36,7 +70,7 @@ class UserDetailsScreen extends StatelessWidget {
                   ),
                   subtitle: Text(
                     '${user.fuid}',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                 ),
                 Divider(color: Colors.grey),

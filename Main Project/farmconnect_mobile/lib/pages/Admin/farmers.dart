@@ -1,27 +1,62 @@
-import 'package:farmconnect/pages/Admin//displayProductsFarmerWise.dart';
+import 'package:farmconnect/pages/Admin/farmer_wise_products.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
-class FarmerDetailsPage extends StatefulWidget {
+class Farmers extends StatefulWidget {
   @override
-  _FarmerDetailsPageState createState() => _FarmerDetailsPageState();
+  _FarmersState createState() => _FarmersState();
 }
 
-class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
+class _FarmersState extends State<Farmers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-    backgroundColor: Colors.blueGrey[900],
-      title: Text(
-        'Farmer Details',
-        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      iconTheme: IconThemeData(color: Colors.white),
-    ),
+      backgroundColor: Colors.blueGrey[900],
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Row(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 80.0),
+                child: Icon(
+                  Icons.people,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(width: 8,),
+              Text(
+                "Farmers",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          centerTitle: true, // Center the title horizontally
+          elevation: 0,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withOpacity(0),
+                    Colors.blueGrey[900]!,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              height: 5.0,
+            ),
+          ),
+        ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users')
             .where('role', isEqualTo: 'Farmer')
@@ -46,6 +81,7 @@ class _FarmerDetailsPageState extends State<FarmerDetailsPage> {
               return Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Card(
+                  color: Colors.white,
                   elevation: 4,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),

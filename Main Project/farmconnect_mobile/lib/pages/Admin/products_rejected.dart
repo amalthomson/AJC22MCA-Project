@@ -1,24 +1,57 @@
-import 'package:farmconnect/pages/Admin//productsPending.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ApprovedProductsPage extends StatelessWidget {
+class RejectedProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
-        title: Text(
-          'Approved Products',
-          style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 40.0),
+              child: Icon(
+                Icons.store,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 8,),
+            Text(
+              "Product Rejected",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true, // Center the title horizontally
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
+          ),
+        ),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('isApproved', isEqualTo: 'Approved')
+            .where('isApproved', isEqualTo: 'Rejected')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -32,7 +65,7 @@ class ApprovedProductsPage extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.all(16.0), // Add margin
                 child: Text(
-                  "No approved products found.",
+                  "No rejected products found.",
                   style: TextStyle(
                     color: Colors.white, // Set text color to white
                     fontSize: 18,
@@ -42,16 +75,18 @@ class ApprovedProductsPage extends StatelessWidget {
             );
           }
 
+
           return ListView.builder(
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
-              final productName = product['productName'];
+              final productName = product['productName']; // Use subcategory instead of productName
               final productPrice = product['productPrice'];
               final productDescription = product['productDescription'];
               final category = product['category'];
               final productImage = product['productImage'] ?? '';
               final userId = product['userId'];
+              final remark = product['remark'] ?? ''; // Include the "remark" field
 
               return Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -67,7 +102,7 @@ class ApprovedProductsPage extends StatelessWidget {
                       radius: 30,
                     ),
                     title: Text(
-                      productName, // Use subcategory instead of productName
+                      productName,
                       style: TextStyle(
                         color: Colors.green,
                         fontSize: 30,
@@ -141,7 +176,28 @@ class ApprovedProductsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      FarmerDetailsWidget(userId: userId),
+                      ListTile(
+                        leading: Icon(
+                          Icons.note,
+                          color: Colors.green,
+                          size: 28,
+                        ),
+                        title: Text(
+                          "Remark",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          remark,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

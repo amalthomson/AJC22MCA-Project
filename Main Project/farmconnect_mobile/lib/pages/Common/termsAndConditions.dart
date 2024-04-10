@@ -1,61 +1,89 @@
+import 'package:farmconnect/pages/Common/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class TermsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
-        title: Text(
-          'Terms and Conditions',
-          style: TextStyle(color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SignUpPage()),
+            );
+          },
+        ),
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 30.0), // Adjust the padding as needed
+              child: Icon(
+                Icons.rule,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 8),
+            Text(
+              "Terms & Conditions",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
+          ),
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 30),
-              Text(
-                "Terms and Conditions",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-              ),
-              SizedBox(height: 30),
-              StyledTerms(
-                number: "1",
+              TermsCard(
                 text:
                 "By using the FarmConnect platform, you agree to comply with all applicable laws and regulations.",
               ),
-              StyledTerms(
-                number: "2",
+              TermsCard(
                 text:
                 "You must provide accurate and up-to-date information when registering and using our services.",
               ),
-              StyledTerms(
-                number: "3",
+              TermsCard(
                 text:
                 "Users engaging in fraudulent activities will be permanently banned from FarmConnect.",
               ),
-              StyledTerms(
-                number: "4",
+              TermsCard(
                 text:
                 "We may update our terms and conditions from time to time, and it's your responsibility to review them regularly.",
               ),
-              StyledTerms(
-                number: "5",
+              TermsCard(
                 text:
                 "Any disputes arising from the use of FarmConnect will be resolved through arbitration.",
               ),
-              StyledTerms(
-                number: "6",
+              TermsCard(
                 text:
                 "Only users who are Buyers can register with the 'Sign In with Google' option.",
               ),
@@ -67,38 +95,34 @@ class TermsPage extends StatelessWidget {
   }
 }
 
-class StyledTerms extends StatelessWidget {
-  final String number;
+class TermsCard extends StatelessWidget {
   final String text;
 
-  StyledTerms({required this.number, required this.text});
+  TermsCard({required this.text});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            number,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
+    return Card(
+      color: Colors.grey,
+      elevation: 3,
+      margin: EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,32 +1,62 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/pages/Farmer/updateStock.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:farmconnect/pages/Farmer/productDetails.dart';
 import 'package:flutter/material.dart';
 
-class LowStockProductsPage extends StatelessWidget {
+class StockDetails extends StatelessWidget {
+  final String category;
+
+  StockDetails({required this.category});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(
-          "Low Stock Products",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 35.0),
+              child: Icon(
+                Icons.warehouse,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 8,),
+            Text(
+              'Products - $category',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
           ),
         ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('products')
-            .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-            .where('isApproved', isEqualTo: 'Approved')
-            .where('stock', isLessThan: 10)
+            .where('category', isEqualTo: category)
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -38,7 +68,7 @@ class LowStockProductsPage extends StatelessWidget {
           if (products.isEmpty) {
             return Center(
               child: Text(
-                "No low stock products.",
+                "No products found in this category.",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -51,58 +81,51 @@ class LowStockProductsPage extends StatelessWidget {
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products[index];
+              final productId = product['productId'];
               final productName = product['productName'];
-              final stock = product['stock'];
+              final productDescription = product['productDescription'];
               final productPrice = product['productPrice'];
-              final productImage = product['productImage'];
-              final category = product['category'];
+              final stock = product['stock'];
               final expiryDate = product['expiryDate'];
+              final productImage = product['productImage'];
 
-              return Container(
+              return GestureDetector(
                 child: Card(
-                  color: Colors.blueGrey[800],
+                  color: Colors.grey,
                   elevation: 4,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: ListTile(
                     contentPadding: EdgeInsets.all(16),
-                    leading: SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: Image.network(
-                        productImage ?? '',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
                     title: Text(
                       productName,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Colors.black,
+                      ),
+                    ),
+                    leading: Container(
+                      width: 80,
+                      height: 80,
+                      child: Image.network(
+                        productImage,
+                        fit: BoxFit.cover,
                       ),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Category: $category',
+                          "Price: ₹$productPrice.00/KG",
                           style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
+                            fontSize: 18, fontWeight: FontWeight.bold,
+                            color: Colors.black,
                           ),
                         ),
                         Text(
-                          'Price: ₹$productPrice.00',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                        ),
-                        Text(
-                          'Stock: $stock KG',
+                          "Stock: $stock KG",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -110,9 +133,10 @@ class LowStockProductsPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Expiry Date: $expiryDate',
+                          "Expiry Date: $expiryDate",
                           style: TextStyle(
                             fontSize: 20,
+                            fontWeight: FontWeight.bold,
                             color: Colors.red,
                           ),
                         ),

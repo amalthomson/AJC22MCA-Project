@@ -12,14 +12,48 @@ class UserListScreen extends StatelessWidget {
     return Consumer<UserServices>(
       builder: (context, userServices, _) {
         return Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.blueGrey[900],
           appBar: AppBar(
-            title: Text(
-              'User Data Stored on Blockchain',
-              style: TextStyle(color: Colors.white),
-            ),
-            backgroundColor: Colors.blueGrey[900],
+            backgroundColor: Colors.black,
             iconTheme: IconThemeData(color: Colors.white),
+            title: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Icon(
+                    Icons.lock_person,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(width: 8,),
+                Text(
+                  "User Data on Blockchain",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            centerTitle: true, // Center the title horizontally
+            elevation: 0,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(10.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black.withOpacity(0),
+                      Colors.blueGrey[900]!,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                height: 5.0,
+              ),
+            ),
           ),
           body: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -60,7 +94,7 @@ class UserListScreen extends StatelessWidget {
                           },
                           child: Card(
                             elevation: 4,
-                            color: Colors.blueGrey,
+                            color: Colors.white,
                             child: ListTile(
                               title: Text(
                                 userServices.users[index].name,
@@ -68,9 +102,9 @@ class UserListScreen extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 userServices.users[index].fuid,
-                                style: TextStyle(color: Colors.white, fontSize: 18),
+                                style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                              trailing: Icon(Icons.open_in_full, color: Colors.white),
+                              trailing: Icon(Icons.open_in_full, color: Colors.black),
                             ),
                           ),
                         ),
@@ -79,25 +113,6 @@ class UserListScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-          floatingActionButton: AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-            margin: EdgeInsets.all(16),
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddUserScreen()),
-                );
-              },
-              backgroundColor: Colors.green,
-              icon: Icon(Icons.add),
-              label: Text(
-                'Add User Data to Blockchain',
-                style: TextStyle(color: Colors.black),
-              ),
             ),
           ),
         );

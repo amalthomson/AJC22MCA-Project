@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/firebase_auth_services.dart';
-import 'package:farmconnect/pages/Admin/adminDashboard.dart';
+import 'package:farmconnect/pages/Admin/dashboard.dart';
 import 'package:farmconnect/pages/Buyer/buyerDashboard.dart';
 import 'package:farmconnect/pages/Common/sign_up_page.dart';
 import 'package:farmconnect/pages/Delivery/deliveryDashboard.dart';
+import 'package:farmconnect/pages/Farmer/dashboard.dart';
 import 'package:farmconnect/pages/Farmer/farmerDashboard.dart';
 import 'package:farmconnect/pages/Common/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -183,16 +184,45 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.blueGrey[900],
-        title: Text(
-          "Login to FarmConnect",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+        backgroundColor: Colors.black,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              radius: 16,
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/icons/appLogoDark.png'),
+            ),
+            SizedBox(width: 8),
+            Text(
+              "FarmConnect",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.blueGrey[900]!,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            height: 5.0,
           ),
         ),
       ),
@@ -201,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
           return SingleChildScrollView(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 55.0),
+                padding: const EdgeInsets.only(top: 1.0),
                 child: Stack(
                   children: [
                     Padding(
@@ -211,20 +241,37 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              height: 99,
+                            SizedBox(height: 99,),
+                            Image.asset(
+                              'assets/icons/appLogoDark.png',
+                              height: 100,
                             ),
+                            SizedBox(height: 20,),
                             Text(
-                              "Login to FarmConnect",
+                              "Welcome to",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 48,
+                                fontSize: 24.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
+                            Text(
+                              "FarmConnect",
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 48.0,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.5,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.5), // Set shadow color
+                                    blurRadius: 2, // Set blur radius
+                                    offset: Offset(2, 2), // Set shadow offset
+                                  ),
+                                ],
+                              ),
                             ),
+                            SizedBox(height: 20,),
                             TextFormField(
                               controller: _emailController,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
