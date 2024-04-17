@@ -20,15 +20,27 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-header">
-        <img className="logo" src="assets/appLogoDark.png"/>
+        <img className="logo" src="assets/appLogoDark.png" alt="Logo" />
         <h1>FarmConnect</h1>
       </div>
       <form>
-        <label>Email</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+        />
 
-        <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter your password"
+        />
 
         <button type="button" onClick={handleLogin}>
           Login

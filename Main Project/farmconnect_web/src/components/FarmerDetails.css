@@ -1,12 +1,9 @@
-/* FarmerDetails.css */
-
 .wrapper {
   display: flex;
 }
 
 .sidebar {
-  /* Add your sidebar styles here */
-  width: 250px; /* Adjust sidebar width as needed */
+  width: 250px;
   height: 100vh;
   position: fixed;
   left: 0;
@@ -18,27 +15,27 @@
 
 .content {
   flex: 1;
-  padding-left: 250px; /* Adjust this value to match sidebar width */
+  padding-left: 250px;
   overflow-y: auto;
 }
 
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #000; /* Change background color to black */
+  background-color: #000;
   margin: 0;
   padding: 0;
-  color: #fff; /* Adjust text color to white for better contrast */
+  color: #fff;
 }
 
 .container {
-  max-width: 1800px; /* Increase the size of the container */
+  max-width: 1800px;
   margin: 20px auto;
   margin-top: 90px;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent black background */
-  padding: 40px; /* Increase padding for better spacing */
-  border-radius: 20px; /* Increase border radius for rounded corners */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
-  border: 2px solid #fff; /* Add white border */
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #fff;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 40px;
@@ -46,36 +43,51 @@ body {
 
 .farmer-card {
   padding: 20px;
-  background-color: #333; /* Darker background color for buyer cards */
+  background-color: #333;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 2px solid #fff; /* Add white border */
+  border: 2px solid #fff;
 }
 
 .farmer-card img {
-  width: 150px; /* Increase image size */
+  width: 150px;
   height: 150px;
   border-radius: 50%;
   margin: auto;
 }
 
 .farmer-details {
-  margin-top: 30px; /* Increase top margin for spacing */
+  margin-top: 30px;
   text-align: left;
 }
 
-.view-id-button {
-  background-color: #007bff;
+.button-group {
+  display: flex;
+  justify-content: space-between; /* Add space between buttons */
+}
+
+.approve-button {
+  background-color: #28a745; /* Green color */
   color: #fff;
   border: none;
-  padding: 10px 20px; /* Increase button padding for better clickability */
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.view-id-button:hover {
-  background-color: #0056b3;
+.reject-button {
+  background-color: #dc3545; /* Red color */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.approve-button:hover,
+.reject-button:hover {
+  opacity: 0.8; /* Reduce opacity on hover */
 }

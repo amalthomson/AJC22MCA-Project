@@ -10,7 +10,7 @@ body, html {
   justify-content: center;
   align-items: center;
   height: 100vh; /* Set height to 100% of the viewport height */
-  background-color: #000000; /* Set black background */
+  background-color: #223446; /* Set black background */
 }
 
 .login-header {
@@ -76,5 +76,39 @@ button:hover {
 @media (max-width: 480px) {
   .login-container {
     width: 80%;
+  }
+}
+/* Existing styles remain unchanged */
+
+.extra-content {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.extra-content p {
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 16px;
+  animation: fadeIn 1s ease forwards;
+}
+
+.extra-content a {
+  color: #77c7ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.extra-content a:hover {
+  color: #3498db;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

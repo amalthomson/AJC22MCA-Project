@@ -1,8 +1,6 @@
-// FarmerDetails.jsx
-
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import firestore from '../firebase';
 import './FarmerDetails.css';
 import Sidebar from './SideBar';
@@ -10,7 +8,6 @@ import Sidebar from './SideBar';
 Modal.setAppElement('#root');
 
 const FarmerPendingReactPage = () => {
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -18,34 +15,33 @@ const FarmerPendingReactPage = () => {
     }
   }, []);
 
-
   const [farmers, setFarmers] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [aadhaarInfo, setAadhaarInfo] = useState('');
   const [selectedFarmerId, setSelectedFarmerId] = useState('');
 
+  const fetchApprovedFarmers = async () => {
+    try {
+      const farmersRef = collection(firestore, 'users');
+      const approvedFarmersQuery = query(
+        farmersRef,
+        where('role', '==', 'Farmer'),
+        where('isAdminApproved', '==', 'pending')
+      );
+
+      const approvedFarmersSnapshot = await getDocs(approvedFarmersQuery);
+      const approvedFarmersData = approvedFarmersSnapshot.docs.map(doc => ({
+        id: doc.id,
+        data: doc.data(),
+      }));
+
+      setFarmers(approvedFarmersData);
+    } catch (error) {
+      console.error('Error fetching approved farmers:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchApprovedFarmers = async () => {
-      try {
-        const farmersRef = collection(firestore, 'users');
-        const approvedFarmersQuery = query(
-          farmersRef,
-          where('role', '==', 'Farmer'),
-          where('isAdminApproved', '==', 'pending')
-        );
-
-        const approvedFarmersSnapshot = await getDocs(approvedFarmersQuery);
-        const approvedFarmersData = approvedFarmersSnapshot.docs.map(doc => ({
-          id: doc.id,
-          data: doc.data(),
-        }));
-
-        setFarmers(approvedFarmersData);
-      } catch (error) {
-        console.error('Error fetching approved farmers:', error);
-      }
-    };
-
     fetchApprovedFarmers();
   }, []);
 
@@ -60,15 +56,39 @@ const FarmerPendingReactPage = () => {
     setSelectedFarmerId('');
   };
 
+  const handleApprove = async (farmerId) => {
+    try {
+      await updateDoc(doc(firestore, 'users', farmerId), {
+        isAdminApproved: 'approved'
+      });
+      // After updating, fetch the updated list of farmers
+      fetchApprovedFarmers();
+    } catch (error) {
+      console.error('Error approving farmer:', error);
+    }
+  };
+
+  const handleReject = async (farmerId) => {
+    try {
+      await updateDoc(doc(firestore, 'users', farmerId), {
+        isAdminApproved: 'rejected'
+      });
+      // After updating, fetch the updated list of farmers
+      fetchApprovedFarmers();
+    } catch (error) {
+      console.error('Error rejecting farmer:', error);
+    }
+  };
+
   return (
     <div className="wrapper">
-      <Sidebar/>
+      <Sidebar />
       <div className="content">
-      <div className="w-100 d-flex justify-content-center align-items-center">
-            <h3 className="text-center mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold'}}>
+        <div className="w-100 d-flex justify-content-center align-items-center">
+          <h3 className="text-center mb-0" style={{ fontFamily: 'Arial, sans-serif', color: '#fff', fontSize: '36px', fontWeight: 'bold' }}>
             Farmers - Pending
-            </h3>
-          </div>
+          </h3>
+        </div>
         <div className="container">
           {farmers.length === 0 ? (
             <p>No approved farmers found.</p>
@@ -90,12 +110,20 @@ const FarmerPendingReactPage = () => {
                   <p>Farm Name: {farmer.data.farmName || 'N/A'}</p>
                   <p>Aadhaar: {farmer.data.aadhaar || 'N/A'}</p>
                 </div>
-                <button
-                  className="view-id-button"
-                  onClick={() => handleViewId(farmer.data.aadhaar, farmer.id)}
-                >
-                  View ID
-                </button>
+                <div className="button-group">
+                  <button
+                    className="approve-button"
+                    onClick={() => handleApprove(farmer.id)}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    className="reject-button"
+                    onClick={() => handleReject(farmer.id)}
+                  >
+                    Reject
+                  </button>
+                </div>
               </div>
             ))
           )}
