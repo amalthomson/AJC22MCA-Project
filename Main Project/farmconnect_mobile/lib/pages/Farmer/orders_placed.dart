@@ -12,10 +12,10 @@ class OrdersPlace extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Orders Place',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.black,
         centerTitle: true,
         elevation: 0,
       ),
@@ -133,7 +133,7 @@ class OrderListItem extends StatelessWidget {
                   ),
                   Text(
                     'Status: $orderStatus',
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ],
               ),

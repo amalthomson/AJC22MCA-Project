@@ -29,10 +29,10 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
+        centerTitle: false, // Set to false to align content to the left
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
               radius: 16,
@@ -50,7 +50,6 @@ class _FarmerDashboardState extends State<FarmerDashboard> {
             ),
           ],
         ),
-        centerTitle: true,
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(10.0),

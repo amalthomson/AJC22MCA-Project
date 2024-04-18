@@ -1,5 +1,4 @@
 import 'package:farmconnect/pages/Admin/order_details.dart';
-import 'package:farmconnect/pages/Buyer/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -69,11 +68,13 @@ class OrderHistory extends StatelessWidget {
               var orderId = order['orderId'];
               var orderDate = order['timestamp'].toDate();
               var orderAmount = order['amount'];
+              var orderStatus = order['orderStatus'];
 
               return OrderListItem(
                 orderId: orderId,
                 orderDate: orderDate,
                 orderAmount: orderAmount,
+                orderStatus: orderStatus,
                 onTap: () {
                   Navigator.push(
                     context,
@@ -95,12 +96,14 @@ class OrderListItem extends StatelessWidget {
   final String orderId;
   final DateTime orderDate;
   final double orderAmount;
+  final String orderStatus;
   final VoidCallback onTap;
 
   const OrderListItem({
     required this.orderId,
     required this.orderDate,
     required this.orderAmount,
+    required this.orderStatus,
     required this.onTap,
   });
 
@@ -111,6 +114,7 @@ class OrderListItem extends StatelessWidget {
       margin: EdgeInsets.all(8),
       color: Colors.grey[900], // Set your desired card color
       child: ListTile(
+        leading: Icon(Icons.shopping_bag, color: Colors.white), // Add an icon to the left of the list tile
         title: Text(
           'Order ID: $orderId',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -125,6 +129,10 @@ class OrderListItem extends StatelessWidget {
             Text(
               'Price: ₹$orderAmount',
               style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              'Order Status: $orderStatus',
+              style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 18),
             ),
           ],
         ),

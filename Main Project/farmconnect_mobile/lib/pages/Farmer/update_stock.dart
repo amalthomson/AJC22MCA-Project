@@ -17,6 +17,7 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Update Stock",
           style: TextStyle(
@@ -26,9 +27,9 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
           ),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueGrey[900], // Appbar color
+        backgroundColor: Colors.black, // Appbar color
       ),
-      backgroundColor: Colors.black, // Background color
+      backgroundColor: Colors.blueGrey[900], // Background color
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

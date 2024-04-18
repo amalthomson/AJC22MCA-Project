@@ -24,22 +24,18 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
   @override
   void initState() {
     super.initState();
-    // Call retrieveUserData in initState to populate the text fields and profile image when the page is loaded.
     retrieveUserData();
   }
 
   Future<void> retrieveUserData() async {
     try {
-      // Ensure the user is signed in before attempting to retrieve data.
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         String userId = user.uid;
         DocumentSnapshot userSnapshot =
         await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
-        // Check if the user document exists.
         if (userSnapshot.exists) {
-          // Check if the required fields exist in the document.
           Map<String, dynamic>? userData = userSnapshot.data() as Map<String, dynamic>?;
 
           if (userData != null) {
@@ -87,9 +83,9 @@ class _UpdateDetailsPageState extends State<UpdateDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.black,
         title: Text(
           'Update User Profile',
           style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),

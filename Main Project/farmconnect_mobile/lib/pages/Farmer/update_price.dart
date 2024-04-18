@@ -16,8 +16,9 @@ class _UpdatePricePageState extends State<UpdatePricePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'Update Price',
           style: TextStyle(
@@ -27,7 +28,7 @@ class _UpdatePricePageState extends State<UpdatePricePage> {
           ),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.black,
         elevation: 0, // Remove app bar shadow
       ),
       body: Padding(

@@ -42,11 +42,13 @@ class OrdersHistory extends StatelessWidget {
               var orderId = order['orderId'];
               var orderDate = order['timestamp'].toDate();
               var orderAmount = order['amount'];
+              var orderStatus = order['orderStatus'];
 
               return OrderListItem(
                 orderId: orderId,
                 orderDate: orderDate,
                 orderAmount: orderAmount,
+                orderStatus: orderStatus,
                 onTap: () {
                   Navigator.push(
                     context,
@@ -68,12 +70,14 @@ class OrderListItem extends StatelessWidget {
   final String orderId;
   final DateTime orderDate;
   final double orderAmount;
+  final String orderStatus;
   final VoidCallback onTap;
 
   const OrderListItem(
       {required this.orderId,
         required this.orderDate,
         required this.orderAmount,
+        required this.orderStatus,
         required this.onTap});
 
   @override
@@ -101,6 +105,10 @@ class OrderListItem extends StatelessWidget {
             Text(
               'Price: ₹$orderAmount',
               style: TextStyle(color: Colors.white),
+            ),
+            Text(
+              'Order Status: $orderStatus',
+              style: TextStyle(color: Colors.green, fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),

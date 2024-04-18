@@ -20,9 +20,9 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Colors.black,
         title: Text(
           'Reset Password',
           style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),

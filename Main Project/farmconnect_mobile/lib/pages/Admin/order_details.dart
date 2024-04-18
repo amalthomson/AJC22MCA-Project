@@ -1,4 +1,3 @@
-import 'package:farmconnect/pages/Buyer/add_reviews_ratings.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,7 +9,7 @@ class AdminOrderDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
@@ -79,6 +78,10 @@ class AdminOrderDetails extends StatelessWidget {
                   title: _buildSectionTitle('Amount'),
                   subtitle: _buildSectionContent('₹${order['amount']}'),
                 ),
+                ListTile(
+                  title: _buildSectionTitle('Order Status'),
+                  subtitle: _buildSectionContent('${order['orderStatus']}'),
+                ),
                 Divider(height: 20, color: Colors.grey),
                 _buildSectionTitle('Products'),
                 order['products'] != null
@@ -113,7 +116,7 @@ class AdminOrderDetails extends StatelessWidget {
   Widget _buildSectionContent(String content) {
     return Text(
       content,
-      style: TextStyle(fontSize: 16, color: Colors.white),
+      style: TextStyle(fontSize: 16, color: Colors.green, fontWeight: FontWeight.bold),
     );
   }
 

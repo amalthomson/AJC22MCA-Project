@@ -1,4 +1,5 @@
 import 'package:farmconnect/pages/Buyer/add_reviews_ratings.dart';
+import 'package:farmconnect/pages/Buyer/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,13 +11,14 @@ class OrderDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
         title: Text(
           'Order Details',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blueGrey[900],
+        centerTitle: true,
+        backgroundColor: Colors.black,
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: FutureBuilder(
@@ -42,6 +44,10 @@ class OrderDetails extends StatelessWidget {
                   subtitle: _buildSectionContent(order['orderId']),
                 ),
                 ListTile(
+                  title: _buildSectionTitle('Order Status'), // Added Order Status section
+                  subtitle: _buildSectionContent(order['orderStatus']), // Displaying orderStatus
+                ),
+                ListTile(
                   title: _buildSectionTitle('Amount'),
                   subtitle: _buildSectionContent('₹${order['amount']}'),
                 ),
@@ -51,7 +57,7 @@ class OrderDetails extends StatelessWidget {
                     ? Column(
                   children: [
                     for (var product in order['products']) ...[
-                      _buildProductDetails(context, product), // Pass the context here
+                      _buildProductDetails(context, product, order), // Pass the context here
                       SizedBox(height: 10),
                     ],
                   ],
@@ -79,63 +85,78 @@ class OrderDetails extends StatelessWidget {
   Widget _buildSectionContent(String content) {
     return Text(
       content,
-      style: TextStyle(fontSize: 16, color: Colors.white),
+      style: TextStyle(fontSize: 16, color: Colors.green, fontWeight: FontWeight.bold),
     );
   }
 
-  Widget _buildProductDetails(BuildContext context, Map<String, dynamic> product) {
+  Widget _buildProductDetails(BuildContext context, Map<String, dynamic> product, Map<String, dynamic> order) {
+    // Check if the orderStatus is "Delivered"
+    bool isDelivered = order['orderStatus'] == 'Delivered';
+
     return Card(
       elevation: 3,
       margin: EdgeInsets.all(8),
       color: Colors.blueGrey[900],
-      child: Row(
-        children: [
-          // Left part: Product Image
-          product['productImage'] != null
-              ? ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.network(
-              product['productImage'],
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailPage(productId: product['productId']),
             ),
-          )
-              : SizedBox.shrink(),
-
-          // Middle part: Product Details
-          Expanded(
-            child: ListTile(
-              title: Text(
-                product['productName'],
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          );
+        },
+        child: Row(
+          children: [
+            // Left part: Product Image
+            product['productImage'] != null
+                ? ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                product['productImage'],
+                width: 100,
+                height: 100,
+                fit: BoxFit.cover,
               ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Quantity: ${product['quantity']}', style: TextStyle(color: Colors.white)),
-                  Text('Unit Price: ₹${product['unitPrice']}', style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 8),
-                ],
-              ),
-            ),
-          ),
+            )
+                : SizedBox.shrink(),
 
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddReviewAndRating(productId: product['productId']),
+            // Middle part: Product Details
+            Expanded(
+              child: ListTile(
+                title: Text(
+                  product['productName'],
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green,
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Quantity: ${product['quantity']}', style: TextStyle(color: Colors.white)),
+                    Text('Unit Price: ₹${product['unitPrice']}', style: TextStyle(color: Colors.white)),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
             ),
-            child: Text('Add Review', style: TextStyle(color: Colors.white)),
-          ),
-        ],
+
+            // Conditionally display the "Add Review" button
+            if (isDelivered)
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddReviewAndRating(productId: product['productId']),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
+                child: Text('Add Review', style: TextStyle(color: Colors.white)),
+              ),
+          ],
+        ),
       ),
     );
   }

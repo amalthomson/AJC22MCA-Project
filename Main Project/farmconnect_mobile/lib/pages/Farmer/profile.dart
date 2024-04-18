@@ -143,7 +143,7 @@ class FarmerPage extends StatelessWidget {
                       buttonColor: Colors.orange,
                     ),
                     DashboardCard(
-                      title: "Bills",
+                      title: "Payments",
                       icon: Icons.currency_rupee,
                       onPressed: () {
                         Navigator.push(

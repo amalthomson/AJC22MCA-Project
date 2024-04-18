@@ -1,7 +1,9 @@
 import 'package:farmconnect/pages/Buyer/product_details.dart';
+import 'package:farmconnect/pages/Cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 class Wishlist extends StatelessWidget {
   @override
@@ -22,6 +24,33 @@ class Wishlist extends StatelessWidget {
           content: Text("Product removed from Wishlist"),
         ),
       );
+    }
+
+    Future<void> addToCart(String productId, String productName, String farmName, dynamic productPrice, String productImage) async {
+      final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      bool isProductInCart = cartProvider.cartItems.any((item) => item['productId'] == productId);
+
+      if (isProductInCart) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("$productName is already in the cart"),
+          ),
+        );
+      } else {
+        cartProvider.addToCart({
+          'productName': productName,
+          'farmName': farmName,
+          'productPrice': productPrice,
+          'productImage': productImage,
+          'productId': productId,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Added $productName to the cart"),
+          ),
+        );
+      }
     }
 
     return Scaffold(
@@ -139,7 +168,7 @@ class Wishlist extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 16),
+                              SizedBox(height: 5),
                               Text(
                                 '$farmName',
                                 style: TextStyle(
@@ -147,13 +176,24 @@ class Wishlist extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              SizedBox(height: 5),
                               Text(
                                 'Price: ₹$productPrice/KG',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
+                              ),
+                              SizedBox(height: 5),
+                              ElevatedButton(
+                                onPressed: () {
+                                  addToCart(productId!, productName, farmName, productPrice, productImage);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.green, // Background color
+                                  onPrimary: Colors.white, // Text color
+                                ),
+                                child: Text('Add to Cart'),
                               ),
                             ],
                           ),
