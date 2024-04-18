@@ -271,7 +271,7 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
                         ),
                       ),
                       SingleChildScrollView(
-                        scrollDirection: Axis.vertical, // Allow horizontal scrolling
+                        scrollDirection: Axis.horizontal, // Allow horizontal scrolling
                         child: Row(
                           children: <Widget>[
                             _buildDetailItem(

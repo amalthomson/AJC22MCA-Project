@@ -1,5 +1,5 @@
-import 'package:farmconnect/pages/Farmer/updatePrice.dart';
-import 'package:farmconnect/pages/Farmer/updateStock.dart';
+import 'package:farmconnect/pages/Farmer/update_price.dart';
+import 'package:farmconnect/pages/Farmer/update_stock.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

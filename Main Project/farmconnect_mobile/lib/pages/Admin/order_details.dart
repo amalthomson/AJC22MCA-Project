@@ -1,4 +1,4 @@
-import 'package:farmconnect/pages/Buyer/addReviewandRating.dart';
+import 'package:farmconnect/pages/Buyer/add_reviews_ratings.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

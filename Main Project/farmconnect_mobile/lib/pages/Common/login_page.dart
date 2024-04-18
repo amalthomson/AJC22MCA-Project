@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmconnect/features/user_auth/firebase_auth_services.dart';
 import 'package:farmconnect/pages/Admin/dashboard.dart';
-import 'package:farmconnect/pages/Buyer/buyerDashboard.dart';
+import 'package:farmconnect/pages/Buyer/buyer_dashboard.dart';
 import 'package:farmconnect/pages/Common/sign_up_page.dart';
-import 'package:farmconnect/pages/Delivery/deliveryDashboard.dart';
-import 'package:farmconnect/pages/Farmer/dashboard.dart';
-import 'package:farmconnect/pages/Farmer/farmerDashboard.dart';
+import 'package:farmconnect/pages/Delivery/delivery_dashboard.dart';
+import 'package:farmconnect/pages/Farmer/farmer_dashboard.dart';
 import 'package:farmconnect/pages/Common/forgot_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -128,7 +127,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           } else {
-            // Handle other roles as needed
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text("Unknown role: $userRole"),
@@ -175,10 +173,10 @@ class _LoginPageState extends State<LoginPage> {
       'uid': user.uid,
       'email': email,
       'name': displayName,
-      'profileImageUrl': photoUrl, // Save profile picture URL
+      'profileImageUrl': photoUrl,
       'role': "Buyer",
-      'isActive': isActive, // Add the isActive field
-    }, SetOptions(merge: true)); // Use merge to update only specific fields
+      'isActive': isActive,
+    }, SetOptions(merge: true));
   }
 
   @override
@@ -189,7 +187,6 @@ class _LoginPageState extends State<LoginPage> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
               radius: 16,
@@ -264,9 +261,9 @@ class _LoginPageState extends State<LoginPage> {
                                 letterSpacing: 1.5,
                                 shadows: [
                                   Shadow(
-                                    color: Colors.black.withOpacity(0.5), // Set shadow color
-                                    blurRadius: 2, // Set blur radius
-                                    offset: Offset(2, 2), // Set shadow offset
+                                    color: Colors.black.withOpacity(0.5),
+                                    blurRadius: 2,
+                                    offset: Offset(2, 2),
                                   ),
                                 ],
                               ),
@@ -295,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
                                   padding: EdgeInsets.all(12.0),
                                   child: Icon(
                                     Icons.email,
-                                    color: Colors.blue, // Set the icon color to blue
+                                    color: Colors.blue,
                                   ),
                                 ),
                                 border: OutlineInputBorder(
@@ -402,7 +399,7 @@ class _LoginPageState extends State<LoginPage> {
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18, // Adjust the font size as needed
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ),
@@ -444,19 +441,19 @@ class _LoginPageState extends State<LoginPage> {
                             ElevatedButton.icon(
                               onPressed: () => _signInWithGoogle(context),
                               icon: Image.asset(
-                                'assets/google_logo.png', // Replace with the path to your Google logo image
-                                height: 24, // Adjust the height as needed
-                                width: 24,  // Adjust the width as needed
+                                'assets/google_logo.png',
+                                height: 24,
+                                width: 24,
                               ),
                               label: Text("Sign In with Google"),
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.white, // Button background color
-                                onPrimary: Colors.blue, // Text color
-                                elevation: 3, // Add elevation for a raised effect
+                                primary: Colors.white,
+                                onPrimary: Colors.blue,
+                                elevation: 3,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0), // Adjust border radius as needed
+                                  borderRadius: BorderRadius.circular(50.0),
                                 ),
-                                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24), // Adjust padding as needed
+                                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                               ),
                             ),
                           ],
@@ -503,26 +500,20 @@ class _LoginPageState extends State<LoginPage> {
                 if (ftl == 'no') {
                   if (role == 'Buyer') {
                     Navigator.pushReplacementNamed(context, "/buyer_home");
-                    //Navigator.pushNamedAndRemoveUntil(context, "/buyer_home", (route) => false,);
                   } else if (role == 'Admin') {
                     Navigator.pushReplacementNamed(context, "/admin_dashboard");
-                    //Navigator.pushNamedAndRemoveUntil(context, "/admin_dashboard", (route) => false,);
                   } else if (role == 'Farmer') {
                     if (isAdminApproved == 'approved') {
                       Navigator.pushReplacementNamed(context, "/farmer_dash");
-                      //Navigator.pushNamedAndRemoveUntil(context, "/farmer_dash", (route) => false,);
                     } else {
                       Navigator.pushReplacementNamed(context, "/admin_approval_pending");
-                      //Navigator.pushNamedAndRemoveUntil(context, '/admin_approval_pending', (route) => false,);
                     }
                   }
                 } else if (ftl == 'yes') {
                   if (role == 'Farmer') {
                     Navigator.pushReplacementNamed(context, "/farmer_ftl");
-                    //Navigator.pushNamedAndRemoveUntil(context, "/farmer_ftl", (route) => false,);
                   } else if (role == 'Buyer') {
                     Navigator.pushReplacementNamed(context, "/buyer_ftl");
-                    //Navigator.pushNamedAndRemoveUntil(context, "/buyer_ftl", (route) => false,);
                   }
                 } else {
                   loading = false;
@@ -534,7 +525,6 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 }
               } else {
-                // Email is not verified
                 loading = false;
                 ScaffoldMessenger.of(scaffoldContext).showSnackBar(
                   SnackBar(
@@ -542,7 +532,7 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Colors.red,
                   ),
                 );
-                await FirebaseAuth.instance.signOut(); // Sign out the user
+                await FirebaseAuth.instance.signOut();
               }
             }
           }

@@ -1,5 +1,5 @@
 import 'package:farmconnect/pages/Admin/order_details.dart';
-import 'package:farmconnect/pages/Buyer/orderDetailsPage.dart';
+import 'package:farmconnect/pages/Buyer/order_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';

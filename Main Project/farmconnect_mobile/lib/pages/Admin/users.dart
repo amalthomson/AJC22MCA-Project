@@ -2,7 +2,7 @@ import 'package:farmconnect/pages/Admin/farmers.dart';
 import 'package:farmconnect/pages/Admin/farmer_rejected.dart';
 import 'package:farmconnect/pages/Admin/farmer_approvals.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/widgets/admin_grid_card.dart';
+import 'package:farmconnect/widgets/grid_card.dart';
 import 'package:farmconnect/pages/Admin/buyers.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

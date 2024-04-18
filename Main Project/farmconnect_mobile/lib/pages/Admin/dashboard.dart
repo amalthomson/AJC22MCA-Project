@@ -3,7 +3,7 @@ import 'package:farmconnect/pages/Admin/orders.dart';
 import 'package:farmconnect/pages/Admin/products.dart';
 import 'package:farmconnect/pages/Admin/profile.dart';
 import 'package:farmconnect/pages/Admin/users.dart';
-import 'package:farmconnect/widgets/admin_bottom_navigation_bar.dart';
+import 'package:farmconnect/widgets/admin_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashboard extends StatefulWidget {
@@ -30,7 +30,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
               radius: 16,
@@ -68,7 +67,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         ),
       ),
       body: _pages[_selectedIndex],
-      bottomNavigationBar: CustomBottomNavigationBar(
+      bottomNavigationBar: AdminCustomBottomNavigationBar(
         selectedIndex: _selectedIndex,
         onTap: (index) {
           setState(() {

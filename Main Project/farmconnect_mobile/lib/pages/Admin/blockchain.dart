@@ -1,7 +1,7 @@
-import 'package:farmconnect/blockchain/add_user_screen.dart';
-import 'package:farmconnect/blockchain/user_list_screen.dart';
+import 'package:farmconnect/blockchain/add_user.dart';
+import 'package:farmconnect/blockchain/list_user.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/widgets/admin_grid_card.dart';
+import 'package:farmconnect/widgets/grid_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Blockchain extends StatelessWidget {

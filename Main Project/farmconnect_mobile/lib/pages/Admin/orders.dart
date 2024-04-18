@@ -1,7 +1,7 @@
 import 'package:farmconnect/pages/Admin/order_history.dart';
 import 'package:farmconnect/pages/Admin/payments.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/widgets/admin_grid_card.dart';
+import 'package:farmconnect/widgets/grid_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Orders extends StatelessWidget {

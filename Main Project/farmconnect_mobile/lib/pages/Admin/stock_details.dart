@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/pages/Farmer/productDetails.dart';
+import 'package:farmconnect/pages/Farmer/product_details.dart';
 import 'package:flutter/material.dart';
 
 class StockDetails extends StatelessWidget {
@@ -57,6 +57,7 @@ class StockDetails extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection('products')
             .where('category', isEqualTo: category)
+            .where('isApproved', isEqualTo: 'Approved')
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {

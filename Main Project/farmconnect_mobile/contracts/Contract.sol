@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
-
 contract UserDetailsContract {
     uint256 public userCount = 0;
-
     struct UserDetails {
         uint256 id;
         string fuid;
@@ -14,9 +12,7 @@ contract UserDetailsContract {
         string aadhar;
         string addres;
     }
-
     mapping(uint256 => UserDetails) public userDetails;
-
     event UserDetailsCreated(
         uint256 id,
         string fuid,
@@ -27,9 +23,8 @@ contract UserDetailsContract {
         string aadhar,
         string addres
     );
-
     event UserDetailsDeleted(uint256 id);
-
+    
     function createUserDetails(
         string memory _fuid,
         string memory _name,

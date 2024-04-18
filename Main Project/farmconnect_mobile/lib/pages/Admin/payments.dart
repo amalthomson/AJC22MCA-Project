@@ -91,7 +91,7 @@ class PaymentSuccessfulPage extends StatelessWidget {
           if (paymentDocs == null || paymentDocs.isEmpty) {
             return Center(
               child: Text(
-                'No bills available',
+                'No Payments available',
                 style: TextStyle(color: Colors.white),
               ),
             );

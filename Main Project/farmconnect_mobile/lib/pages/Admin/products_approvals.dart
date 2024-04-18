@@ -62,7 +62,13 @@ class PendingApprovalPage extends StatelessWidget {
 
           if (products.isEmpty) {
             return Center(
-              child: Text("No Pending Approval Products Found."),
+              child: Text(
+                "No approved products found.",
+                style: TextStyle(
+                  color: Colors.white, // Set text color to white
+                  fontSize: 18,
+                ),
+              ),
             );
           }
 

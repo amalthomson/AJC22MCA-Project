@@ -1,7 +1,7 @@
 import 'package:farmconnect/pages/Admin/stock_details.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmconnect/widgets/admin_grid_card.dart';
+import 'package:farmconnect/widgets/grid_card.dart';
 
 class StockByProductNamePage extends StatelessWidget {
   @override

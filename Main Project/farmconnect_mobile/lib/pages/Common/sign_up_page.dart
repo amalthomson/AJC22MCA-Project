@@ -264,43 +264,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                     borderSide: BorderSide(color: Colors.red),
                                   ),
                                 ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Email cannot be empty';
-                                    }
-                                    if (value.contains(' ')) {
-                                      return 'Email cannot contain spaces';
-                                    }
-                                    if (value.contains('..')) {
-                                      return 'Email cannot have consecutive periods (..)';
-                                    }
-                                    final parts = value.split('@');
-                                    if (parts.length != 2) {
-                                      return 'Please enter a valid email';
-                                    }
-                                    final domainParts = parts[1].split('.');
-                                    if (domainParts.length < 2 || (domainParts[0].startsWith('@') && domainParts[0].substring(1).length <= 3) || domainParts[1].length <= 3) {
-                                      return 'The first domain part is invalid';
-                                    }
-                                    if (!RegExp(
-                                        r"^[A-Za-z0-9_\-\.]+@[A-Za-z0-9_\-\.]+\.[A-Za-z]{2,3}$"
-                                    ).hasMatch(value)) {
-                                      return 'Please enter a valid email';
-                                    }
-                                    return null;
-                                  },
-                                // validator: (value) {
-                                //   if (value == null || value.isEmpty) {
-                                //     return 'Name is required';
-                                //   }
-                                //   if (!(value.isEmpty) &&
-                                //       !RegExp(r"(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)")
-                                //           .hasMatch(value)) {
-                                //     return "Enter a valid Name";
-                                //   } else {
-                                //     return null;
-                                //   }
-                                // },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Name is required';
+                                  }
+                                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                    return 'Enter a valid email address';
+                                  }
+                                },
+
                               ),
                               SizedBox(
                                 height: 10,

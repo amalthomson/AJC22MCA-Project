@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:farmconnect/blockchain/user.dart';
+import 'package:farmconnect/blockchain/user_datastructure.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +17,7 @@ class UserServices extends ChangeNotifier {
   bool isLoading = true;
 
   final String _privatekey =
-      '0x70c30fd856e034b9322fc8f22a9c92567c3b5fae6a393a2bd3310ef88e164537';
+      '0x8d8ee8e432ef1a171013770c3e0dcaafabf6dfe6e97714521f190a7bea5447d7';
   late Web3Client _web3Client;
 
   UserServices() {

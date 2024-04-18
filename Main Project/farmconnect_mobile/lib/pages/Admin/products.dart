@@ -1,8 +1,9 @@
+import 'package:farmconnect/pages/Admin/products_expired.dart';
 import 'package:flutter/material.dart';
-import 'package:farmconnect/widgets/admin_grid_card.dart';
+import 'package:farmconnect/widgets/grid_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:farmconnect/pages/Admin/add_categories.dart';
-import 'package:farmconnect/pages/Admin/caterogy_wise_products.dart';
+import 'package:farmconnect/pages/Admin/caterogywise_products.dart';
 import 'package:farmconnect/pages/Admin/stocks.dart';
 import 'package:farmconnect/pages/Admin/products_approved.dart';
 import 'package:farmconnect/pages/Admin/products_approvals.dart';
@@ -72,6 +73,19 @@ class Products extends StatelessWidget {
                     );
                   },
                   icon: FontAwesomeIcons.cancel,
+                ),
+                GridCard(
+                  title: 'Expired',
+                  gradientColors: [Colors.red.shade100, Colors.red.shade300],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExpiredProducts(),
+                      ),
+                    );
+                  },
+                  icon: FontAwesomeIcons.remove,
                 ),
                 GridCard(
                   title: 'Stock',
