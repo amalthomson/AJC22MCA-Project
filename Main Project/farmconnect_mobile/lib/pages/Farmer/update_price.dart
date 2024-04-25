@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UpdatePricePage extends StatefulWidget {
   @override
@@ -12,6 +13,22 @@ class _UpdatePricePageState extends State<UpdatePricePage> {
   double _currentPrice = 0.0;
   double _newPrice = 0.0;
   final _formKey = GlobalKey<FormState>();
+  late String _currentUserId;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  void _getCurrentUser() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        _currentUserId = user.uid;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +46,7 @@ class _UpdatePricePageState extends State<UpdatePricePage> {
         ),
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.black,
-        elevation: 0, // Remove app bar shadow
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -71,8 +88,8 @@ class _UpdatePricePageState extends State<UpdatePricePage> {
             onChanged: (String? newValue) {
               setState(() {
                 _selectedCategory = newValue;
-                _selectedProduct = null; // Reset product selection when category changes
-                _currentPrice = 0.0; // Reset current price
+                _selectedProduct = null;
+                _currentPrice = 0.0;
               });
             },
             items: categories.map((category) {
@@ -94,7 +111,7 @@ class _UpdatePricePageState extends State<UpdatePricePage> {
       future: FirebaseFirestore.instance.collection('products').where('category', isEqualTo: _selectedCategory).get(),
       builder: (context, snapshot) {
         if (_selectedCategory == null) {
-          return SizedBox.shrink(); // Don't show product dropdown until category is selected
+          return SizedBox.shrink();
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -213,43 +230,73 @@ class _UpdatePricePageState extends State<UpdatePricePage> {
     );
   }
 
+  Future<bool> _verifyProductOwnership(String productName) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('products')
+          .where('productName', isEqualTo: productName)
+          .where('userId', isEqualTo: _currentUserId)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return true; // User owns the product
+      }
+      return false; // Product not found or user doesn't own it
+    } catch (e) {
+      print('Error verifying product ownership: $e');
+      return false;
+    }
+  }
+
   Future<void> _updatePrice() async {
     if (_selectedCategory != null && _selectedProduct != null && _newPrice >= 0) {
-      try {
-        final querySnapshot = await FirebaseFirestore.instance
-            .collection('products')
-            .where('category', isEqualTo: _selectedCategory)
-            .where('productName', isEqualTo: _selectedProduct)
-            .get();
+      final bool isOwner = await _verifyProductOwnership(_selectedProduct!);
+      if (isOwner) {
+        try {
+          final querySnapshot = await FirebaseFirestore.instance
+              .collection('products')
+              .where('category', isEqualTo: _selectedCategory)
+              .where('productName', isEqualTo: _selectedProduct)
+              .get();
 
-        if (querySnapshot.docs.isNotEmpty) {
-          final productId = querySnapshot.docs[0].id;
+          if (querySnapshot.docs.isNotEmpty) {
+            final productId = querySnapshot.docs[0].id;
 
-          await FirebaseFirestore.instance.collection('products').doc(productId).update({
-            'productPrice': _newPrice.toString(),
-          });
+            await FirebaseFirestore.instance.collection('products').doc(productId).update({
+              'productPrice': _newPrice.toString(),
+            });
 
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Price updated successfully'),
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Product not found'),
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        } catch (e) {
+          print('Error updating price: $e');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Price updated successfully'),
-              duration: Duration(seconds: 3),
-              backgroundColor: Colors.green,
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Product not found'),
+              content: Text('Failed to update price: $e'),
               duration: Duration(seconds: 3),
               backgroundColor: Colors.red,
             ),
           );
         }
-      } catch (e) {
-        print('Error updating price: $e');
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to update price: $e'),
+            content: Text('You are not authorized to update the price of this product'),
             duration: Duration(seconds: 3),
             backgroundColor: Colors.red,
           ),

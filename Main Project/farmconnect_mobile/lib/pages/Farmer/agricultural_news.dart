@@ -20,7 +20,7 @@ class _AgriculturalNewsPageState extends State<AgriculturalNewsPage> {
   }
 
   Future<void> _fetchAgriculturalNews() async {
-    final apiKey = 'cfd53a5e9emsh54221adbe4d7b8cp10fc0djsnfbff5ce2b6622';
+    final apiKey = 'cfd53a5e9emsh54221adbe4d7b8cp10fc0djsnfbff5ce2b662';
     final apiUrl = 'https://newsapi90.p.rapidapi.com/search?query=farmer&language=en-IN&region=IN';
 
     final headers = {

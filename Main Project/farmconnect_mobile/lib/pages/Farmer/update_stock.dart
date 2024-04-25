@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UpdateStockPage extends StatefulWidget {
   @override
@@ -12,6 +13,22 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
   int _currentStock = 0;
   int _newStock = 0;
   final _formKey = GlobalKey<FormState>();
+  late String _currentUserId;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  void _getCurrentUser() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        _currentUserId = user.uid;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +44,9 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
           ),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.black, // Appbar color
+        backgroundColor: Colors.black,
       ),
-      backgroundColor: Colors.blueGrey[900], // Background color
+      backgroundColor: Colors.blueGrey[900],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -70,8 +87,8 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
             onChanged: (String? newValue) {
               setState(() {
                 _selectedCategory = newValue;
-                _selectedProduct = null; // Reset product selection when category changes
-                _currentStock = 0; // Reset current stock
+                _selectedProduct = null;
+                _currentStock = 0;
               });
             },
             items: categories.map((category) {
@@ -80,7 +97,7 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
                 child: Text(category, style: TextStyle(color: Colors.white)),
               );
             }).toList(),
-            dropdownColor: Colors.blueGrey[800], // Dropdown background color
+            dropdownColor: Colors.blueGrey[800],
             icon: Icon(Icons.arrow_drop_down, color: Colors.white),
           );
         }
@@ -93,7 +110,7 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
       future: FirebaseFirestore.instance.collection('products').where('category', isEqualTo: _selectedCategory).get(),
       builder: (context, snapshot) {
         if (_selectedCategory == null) {
-          return SizedBox.shrink(); // Don't show product dropdown until category is selected
+          return SizedBox.shrink();
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
@@ -114,7 +131,6 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
                     _selectedProduct = newValue;
                   });
 
-                  // Fetch and set the current stock when a product is selected
                   await _fetchCurrentStock();
                 },
                 items: products.map((product) {
@@ -123,7 +139,7 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
                     child: Text(product, style: TextStyle(color: Colors.white)),
                   );
                 }).toList(),
-                dropdownColor: Colors.blueGrey[800], // Dropdown background color
+                dropdownColor: Colors.blueGrey[800],
                 icon: Icon(Icons.arrow_drop_down, color: Colors.white),
               ),
               SizedBox(height: 10.0),
@@ -206,45 +222,75 @@ class _UpdateStockPageState extends State<UpdateStockPage> {
     );
   }
 
+  Future<bool> _verifyProductOwnership(String productName) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('products')
+          .where('productName', isEqualTo: productName)
+          .where('userId', isEqualTo: _currentUserId)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        return true; // User owns the product
+      }
+      return false; // Product not found or user doesn't own it
+    } catch (e) {
+      print('Error verifying product ownership: $e');
+      return false;
+    }
+  }
+
   Future<void> _updateStock() async {
     if (_selectedCategory != null && _selectedProduct != null && _newStock > 0) {
-      try {
-        final querySnapshot = await FirebaseFirestore.instance
-            .collection('products')
-            .where('category', isEqualTo: _selectedCategory)
-            .where('productName', isEqualTo: _selectedProduct)
-            .get();
+      final bool isOwner = await _verifyProductOwnership(_selectedProduct!);
+      if (isOwner) {
+        try {
+          final querySnapshot = await FirebaseFirestore.instance
+              .collection('products')
+              .where('category', isEqualTo: _selectedCategory)
+              .where('productName', isEqualTo: _selectedProduct)
+              .get();
 
-        if (querySnapshot.docs.isNotEmpty) {
-          final productId = querySnapshot.docs[0].id;
-          final existingStock = querySnapshot.docs[0]['stock'] ?? 0;
-          final updatedStock = existingStock + _newStock;
+          if (querySnapshot.docs.isNotEmpty) {
+            final productId = querySnapshot.docs[0].id;
+            final existingStock = querySnapshot.docs[0]['stock'] ?? 0;
+            final updatedStock = existingStock + _newStock;
 
-          await FirebaseFirestore.instance.collection('products').doc(productId).update({
-            'stock': updatedStock,
-          });
+            await FirebaseFirestore.instance.collection('products').doc(productId).update({
+              'stock': updatedStock,
+            });
 
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Stock updated successfully'),
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Product not found'),
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        } catch (e) {
+          print('Error updating stock: $e');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Stock updated successfully'),
-              duration: Duration(seconds: 3),
-              backgroundColor: Colors.green,
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Product not found'),
+              content: Text('Failed to update stock: $e'),
               duration: Duration(seconds: 3),
               backgroundColor: Colors.red,
             ),
           );
         }
-      } catch (e) {
-        print('Error updating stock: $e');
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to update stock: $e'),
+            content: Text('You are not authorized to update the stock of this product'),
             duration: Duration(seconds: 3),
             backgroundColor: Colors.red,
           ),
