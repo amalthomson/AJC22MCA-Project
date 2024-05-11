@@ -19,16 +19,14 @@ class _PendingFarmerApprovalPageState extends State<PendingFarmerApprovalPage> {
       messageSubject = 'Account Rejected';
       messageText = 'Your account has been rejected by the Admin. Please contact Admin for further assistance.';
     } else {
-      // Handle other cases if necessary
       return;
     }
 
     FirebaseFirestore.instance.collection('users').doc(userId).update({
       'isAdminApproved': status,
-      'remark': status == 'approved' ? 'The User is Approved' : '', // Update the remark field
+      'remark': status == 'approved' ? 'The User is Approved' : '',
     });
 
-    // Send email notification
     sendNotificationEmail(email, messageSubject, messageText);
 
     ScaffoldMessenger.of(context).showSnackBar(

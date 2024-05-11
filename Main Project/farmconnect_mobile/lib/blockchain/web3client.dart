@@ -17,7 +17,7 @@ class UserServices extends ChangeNotifier {
   bool isLoading = true;
 
   final String _privatekey =
-      '0x8d8ee8e432ef1a171013770c3e0dcaafabf6dfe6e97714521f190a7bea5447d7';
+      '0xea0bc79a03c2b07a8c9a3bfce6abd0e2b5d10c79c1b22c43c9e59fadfc45399c';
   late Web3Client _web3Client;
 
   UserServices() {

@@ -1,5 +1,6 @@
 import 'package:farmconnect/pages/Admin/order_history.dart';
 import 'package:farmconnect/pages/Admin/payments.dart';
+import 'package:farmconnect/pages/Admin/reports.dart';
 import 'package:flutter/material.dart';
 import 'package:farmconnect/widgets/grid_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,7 +57,19 @@ class Orders extends StatelessWidget {
                   },
                   icon: FontAwesomeIcons.indianRupeeSign,
                 ),
-                // Add more GridCard widgets for additional transactions
+                GridCard(
+                  title: 'Reports',
+                  gradientColors: [Colors.yellow.shade100, Colors.yellow.shade300],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ReportsPage(),
+                      ),
+                    );
+                  },
+                  icon: FontAwesomeIcons.indianRupeeSign,
+                ),
               ],
             ),
           ),
